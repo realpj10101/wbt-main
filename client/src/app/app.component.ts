@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ErrorsComponent } from "./components/errors/errors.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ErrorsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
