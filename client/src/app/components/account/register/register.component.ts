@@ -40,15 +40,34 @@ export class RegisterComponent implements OnInit, OnDestroy {
   //#endregion
 
   //#region auto-run-methods
-  ngOnDestroy(): void {
+  ngOnInit(): void {
     // set datePicker year limitations
     const currentYear = new Date().getFullYear();
-    this.minDate = new Date(currentYear - 99, 0, 1)
+    this.minDate = new Date(currentYear - 99, 0, 1); // not older than 99 years
+    this.maxDate = new Date(currentYear - 18 - 0 - 1); // not earlier than 18 years
   }
 
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  ngOnDestroy(): void {
+    this.subscibedRegisterPlayer?.unsubscribe();
   }
+  //#endregion
+
+  //#region FormGroup
+  registerFg = this.fb.group({
+    genderCtrl: ['female', [Validators.required]],
+    emailCtrl: ['', [Validators.required, Validators.maxLength(50), Validators.pattern(/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$/)]],
+    userNameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+    passwordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
+    confirmPasswordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
+    name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+    lastNameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+    nationalCodeCtrl: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+    heightCtrl: ['', [Validators.required]],
+    age: ['', [Validators.required]],
+    knownAsCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+    cityCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+    countryCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+  })
   //#endregion
 
 }
