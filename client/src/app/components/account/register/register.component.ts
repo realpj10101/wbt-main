@@ -10,7 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Subscription } from 'rxjs';
+import { Subscription, retry } from 'rxjs';
 import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 
 @Component({
@@ -59,15 +59,109 @@ export class RegisterComponent implements OnInit, OnDestroy {
     userNameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
     passwordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
     confirmPasswordCtrl: ['', [Validators.required, Validators.minLength(7), Validators.maxLength(20)]],
-    name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
+    nameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
     lastNameCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
     nationalCodeCtrl: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
     heightCtrl: ['', [Validators.required]],
-    age: ['', [Validators.required]],
+    ageCtrl: ['', [Validators.required]],
     knownAsCtrl: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
     cityCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
     countryCtrl: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
   })
+
+  get GenderCtrl(): FormControl {
+    return this.registerFg.get('genderCtrl') as FormControl;
+  }
+  get EmailCtrl(): FormControl {
+    return this.registerFg.get('emailCtrl') as FormControl;
+  }
+  get UserNameCtrl(): FormControl {
+    return this.registerFg.get('userNameCtrl') as FormControl;
+  }
+  get PasswordCtrl(): FormControl {
+    return this.registerFg.get('passwordCtrl') as FormControl;
+  }
+  get ConfirmPasswordCtrl(): FormControl {
+    return this.registerFg.get('confirmPasswordCtrl') as FormControl;
+  }
+  get NameCtrl(): FormControl {
+    return this.registerFg.get('nameCtrl') as FormControl;
+  }
+  get LastNameCtrl(): FormControl {
+    return this.registerFg.get('lastNameCtrl') as FormControl;
+  }
+  get NationalCodeCtrl(): FormControl {
+    return this.registerFg.get('nationalCodeCtrl') as FormControl;
+  }
+  get HeightCtrl(): FormControl {
+    return this.registerFg.get('heightCtrl') as FormControl;
+  }
+  get AgeCtrl(): FormControl {
+    return this.registerFg.get('ageCtrl') as FormControl;
+  }
+  get KnownAsCtrl(): FormControl {
+    return this.registerFg.get('knownAsCtrl') as FormControl;
+  }
+  get CityCtrl(): FormControl {
+    return this.registerFg.get('cityCtrl') as FormControl;
+  }
+  get CountryCtrl(): FormControl {
+    return this.registerFg.get('countryCtrl') as FormControl;
+  }
   //#endregion
 
+  //#region methods
+  /**
+   * Create RegisterPlayer Object
+   * call registerPlayerService.registerPlayer to send data to api
+   */
+  register(): void {
+    const dob: string |undefined = this.getDateOnly(this.AgeCtrl.value);
+
+    if (this.PasswordCtrl.value === this.ConfirmPasswordCtrl.value) {
+      this.passwordsNotMatch = false;
+      
+      let registerPlayer: RegisterPlayer = {
+        gender: this.GenderCtrl.value,
+        email: this.EmailCtrl.value,
+        userName: this.UserNameCtrl.value,
+        password: this.PasswordCtrl.value,
+        confirmPassword: this.ConfirmPasswordCtrl.value,
+        name: this.NameCtrl.value,
+        lastName: this.LastNameCtrl.value,
+        nationalCode: this.NationalCodeCtrl.value,
+        height: this.HeightCtrl.value,
+        age: dob,
+        knownAs: this.KnownAsCtrl.value,
+        city: this.CityCtrl.value,
+        country: this.CountryCtrl.value
+      }
+
+      this.subscibedRegisterPlayer = this.registerPlayerService.registerPlayer(registerPlayer).subscribe({
+        next: player => console.log(player),
+        error: err => this.emailExistError = err.error
+      });
+    }
+    else {
+      this.passwordsNotMatch = true;
+    }
+  }
+
+  /**
+   * conver Angular Data t C# DateOnly
+   * @param dob // yyyy/mm/dd/mm/ss. Takes DateOfBirth
+   * @return yyyy/mm/dd
+   */
+
+  private getDateOnly(dob: string | null): string | undefined {
+    if (!dob) return undefined;
+
+    let theDob: Date = new Date(dob);
+    return new Date(theDob.setMinutes(theDob.getMinutes() - theDob.getTimezoneOffset())).toISOString().slice(0, 10);
+  }
+
+  getState(): void {
+    console.log(this.registerFg);
+  }
+  //#endregion
 }
