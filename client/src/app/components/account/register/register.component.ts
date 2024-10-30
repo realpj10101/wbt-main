@@ -10,7 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { Subscription, retry } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 
 @Component({
