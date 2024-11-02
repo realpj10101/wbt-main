@@ -11,9 +11,26 @@
             </mat-radio-group>
         </div>
 
+        <!-- Email -->
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input autoFocusDir type="email" formControlName="EmailCtrl" label="Email" placeholder="Your email" matInput>
+            <mat-hint>Enter your email.</mat-hint>
+            @if (EmailCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+            }
+        </mat-form-field>
+
+        <!-- UserName -->
         <mat-form-field appearance="outline">
             <mat-label>UserName</mat-label>
-            <input type="text" formControlName="userNameCtrl" label="Username" placeholder="Your usernameP">
+            <input type="text" formControlName="userNameCtrl" label="Username" placeholder="Your username" matInput>
+            <mat-hint>Between 1 to 30 characters.</mat-hint>
+            @if (UserNameCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+            }
         </mat-form-field>
+
+        <!--  -->
     </div>
 </form>
