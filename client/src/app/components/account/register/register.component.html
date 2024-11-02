@@ -1,1 +1,19 @@
-<h1>Register</h1>
+<form [formGroup]="registerFg" (ngSubmit)="registerFg.valid">
+    <div class="content">
+        <h1>Create Account</h1>
+
+        <div class="gender">
+            <strong>I am a</strong>
+            <mat-radio-group formControlName="genderCtrl" aria-label="Select your gender" color="primary">
+                <mat-radio-button value="female">Female</mat-radio-button>
+                <mat-radio-button value="male">Male</mat-radio-button>
+                <mat-radio-button value="other">Other</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <mat-form-field appearance="outline">
+            <mat-label>UserName</mat-label>
+            <input type="text" formControlName="userNameCtrl" label="Username" placeholder="Your usernameP">
+        </mat-form-field>
+    </div>
+</form>
