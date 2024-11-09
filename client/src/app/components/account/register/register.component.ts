@@ -28,7 +28,7 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 })
 export class RegisterComponent {
   //#region enjects and vars
-  registerPlayerService = inject(RegisterPlayerService);
+  // registerPlayerService = inject(RegisterPlayerService);
   fb = inject(FormBuilder);
 
   minDate = new Date();
@@ -120,7 +120,7 @@ export class RegisterComponent {
 
     if (this.PasswordCtrl.value === this.ConfirmPasswordCtrl.value) {
       this.passwordsNotMatch = false;
-      
+
       let registerPlayer: RegisterPlayer = {
         gender: this.GenderCtrl.value,
         email: this.EmailCtrl.value,
@@ -138,10 +138,10 @@ export class RegisterComponent {
       }
 
       // return: Observable<Player> | Promise().then()
-      this.subscibedRegisterPlayer = this.registerPlayerService.registerPlayer(registerPlayer).subscribe({
-        next: player => console.log(player),
-        error: err => this.emailExistError = err.error
-      });
+      // this.subscibedRegisterPlayer = this.registerPlayerService.registerPlayer(registerPlayer).subscribe({
+      //   next: player => console.log(player),
+      //   error: err => this.emailExistError = err.error
+      // });
     }
     else {
       this.passwordsNotMatch = true;

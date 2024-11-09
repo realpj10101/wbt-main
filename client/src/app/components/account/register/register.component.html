@@ -1,4 +1,5 @@
-<form [formGroup]="registerFg" (ngSubmit)="registerFg.valid">
+<section>
+  <form [formGroup]="registerFg" (ngSubmit)="registerFg.valid">
     <div class="content">
         <h1>Create Account</h1>
 
@@ -31,6 +32,21 @@
             }
         </mat-form-field>
 
-        <!--  -->
+        <!-- Password  -->
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input type="password" formControlName="passwordCtrl" label="Password" placeholder="Your password" matInput>
+          @if (PasswordCtrl.hasError("required")) {
+            <mat-error>This field is required.</mat-error>
+          }
+          @else if (PasswordCtrl.errors && PasswordCtrl.hasError("minlength")) {
+            <mat-error>It's too short. Min: {{PasswordCtrl.errors["minlength"].requiredLength}}</mat-error>
+          }
+          @else if (PasswordCtrl.errors && PasswordCtrl.hasError("maxlength")) {
+            <mat-error>It's too long. Max: {{PasswordCtrl.errors["maxlength"].requirdLength}}</mat-error>
+          }
+        </mat-form-field>
+
     </div>
-</form>
+  </form>
+</section>
