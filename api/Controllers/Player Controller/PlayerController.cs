@@ -69,4 +69,3 @@ IFollowRepository _followRepository, ITokenService _tokenService) : BaseApiContr
         return playerDto;
     }
 }
-// test
