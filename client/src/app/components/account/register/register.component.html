@@ -47,9 +47,27 @@
           }
         </mat-form-field>
 
+        <!-- Confirm Password -->
         <mat-form-field>
           <mat-label>Confirm Password</mat-label>
+          <input type="password" formControlName="confirmPasswordCtrl" label="Password" placeholder="Your passsword" matInput>
+          @if (ConfirmPasswordCtrl.hasError("required"))
+          {
+            <mat-error>This field is required</mat-error>
+          }
+          @else if (ConfirmPasswordCtrl.errors && ConfirmPasswordCtrl.hasError("minlength"))
+          {
+            <mat-error>It's too short. Min: {{ConfirmPasswordCtrl.errors["minlength"].requiredLength}}</mat-error>
+          }
+          @else if (ConfirmPasswordCtrl.errors && ConfirmPasswordCtrl.hasError("maxlength")) {
+            <mat-error>It's too long. Mac: {{ConfirmPasswordCtrl.errors["maxlength"].requiredLength}}</mat-error>
+          }
         </mat-form-field>
+
+        <!-- Name -->
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+      </mat-form-field>
     </div>
   </form>
 </section>

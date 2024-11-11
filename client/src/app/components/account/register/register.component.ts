@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
+import {C} from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-register',
@@ -165,4 +166,5 @@ export class RegisterComponent {
     console.log(this.registerFg);
   }
   //#endregion
+  protected readonly C = C;
 }
