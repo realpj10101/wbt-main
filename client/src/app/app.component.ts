@@ -5,7 +5,6 @@ import { FormBuilder, FormControl, ReactiveFormsModule, FormsModule, Validators 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import
 
 @Component({
   selector: 'app-root',
@@ -13,7 +12,8 @@ import
   imports: [
     RouterOutlet,
     ReactiveFormsModule, FormsModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule
+    MatFormFieldModule, MatInputModule, MatButtonModule,
+    RegisterComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
