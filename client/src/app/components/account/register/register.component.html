@@ -43,13 +43,14 @@
             <mat-error>It's too short. Min: {{PasswordCtrl.errors["minlength"].requiredLength}}</mat-error>
           }
           @else if (PasswordCtrl.errors && PasswordCtrl.hasError("maxlength")) {
-            <mat-error>It's too long. Max: {{PasswordCtrl.errors["maxlength"].requirdLength}}</mat-error>
+            <mat-error>It's too long. Max: {{PasswordCtrl.errors["maxlength"].requirdLength}}</mat-error>l
           }
         </mat-form-field>
 
+        <mat-form-field>
+          <mat-label>Confirm Password</mat-label>
+        </mat-form-field>
     </div>
   </form>
 </section>
-<section>
-  <img src="" alt="">
-</section>
+<
