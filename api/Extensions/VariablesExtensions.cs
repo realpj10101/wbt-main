@@ -4,12 +4,7 @@ public class AppVariablesExtensions
 {
     public const string TokenKey = "TokenKey";
 
-    public const string collectionPlayers = "users";
-    public const string collectionCoaches = "coaches";
-    public const string collectionTeams = "teams";
-    public const string collectionFollows = "follows";
-    public const string collectionLikes = "likes";
-    public const string collectionJoines = "joins";
+    public const string collectionUsers = "users";
     public const string collectionExceptionLogs = "exception-logs";
 
     public readonly static string[] AppVersion = ["1", "1.0.2"];

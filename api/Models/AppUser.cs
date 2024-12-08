@@ -4,7 +4,7 @@ using MongoDbGenericRepository.Attributes;
 namespace api.Models;
 
 [CollectionName("users")]
-public class RootModel : MongoIdentityUser<ObjectId>
+public class AppUser : MongoIdentityUser<ObjectId>
 {
     public string? IdentifierHash { get; init; }    
     public string Name { get; init; } = string.Empty;

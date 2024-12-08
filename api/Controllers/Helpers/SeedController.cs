@@ -7,10 +7,10 @@ public class SeedController : BaseApiController
     #region Db Settings
     private readonly IMongoDatabase _database;
     private readonly IMongoClient _client;
-    private readonly UserManager<RootModel> _userManager;
+    private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<AppRole> _roleManager;
 
-    public SeedController(IMongoClient client, IMyMongoDbSettings dbSettings, UserManager<RootModel> userManager, RoleManager<AppRole> roleManager)
+    public SeedController(IMongoClient client, IMyMongoDbSettings dbSettings, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
     {
         _client = client;
         _database = client.GetDatabase(dbSettings.DatabaseName);
@@ -53,7 +53,7 @@ public class SeedController : BaseApiController
 
         #region Create Admin and Moderator
 
-        RootModel admin = new()
+        AppUser admin = new()
         {
             UserName = "admin",
             Email = "admin@a.com"
@@ -62,7 +62,7 @@ public class SeedController : BaseApiController
         await _userManager.CreateAsync(admin, "Aaaaaaaa/");
         await _userManager.AddToRolesAsync(admin, ["admin", "moderator"]);
 
-        RootModel moderator = new()
+        AppUser moderator = new()
         {
             Email = "moderator@a.com",
             UserName = "moderator"

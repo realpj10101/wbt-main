@@ -54,9 +54,9 @@ public static class IdentityServiceExtensions
                 }
             };
 
-            services.ConfigureMongoDbIdentity<RootModel, AppRole, ObjectId>(mongodbIdentityConfig)
-            .AddUserManager<UserManager<RootModel>>()
-            .AddSignInManager<SignInManager<RootModel>>()
+            services.ConfigureMongoDbIdentity<AppUser, AppRole, ObjectId>(mongodbIdentityConfig)
+            .AddUserManager<UserManager<AppUser>>()
+            .AddSignInManager<SignInManager<AppUser>>()
             .AddRoleManager<RoleManager<AppRole>>()
             .AddDefaultTokenProviders();
 

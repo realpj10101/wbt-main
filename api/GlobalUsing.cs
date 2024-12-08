@@ -9,7 +9,6 @@ global using System.ComponentModel.DataAnnotations;
 global using MongoDB.Bson.Serialization.Attributes;
 global using api.Controllers.Helpers;
 global using api.Interfaces;
-global using api.Repositories;
 global using Microsoft.Extensions.Options;
 global using System.Text;
 global using api.Services;

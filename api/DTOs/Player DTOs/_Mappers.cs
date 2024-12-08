@@ -5,59 +5,48 @@ namespace api.DTOs;
 
 public static class Mappers
 {
-    public static RootModel ConvertRegisterPlayerDtoToRootModel(RegisterPlayerDto playerInput)
+    public static AppUser ConvertRegisterPlayerDtoToAppUser(RegisterPlayerDto playerInput)
     {
 
-        return new RootModel
+        return new AppUser
         {
             Email = playerInput.Email,
-            UserName = playerInput.UserName,
-            Name = playerInput.Name,
-            LastName = playerInput.LastName,
-            NationalCode = playerInput.NationalCode.Trim(),
-            Height = playerInput.Height,
-            Age = playerInput.Age,
-            KnownAs = playerInput.KnownAs.Trim(),
-            LastActive = DateTime.UtcNow,
-            Gender = playerInput.Gender.ToLower(),
-            City = playerInput.City.Trim(),
-            Country = playerInput.Country.Trim(),
-            Photos = []
+            UserName = playerInput.UserName
         };
     }
 
-    public static LoggedInDto ConvertRootModelToLoggedInDto(RootModel rootModel, string tokenValue)
+    public static LoggedInDto ConvertAppUserToLoggedInDto(AppUser appUser, string tokenValue)
     {
         return new LoggedInDto
         {
             Token = tokenValue,
-            UserName = rootModel.NormalizedUserName,
-            KnownAs = rootModel.KnownAs,
-            Gender = rootModel.Gender,
-            ProfilePhotoUrl = rootModel.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
+            UserName = appUser.NormalizedUserName,
+            KnownAs = appUser.KnownAs,
+            Gender = appUser.Gender,
+            ProfilePhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
         };
     }
 
-    public static PlayerDto ConvertRootModelToPlayerDto(RootModel rootModel, bool isFollowing = false)
+    public static PlayerDto ConvertAppUserToPlayerDto(AppUser appUser, bool isFollowing = false)
     {
         return new PlayerDto(
             // Id: rootModel.Id!.ToString(),    
-            UserName: rootModel.NormalizedUserName!,
-            Name: rootModel.Name,
-            LastName: rootModel.LastName,
-            NationalCode: rootModel.NationalCode,
-            Height: rootModel.Height,
-            Age: CustomDateTimeExtensions.CalculateAge(rootModel.Age),
-            KnownAs: rootModel.KnownAs,
-            Created: rootModel.CreatedOn,
-            LastActive: rootModel.LastActive,
-            Gender: rootModel.Gender,
-            LookingFor: rootModel.LookingFor,
-            City: rootModel.City,
-            Country: rootModel.Country,
-            Photos: rootModel.Photos,
+            UserName: appUser.NormalizedUserName!,
+            Name: appUser.Name,
+            LastName: appUser.LastName,
+            NationalCode: appUser.NationalCode,
+            Height: appUser.Height,
+            Age: CustomDateTimeExtensions.CalculateAge(appUser.Age),
+            KnownAs: appUser.KnownAs,
+            Created: appUser.CreatedOn,
+            LastActive: appUser.LastActive,
+            Gender: appUser.Gender,
+            LookingFor: appUser.LookingFor,
+            City: appUser.City,
+            Country: appUser.Country,
+            Photos: appUser.Photos,
             IsFollowing: isFollowing,
-            IsCaptain: rootModel.IsCaptain
+            IsCaptain: appUser.IsCaptain
         );
     }
 

@@ -6,14 +6,14 @@ using Microsoft.AspNetCore.Identity;
 namespace api.Services;
 public class TokenService : ITokenService
 {
-    private readonly IMongoCollection<RootModel> _collection;
+    private readonly IMongoCollection<AppUser> _collection;
     private readonly SymmetricSecurityKey? _key; // set it as nullable by ? mark
-    private readonly UserManager<RootModel> _userManager;
+    private readonly UserManager<AppUser> _userManager;
 
-    public TokenService(IConfiguration config, IMongoClient client, IMyMongoDbSettings dbSettings, UserManager<RootModel> userManager)
+    public TokenService(IConfiguration config, IMongoClient client, IMyMongoDbSettings dbSettings, UserManager<AppUser> userManager)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionPlayers);
+        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
         // _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionCoaches);
         // _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionTeams);
 
@@ -28,11 +28,11 @@ public class TokenService : ITokenService
     }
 
 
-    public async Task<string?> CreateToken(RootModel rootModel, CancellationToken cancellationToken)
+    public async Task<string?> CreateToken(AppUser appUser, CancellationToken cancellationToken)
     {
         _ = _key ?? throw new ArgumentNullException("_key cannot be null", nameof(_key));
 
-        string? hashedUserId = await GenerateAndStoreHashedId(rootModel.Id, cancellationToken);
+        string? hashedUserId = await GenerateAndStoreHashedId(appUser.Id, cancellationToken);
 
         if (string.IsNullOrEmpty(hashedUserId))
             return null;
@@ -43,7 +43,7 @@ public class TokenService : ITokenService
         };
 
         // Get user's roles and add them all into claims
-        IList<string>? roles = await _userManager.GetRolesAsync(rootModel);
+        IList<string>? roles = await _userManager.GetRolesAsync(appUser);
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
@@ -70,10 +70,10 @@ public class TokenService : ITokenService
 
         string identifierHash = BCrypt.Net.BCrypt.HashPassword(newObjectId);
 
-        UpdateDefinition<RootModel> updatedSecuredToken = Builders<RootModel>.Update
+        UpdateDefinition<AppUser> updatedSecuredToken = Builders<AppUser>.Update
             .Set(rootModel => rootModel.IdentifierHash, identifierHash);
 
-        UpdateResult updateResult = await _collection.UpdateOneAsync<RootModel>(rootModel =>
+        UpdateResult updateResult = await _collection.UpdateOneAsync<AppUser>(rootModel =>
             rootModel.Id == userId, updatedSecuredToken, null, cancellationToken);
 
         if (updateResult.ModifiedCount == 1)
