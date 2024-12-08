@@ -11,7 +11,8 @@ public static class Mappers
         return new AppUser
         {
             Email = playerInput.Email,
-            UserName = playerInput.UserName
+            UserName = playerInput.UserName,
+            Gender = playerInput.Gender
         };
     }
 
