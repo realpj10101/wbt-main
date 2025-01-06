@@ -43,4 +43,24 @@ public class MemberController(IMemberRepository _memberRepository, ITokenService
 
         return playerDtos;
     }
+
+    [HttpGet("get-by-id/{playerId}")]
+    public async Task<ActionResult<PlayerDto>> GetById(string playerId, CancellationToken cancellationToken)
+    {
+        PlayerDto? playerDto = await _memberRepository.GetByIdAsync(playerId, cancellationToken);
+        
+        if (playerDto is null) return NotFound("No player with this ID");
+
+        return playerDto;
+    }
+
+    [HttpGet("get-by-username/{playerUserName}")]
+    public async Task<ActionResult<PlayerDto>> GetByUsername(string playerUserName, CancellationToken cancellationToken)
+    {
+        PlayerDto? playerDto = await _memberRepository.GetByUserNameAsync(playerUserName, cancellationToken);
+        
+        if (playerDto is null) return NotFound("No player with this username");
+
+        return playerDto;
+    }
 }

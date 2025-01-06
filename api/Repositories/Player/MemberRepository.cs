@@ -1,6 +1,7 @@
 using api.Extensions;
 using api.Helpers;
 using api.Interfaces.Player;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api.Repositories.Player;
 
@@ -27,6 +28,8 @@ public class MemberRepository : IMemberRepository
     {
         AppUser appUser = await _collection.Find(appUser =>
             appUser.Id.ToString() == playerId).FirstOrDefaultAsync(cancellationToken);
+        
+        if (appUser is null) return null;
 
         if (appUser.Id.ToString() is not null) return Mappers.ConvertAppUserToPlayerDto(appUser);
 
@@ -36,7 +39,9 @@ public class MemberRepository : IMemberRepository
     public async Task<PlayerDto?> GetByUserNameAsync(string playerUserName, CancellationToken cancellationToken)
     {
         AppUser appUser = await _collection.Find(appUser =>
-            appUser.NormalizedUserName == playerUserName).FirstOrDefaultAsync(cancellationToken);
+            appUser.NormalizedUserName == playerUserName.ToUpper()).FirstOrDefaultAsync(cancellationToken);
+
+        if (appUser is null) return null;
 
         if (appUser.Id.ToString() is not null) return Mappers.ConvertAppUserToPlayerDto(appUser);
 
