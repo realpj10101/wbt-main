@@ -2,10 +2,10 @@ namespace api.Extensions;
 
 public static class ValidationsExtensions
 {
-    public static ObjectId? ValidateObjectId(ObjectId? id)
+    public static ObjectId? ValidateObjectId(ObjectId? objectId)
     {
-        return id is null || !id.HasValue || id.Equals(ObjectId.Empty)
+        return objectId is null || !objectId.HasValue || objectId.Equals(ObjectId.Empty)
             ? null
-            : id;
+            : objectId;
     }
 }
