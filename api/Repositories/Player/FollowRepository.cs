@@ -116,4 +116,81 @@ public class FollowRepository : IFollowRepository
 
         return fS;
     }
+
+    /// Unfollow the target player by logged in user
+    public async Task<FollowStatus> DeleteAsync(ObjectId playerId, string followedPlayerUserName,
+        CancellationToken cancellationToken)
+    {
+        FollowStatus fS = new();
+
+        ObjectId? followedId = // Get target player username and find his/her ObjectId.
+            await _playerUserRepository.GetObjectIdByUserNameAsync(followedPlayerUserName, cancellationToken);
+
+        if (followedId is null)
+        {
+            fS.IsTargetMemberNotFound = true;
+
+            return fS;
+        }
+
+        using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
+        
+        session.StartTransaction();
+
+        try
+        {
+            DeleteResult deleteResult = await _collection.DeleteOneAsync(
+                doc => doc.FollowerId == playerId
+                       && doc.FollowedMemberId == followedId,
+                cancellationToken);
+
+            if (deleteResult.DeletedCount < 1)
+            {
+                fS.IsAlreadyUnfollowed = true;
+
+                return fS;
+            }
+
+            #region UpdateCounters
+
+            UpdateDefinition<AppUser> updateFollowingsCount = Builders<AppUser>.Update
+                .Inc(appUser => appUser.FollowingsCount, -1);
+
+            await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
+                appUser.Id == playerId, updateFollowingsCount, null, cancellationToken);
+
+            UpdateDefinition<AppUser> updateFollowersCount = Builders<AppUser>.Update
+                .Inc(appUser => appUser.FollowersCount, -1);
+
+            await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
+                appUser.Id == followedId, updateFollowersCount, null, cancellationToken);
+
+            #endregion
+
+            await session.CommitTransactionAsync(cancellationToken);
+
+            fS.IsSuccess = true;
+        }
+        catch (Exception ex)
+        {
+            await session.AbortTransactionAsync(cancellationToken);
+
+            _logger.LogError(
+                "UnFollow failed."
+                + "MESSAGE:" + ex.Message
+                + "TRACE:" + ex.StackTrace);
+        }
+        finally
+        {
+            _logger.LogInformation("MongoDB transaction/session finished.");
+        }
+
+        return fS;
+    }
+
+    public async Task<bool> CheckIsFollowingAsync(ObjectId playerId, AppUser appUser,
+        CancellationToken cancellationToken) => 
+        await _collection.Find<Follow>(
+            doc => doc.FollowerId == playerId && doc.FollowedMemberId == appUser.Id
+            ).AnyAsync(cancellationToken);
 }

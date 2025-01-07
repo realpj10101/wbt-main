@@ -29,4 +29,24 @@ public class FollowController(IFollowRepository _followRepository, ITokenService
             ? BadRequest($"{targetPlayerUserName} is already followed.")
             : BadRequest("Following failed. Please try again or contact the administrator.");
     }
+
+    [HttpDelete("remove-follow/{targetPlayerUserName}")]
+    public async Task<ActionResult<Response>> Delete(string targetPlayerUserName, CancellationToken cancellationToken)
+    {
+        // Get logged in user ObjectId from token.
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken); 
+        
+        if (playerId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+                
+        FollowStatus fS = await _followRepository.DeleteAsync(playerId.Value, targetPlayerUserName, cancellationToken);
+        
+        return fS.IsSuccess
+        ? Ok(new Response(Message: $"You unfollowed {targetPlayerUserName} successfully."))
+        : fS.IsTargetMemberNotFound
+        ? NotFound($"{targetPlayerUserName} is not found.")
+        : fS.IsAlreadyUnfollowed
+        ? BadRequest($"{targetPlayerUserName} is already unfollowed.")
+        : BadRequest("Unfollowing failed. Please try again or contact the administrator.");
+    }
 }

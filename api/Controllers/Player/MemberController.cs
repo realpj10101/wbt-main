@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers.Player;
 
 [Authorize]
-public class MemberController(IMemberRepository _memberRepository, ITokenService _tokenService) : BaseApiController
+public class MemberController(IMemberRepository _memberRepository, 
+    ITokenService _tokenService, IFollowRepository _followRepository) : BaseApiController
 {
     [AllowAnonymous]
     [HttpGet]
@@ -36,9 +37,12 @@ public class MemberController(IMemberRepository _memberRepository, ITokenService
 
         List<PlayerDto> playerDtos = [];
 
+        bool isFollowing;
         foreach (AppUser appUser in pagedAppUsers)
         {
-            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser));
+            isFollowing = await _followRepository.CheckIsFollowingAsync(userId.Value, appUser, cancellationToken);
+            
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
         }
 
         return playerDtos;
@@ -57,7 +61,11 @@ public class MemberController(IMemberRepository _memberRepository, ITokenService
     [HttpGet("get-by-username/{playerUserName}")]
     public async Task<ActionResult<PlayerDto>> GetByUsername(string playerUserName, CancellationToken cancellationToken)
     {
-        PlayerDto? playerDto = await _memberRepository.GetByUserNameAsync(playerUserName, cancellationToken);
+        string? userIdHashed = User.GetHashedUserId();
+
+        if (userIdHashed is null) return Unauthorized("You are not logged in! Login again.");
+        
+        PlayerDto? playerDto = await _memberRepository.GetByUserNameAsync(playerUserName, userIdHashed, cancellationToken);
         
         if (playerDto is null) return NotFound("No player with this username");
 
