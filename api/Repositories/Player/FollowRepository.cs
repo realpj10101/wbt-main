@@ -1,4 +1,6 @@
+using api.Enums;
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces.Player;
 using api.Models.Helpers;
 
@@ -193,4 +195,35 @@ public class FollowRepository : IFollowRepository
         await _collection.Find<Follow>(
             doc => doc.FollowerId == playerId && doc.FollowedMemberId == appUser.Id
             ).AnyAsync(cancellationToken);
+    
+    // get all followers/followings with pagination and 
+    public async Task<PagedList<AppUser>> GetAllAsync(FollowParams followParams, CancellationToken cancellationToken)
+    {
+        if (followParams.Predicate == FollowPredicateEnum.Followings)
+        {
+            IMongoQueryable<AppUser> query = _collection.AsQueryable<Follow>()
+                .Where(follow => follow.FollowerId == followParams.UserId) // filter by parsa id
+                .Join(_collectionUsers.AsQueryable<AppUser>(), // get follows list which are followed by the followerId/loggedInUserId
+                    follow => follow.FollowedMemberId, // map each followedId user with their AppUser Id bellow 
+                    appUser => appUser.Id,
+                    (follow, appUser) => appUser); // project the AppUser
+
+            return await PagedList<AppUser>
+                .CreatePagedListAsync(query, followParams.PageNumber, followParams.PageSize, cancellationToken);
+        }
+        else if (followParams.Predicate == FollowPredicateEnum.Followers) // followers
+        {
+            IMongoQueryable<AppUser> query = _collection.AsQueryable<Follow>()
+                .Where(follow => follow.FollowedMemberId == followParams.UserId)
+                .Join(_collectionUsers.AsQueryable<AppUser>(),
+                    follow => follow.FollowerId,
+                    appUser => appUser.Id,
+                    (follow, appUser) => appUser);
+            
+            return await PagedList<AppUser>
+                .CreatePagedListAsync(query, followParams.PageNumber, followParams.PageSize, cancellationToken);
+        }
+
+        return [];
+    }
 }
