@@ -21,7 +21,7 @@ public class RegisterPlayerController(IRegisterPlayerRepository _registerPlayerR
         if (userInput.Password != userInput.ConfirmPassword)
             return BadRequest("Passwords don't match");
         
-        LoggedInDto? loggedInDto = await _registerPlayerRepository.RegisterPlayer(userInput, cancellationToken);
+        LoggedInDto? loggedInDto = await _registerPlayerRepository.RegisterPlayerAsync(userInput, cancellationToken);
         
         return !string.IsNullOrEmpty(loggedInDto.Token)
             ? Ok(loggedInDto)

@@ -28,9 +28,10 @@ public class RegisterPlayerRepository : IRegisterPlayerRepository
     /// Check if the user doesn't already exist.
     /// </summary>
     /// <param name="userInput"></param>
+    /// <param name="registerDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>LoggedInDto</returns>
-    public async Task<LoggedInDto> RegisterPlayer(RegisterPlayerDto registerDto, CancellationToken cancellationToken)
+    public async Task<LoggedInDto> RegisterPlayerAsync(RegisterPlayerDto registerDto, CancellationToken cancellationToken)
     {
         LoggedInDto loggedInDto = new();
 

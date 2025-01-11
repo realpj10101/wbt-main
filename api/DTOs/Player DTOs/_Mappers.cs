@@ -7,7 +7,6 @@ public static class Mappers
 {
     public static AppUser ConvertRegisterPlayerDtoToAppUser(RegisterPlayerDto playerInput)
     {
-
         return new AppUser
         {
             Email = playerInput.Email,
