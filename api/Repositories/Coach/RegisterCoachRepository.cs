@@ -38,7 +38,92 @@ public class RegisterCoachRepository : IRegisterCoachRepository
         LoggedInCoachDto loggedInCoachDto = new();
 
         AppUser appUser = CoachMappers.ConvertRegisterCoachDtoToAppUser(registerCoachDto);
+
+        IdentityResult? coachCreatedResult = await _userManager.CreateAsync(appUser, registerCoachDto.Password);
+
+        if (coachCreatedResult.Succeeded)
+        {
+            IdentityResult? roleResult = await _userManager.AddToRoleAsync(appUser, "member");
+
+            if (!roleResult.Succeeded)
+                return loggedInCoachDto;
+
+            string? token = await _tokenService.CreateToken(appUser, cancellationToken);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                return CoachMappers.ConvertAppUserToLoggedInCoachDto(appUser, token);
+            }
+        }
+        else
+        {
+            foreach (IdentityError error in coachCreatedResult.Errors)
+            {
+                loggedInCoachDto.Errors.Add(error.Description);
+            }
+        }
+
+        return loggedInCoachDto;
+    }
+
+    public async Task<LoggedInCoachDto> LoginAsync(LoginCoachDto coachInput, CancellationToken cancellationToken)
+    {
+        LoggedInCoachDto loggedInCoachDto = new();
+
+        AppUser? appUser;
+
+        appUser = await _userManager.FindByEmailAsync(coachInput.Email);
+
+        if (appUser is null)
+        {
+            loggedInCoachDto.IsWrongCreds = true;
+
+            return loggedInCoachDto;
+        }
         
+        bool isPasswordCorrect = await _userManager.CheckPasswordAsync(appUser, coachInput.Password);
+
+        if (!isPasswordCorrect)
+        {
+            loggedInCoachDto.IsWrongCreds = true;
+
+            return loggedInCoachDto;
+        }
+
+        string? token = await _tokenService.CreateToken(appUser, cancellationToken);
+
+        if (!string.IsNullOrEmpty(token))
+        {
+            return CoachMappers.ConvertAppUserToLoggedInCoachDto(appUser, token);
+        }
+
+        return loggedInCoachDto;
+    }
+
+    public async Task<LoggedInCoachDto?> ReloadLoggedInCoachAsync(string hashedUserId, string token,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? coachId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (coachId is null) return null;
         
+        AppUser appUser = await _collection.Find<AppUser>(appUser => appUser.Id == coachId).FirstOrDefaultAsync(cancellationToken);
+
+        return appUser is null
+            ? null
+            : CoachMappers.ConvertAppUserToLoggedInCoachDto(appUser, token);
+    }
+
+    public async Task<UpdateResult?> UpdateLastActive(string hashedUserId, CancellationToken cancellationToken)
+    {
+        ObjectId? coachId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (coachId is null) return null;
+
+        UpdateDefinition<AppUser> newLastActive = Builders<AppUser>.Update
+            .Set(appUser => appUser.LastActive, DateTime.UtcNow);
+
+        return await _collection.UpdateOneAsync<AppUser>(coach =>
+            coach.Id == coachId, newLastActive, null, cancellationToken);
     }
 }

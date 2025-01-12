@@ -75,6 +75,7 @@ public class RegisterPlayerRepository : IRegisterPlayerRepository
         if (appUser is null)
         {
             loggedInDto.IsWrongCreds = true;
+            
             return loggedInDto;
         }
 
@@ -83,6 +84,7 @@ public class RegisterPlayerRepository : IRegisterPlayerRepository
         if (!isPassCorrect)
         {
             loggedInDto.IsWrongCreds = true;
+            
             return loggedInDto;
         }
 
