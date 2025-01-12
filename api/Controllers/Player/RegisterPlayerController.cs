@@ -15,7 +15,7 @@ public class RegisterPlayerController(IRegisterPlayerRepository _registerPlayerR
     /// <returns>LoggedInDto</returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<LoggedInDto>> RegisterPlayer(RegisterPlayerDto userInput,
+    public async Task<ActionResult<LoggedInDto>> Register(RegisterPlayerDto userInput,
         CancellationToken cancellationToken)
     {
         if (userInput.Password != userInput.ConfirmPassword)
