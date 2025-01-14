@@ -41,13 +41,13 @@ public class RegisterPlayerRepository : IRegisterPlayerRepository
 
         if (userCreatedResult.Succeeded)
         {
-            IdentityResult? roleResult = await _userManager.AddToRoleAsync(appUser, "member");
+            IdentityResult? roleResult = await _userManager.AddToRoleAsync(appUser, "player");
 
             if (!roleResult.Succeeded)
                 return loggedInDto;
 
             string? token = await _tokenService.CreateToken(appUser, cancellationToken);
-
+    
             if (!string.IsNullOrEmpty(token))
             {
                 return Mappers.ConvertAppUserToLoggedInDto(appUser, token);

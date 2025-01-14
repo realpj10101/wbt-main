@@ -51,6 +51,8 @@ public class MemberRepository : IMemberRepository
         AppUser appUser = await _collection.Find(appUser =>
             appUser.NormalizedUserName == playerUserName.ToUpper()).FirstOrDefaultAsync(cancellationToken);
 
+        if (appUser is null) return null;
+        
         bool isFollowing = await _followRepository.CheckIsFollowingAsync(playerId.Value, appUser, cancellationToken);
 
         return appUser is not null

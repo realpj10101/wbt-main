@@ -41,14 +41,17 @@ public class SeedController : BaseApiController
         }
 
         if (dataBaseExists == true)
-            return BadRequest("Database already exists");
+            // return BadRequest("Database already exists");
+
+            await _client.DropDatabaseAsync("wbt");
 
         #endregion If dataBaseExist
 
         #region Create Roles
         await _roleManager.CreateAsync(new AppRole { Name = "admin"});
         await _roleManager.CreateAsync(new AppRole { Name = "moderator"});
-        await _roleManager.CreateAsync(new AppRole { Name = "member"});
+        await _roleManager.CreateAsync(new AppRole { Name = "player"});
+        await _roleManager.CreateAsync(new AppRole { Name = "coach"});
         #endregion Create Roles
 
         #region Create Admin and Moderator

@@ -76,4 +76,13 @@ public static class Mappers
             LikedMemberId: likedId
         );
     }
+
+    public static Comment ConvertCommentIdsToComment(ObjectId commenterId, ObjectId commentedId, string content)
+    {
+        return new Comment(
+            CommenterId: commenterId,
+            CommentedMemberId: commentedId,
+            Content: content,
+            CreatedAt: DateTime.Now);
+    }
 }

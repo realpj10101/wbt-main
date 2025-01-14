@@ -33,5 +33,6 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string GameHistory { get; init; } = string.Empty;
     public string GameResults { get; init;} = string.Empty;
     public int JoinersCount { get; init; }
-    
+    public int CommentingCount { get; init; }
+    public int CommentersCount { get; init; }
 }

@@ -6,6 +6,7 @@ public class AppVariablesExtensions
 
     public const string collectionUsers = "users";
     public const string collectionFollows = "follows";
+    public const string CollectionComments = "comments";
     public const string collectionExceptionLogs = "exception-logs";
 
     public readonly static string[] AppVersion = ["1", "1.0.2"];

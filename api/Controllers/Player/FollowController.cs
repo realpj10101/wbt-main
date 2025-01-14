@@ -85,4 +85,10 @@ public class FollowController(IFollowRepository _followRepository, ITokenService
 
         return playerDtos;
     }
+
+    [HttpPost("test")]
+    public string Add()
+    {
+        return "test";
+    }
 }
