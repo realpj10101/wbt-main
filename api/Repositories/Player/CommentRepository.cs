@@ -1,4 +1,6 @@
+using api.Enums;
 using api.Extensions;
+using api.Helpers;
 using api.Models.Helpers;
 using Snappier;
 
@@ -163,5 +165,36 @@ public class CommentRepository : ICommentRepository
         }
 
         return cS;
+    }
+    
+    // get all commens/commentigs with pagination
+    public async Task<PagedList<AppUser>> GetAllAsync(CommentParams commentParams, CancellationToken cancellationToken)
+    {
+        if (commentParams.Predicate == CommentPredicateEnum.Commentings) // Logged in user comments for other users
+        {
+            IMongoQueryable<AppUser> query = _collection.AsQueryable<Comment>()
+                .Where(comment => comment.CommenterId == commentParams.UserId)
+                .Join(_collectionUsers.AsQueryable(),
+                    comment => comment.CommentedMemberId,
+                    appUser => appUser.Id,
+                    (comment, appUser) => appUser);
+            
+            return await PagedList<AppUser>
+                .CreatePagedListAsync(query, commentParams.PageNumber, commentParams.PageSize, cancellationToken);
+        }
+        else if (commentParams.Predicate == CommentPredicateEnum.Commenters) // Users comments for logged in user
+        {
+            IMongoQueryable<AppUser> query = _collection.AsQueryable<Comment>()
+                .Where(comment => comment.CommentedMemberId == commentParams.UserId)
+                .Join(_collectionUsers.AsQueryable(),
+                    comment => comment.CommenterId,
+                    appUser => appUser.Id,
+                    (comment, appUser) => appUser);
+            
+            return await PagedList<AppUser>
+                .CreatePagedListAsync(query, commentParams.PageNumber, commentParams.PageSize, cancellationToken);
+        }
+
+        return [];
     }
 }
