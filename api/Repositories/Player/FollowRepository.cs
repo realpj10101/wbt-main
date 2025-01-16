@@ -8,7 +8,7 @@ namespace api.Repositories.Player;
 
 public class FollowRepository : IFollowRepository
 {
-    #region Db and vars
+    #region DB and vars
 
     private readonly IMongoClient _client;
     private readonly IMongoCollection<Follow> _collection;
@@ -37,13 +37,13 @@ public class FollowRepository : IFollowRepository
     /// <summary>
     /// Follow the target player by username and only the logged in user can follow
     /// </summary>
-    public async Task<FollowStatus> CreateAsync(ObjectId playerId, string targetPlayeUserName,
+    public async Task<FollowStatus> CreateAsync(ObjectId playerId, string targetMemberUserName,
         CancellationToken cancellationToken)
     {
         FollowStatus fS = new();
 
         ObjectId? followedId =
-            await _playerUserRepository.GetObjectIdByUserNameAsync(targetPlayeUserName, cancellationToken);
+            await _playerUserRepository.GetObjectIdByUserNameAsync(targetMemberUserName, cancellationToken);
 
         if (followedId is null)
         {
@@ -120,13 +120,13 @@ public class FollowRepository : IFollowRepository
     }
 
     /// Unfollow the target player by logged in user
-    public async Task<FollowStatus> DeleteAsync(ObjectId playerId, string followedPlayerUserName,
+    public async Task<FollowStatus> DeleteAsync(ObjectId playerId, string targetMemberUserName,
         CancellationToken cancellationToken)
     {
         FollowStatus fS = new();
 
         ObjectId? followedId = // Get target player username and find his/her ObjectId.
-            await _playerUserRepository.GetObjectIdByUserNameAsync(followedPlayerUserName, cancellationToken);
+            await _playerUserRepository.GetObjectIdByUserNameAsync(targetMemberUserName, cancellationToken);
 
         if (followedId is null)
         {

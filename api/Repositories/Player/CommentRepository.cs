@@ -21,7 +21,7 @@ public class CommentRepository : ICommentRepository
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = dbName.GetCollection<Comment>(AppVariablesExtensions.CollectionComments);
+        _collection = dbName.GetCollection<Comment>(AppVariablesExtensions.collectionComments);
         _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
         
         _tokenService = tokenService;
