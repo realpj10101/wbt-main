@@ -73,17 +73,104 @@ public class LikeRepository : ILikeRepository
 
             #region UpdateCounters
 
-            UpdateDefinition<AppUser> updateCommentingsCount = Builders<AppUser>.Update
+            UpdateDefinition<AppUser> updateLikingsCount = Builders<AppUser>.Update
                 .Inc(appUser => appUser.LikingsCount, 1); // Increment by 1 for each like
-            
-            await _collectionUsers.UpdateOneAsync()
+
+            await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
+                appUser.Id == playerId, updateLikingsCount, null, cancellationToken);
+
+            UpdateDefinition<AppUser> updateLikersCount = Builders<AppUser>.Update
+                .Inc(appUser => appUser.LikersCount, 1);
+
+            await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
+                appUser.Id == targetId, updateLikersCount, null, cancellationToken);
 
             #endregion
+
+            await session.CommitTransactionAsync(cancellationToken);
+
+            lS.IsSuccess = true;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
-            throw;
+            await session.AbortTransactionAsync(cancellationToken);
+
+            _logger.LogError(
+                "Like failed."
+                + "MESSAGE:" + ex.Message
+                + "TRACE:" + ex.StackTrace
+            );
         }
+        finally
+        {
+            _logger.LogInformation("MongoDB transaction/session finished.");
+        }
+
+        return lS;
+    }
+    
+    //dislike the target member by logged in user
+    public async Task<LikeStatus> DeleteAsync(ObjectId playerId, string targetMemberUserName,
+        CancellationToken cancellationToken)
+    {
+        LikeStatus lS = new();
+        
+        ObjectId? targetId = 
+            await _playerUserRepository.GetObjectIdByUserNameAsync(targetMemberUserName, cancellationToken);
+
+        if (targetId is null)
+        {
+            lS.IsTargetMemberNotFound = true;
+
+            return lS;
+        }
+
+        using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
+        
+        session.StartTransaction();
+
+        try
+        {
+            DeleteResult deleteResult = await _collection.DeleteOneAsync(
+                doc => doc.LikerId == playerId
+                       && doc.LikedMemberId == targetId,
+                cancellationToken);
+
+            #region UpdateCounters
+
+            UpdateDefinition<AppUser> updateLikingsCount = Builders<AppUser>.Update
+                .Inc(appUser => appUser.LikingsCount, -1);
+
+            await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
+                appUser.Id == playerId, updateLikingsCount, null, cancellationToken);
+
+            UpdateDefinition<AppUser> updateLikersCount = Builders<AppUser>.Update
+                .Inc(appUser => appUser.LikingsCount, -1);
+
+            await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
+                appUser.Id == targetId, updateLikersCount, null, cancellationToken);
+
+            #endregion
+
+            await session.CommitTransactionAsync(cancellationToken);
+
+            lS.IsSuccess = true;
+        }
+        catch (Exception ex)
+        {
+            await session.AbortTransactionAsync(cancellationToken);
+
+            _logger.LogError(
+                "Like failed."
+                + "MESSAGE:" + ex.Message
+                + "TRACE:" + ex.StackTrace
+            );
+        }
+        finally
+        {
+            _logger.LogInformation("MongoDB transaction/session finished.");
+        }
+
+        return lS;
     }
 }

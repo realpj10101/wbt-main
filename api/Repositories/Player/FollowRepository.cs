@@ -119,7 +119,7 @@ public class FollowRepository : IFollowRepository
         return fS;
     }
 
-    /// Unfollow the target player by logged in user
+    /// Unfollow the target member by logged in user
     public async Task<FollowStatus> DeleteAsync(ObjectId playerId, string targetMemberUserName,
         CancellationToken cancellationToken)
     {
