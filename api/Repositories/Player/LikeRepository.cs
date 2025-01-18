@@ -32,7 +32,6 @@ public class LikeRepository : ILikeRepository
     }
     #endregion
     
-    
     // Add like 
     public async Task<LikeStatus> CreateAsync(ObjectId playerId, string targetMemberUserName,
         CancellationToken cancellationToken)
