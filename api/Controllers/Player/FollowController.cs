@@ -52,7 +52,7 @@ public class FollowController(IFollowRepository _followRepository, ITokenService
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll([FromQuery] FollowParams followParams,
+    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllAsync([FromQuery] FollowParams followParams,
         CancellationToken cancellationToken)
     {
         ObjectId? playerId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
@@ -84,11 +84,5 @@ public class FollowController(IFollowRepository _followRepository, ITokenService
         }
 
         return playerDtos;
-    }
-
-    [HttpPost("test")]
-    public string Add()
-    {
-        return "test";
     }
 }

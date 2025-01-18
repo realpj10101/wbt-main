@@ -1,10 +1,13 @@
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces.Player;
 using api.Models.Helpers;
 
 namespace api.Controllers.Player;
 
-public class LikeController(ILikeRepository _likeRepository, ITokenService _tokenService) : BaseApiController
+public class LikeController(
+    ILikeRepository _likeRepository, 
+    ITokenService _tokenService, IFollowRepository _followRepository) : BaseApiController
 {
     // add like
     [HttpPost("add/{targetMemberUserName}")]
@@ -45,5 +48,40 @@ public class LikeController(ILikeRepository _likeRepository, ITokenService _toke
             : lS.IsAlreadyDisLiked
             ? BadRequest($"{targetMemberUserName} is already liked.")
             : BadRequest("Disliking failed. Please try again or contact the administrator.");
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllAsync([FromQuery] LikeParams likeParams,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (playerId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+        likeParams.UserId = playerId;
+        
+        PagedList<AppUser> pagedAppUsers = await _likeRepository.GetAllAsync(likeParams, cancellationToken);
+
+        if (pagedAppUsers.Count == 0) return NoContent();
+        
+        Response.AddPaginationHeader(new (
+            pagedAppUsers.CurrentPage,
+            pagedAppUsers.PageSize,
+            pagedAppUsers.TotalItems,
+            pagedAppUsers.TotalPages
+            ));
+
+        List<PlayerDto> playerDtos = [];
+
+        bool isFollowing;
+        foreach (AppUser appUser in pagedAppUsers)
+        {
+            isFollowing = await _followRepository.CheckIsFollowingAsync(playerId.Value, appUser, cancellationToken);
+            
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
+        }
+
+        return playerDtos;
     }
 }

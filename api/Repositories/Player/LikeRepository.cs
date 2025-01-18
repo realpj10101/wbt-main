@@ -1,4 +1,6 @@
+using api.Enums;
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces.Player;
 using api.Models.Helpers;
 
@@ -178,5 +180,41 @@ public class LikeRepository : ILikeRepository
         }
 
         return lS;
+    }
+
+    public async Task<bool> CheckIsLikingAsync(ObjectId playerId, AppUser appUser,
+        CancellationToken cancellationToken) =>
+        await _collection.Find<Like>(
+            doc => doc.LikerId == playerId && doc.LikedMemberId == appUser.Id
+            ).AnyAsync(cancellationToken);
+    
+    public async Task<PagedList<AppUser>> GetAllAsync(LikeParams likeParams, CancellationToken cancellationToken)
+    {
+        if (likeParams.Predicate == LikePredicateEnum.Likings)
+        {
+            IMongoQueryable<AppUser> query = _collection.AsQueryable<Like>()
+                .Where(like => like.LikerId == likeParams.UserId)
+                .Join(_collectionUsers.AsQueryable<AppUser>(),
+                    like => like.LikedMemberId,
+                    appUser => appUser.Id,
+                    (like, appUser) => appUser);
+
+            return await PagedList<AppUser>
+                .CreatePagedListAsync(query, likeParams.PageNumber, likeParams.PageSize, cancellationToken);
+        }
+        else if (likeParams.Predicate == LikePredicateEnum.Likers)
+        {
+            IMongoQueryable<AppUser> query = _collection.AsQueryable<Like>()
+                .Where(like => like.LikedMemberId == likeParams.UserId)
+                .Join(_collectionUsers.AsQueryable(),
+                    like => like.LikerId,
+                    appUser => appUser.Id,
+                    (like, appUser) => appUser);
+            
+            return await PagedList<AppUser>
+                .CreatePagedListAsync(query, likeParams.PageNumber, likeParams.PageSize, cancellationToken);
+        }
+
+        return [];
     }
 }
