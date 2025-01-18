@@ -135,6 +135,13 @@ public class LikeRepository : ILikeRepository
                        && doc.LikedMemberId == targetId,
                 cancellationToken);
 
+            if (deleteResult.DeletedCount < 1)
+            {
+                lS.IsAlreadyDisLiked = true;
+
+                return lS;
+            }
+
             #region UpdateCounters
 
             UpdateDefinition<AppUser> updateLikingsCount = Builders<AppUser>.Update
@@ -144,7 +151,7 @@ public class LikeRepository : ILikeRepository
                 appUser.Id == playerId, updateLikingsCount, null, cancellationToken);
 
             UpdateDefinition<AppUser> updateLikersCount = Builders<AppUser>.Update
-                .Inc(appUser => appUser.LikingsCount, -1);
+                .Inc(appUser => appUser.LikersCount, -1);
 
             await _collectionUsers.UpdateOneAsync<AppUser>(session, appUser =>
                 appUser.Id == targetId, updateLikersCount, null, cancellationToken);

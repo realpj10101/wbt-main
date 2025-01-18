@@ -6,6 +6,7 @@ namespace api.Controllers.Player;
 
 public class LikeController(ILikeRepository _likeRepository, ITokenService _tokenService) : BaseApiController
 {
+    // add like
     [HttpPost("add/{targetMemberUserName}")]
     public async Task<ActionResult<Response>> Create(string targetMemberUserName, CancellationToken cancellationToken)
     {
@@ -23,5 +24,26 @@ public class LikeController(ILikeRepository _likeRepository, ITokenService _toke
             : lS.IsAlreadyLiked
             ? BadRequest($"{targetMemberUserName} is already liked.")
             : BadRequest("Liking failed. Please try again or contact the administrator.");
+    }
+    
+    // remove like
+    [HttpDelete("remove/{targetMemberUserName}")]
+    public async Task<ActionResult<Response>> Delete(string targetMemberUserName, CancellationToken cancellationToken)
+    {
+        // Get logged in user ObjectId from token.
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (playerId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+        LikeStatus lS = await _likeRepository.DeleteAsync(playerId.Value, targetMemberUserName, cancellationToken);
+
+        return lS.IsSuccess
+            ? Ok(new Response(Message: $"You dislike {targetMemberUserName} successfully."))
+            : lS.IsTargetMemberNotFound
+            ? NotFound($"{targetMemberUserName} was not found.")
+            : lS.IsAlreadyDisLiked
+            ? BadRequest($"{targetMemberUserName} is already liked.")
+            : BadRequest("Disliking failed. Please try again or contact the administrator.");
     }
 }
