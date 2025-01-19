@@ -17,10 +17,9 @@ export class RegisterPlayerService {
   http = inject(HttpClient);
   router = inject(Router);
   platformId = inject(PLATFORM_ID);
+  loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
 
   private readonly baseApiUrl = environment.apiUrl + 'registerplayer/';
-
-  loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
 
   registerPlayer(playerInput: RegisterPlayer): Observable<LoggedInPlayer | null> {
     return this.http.post<LoggedInPlayer>(this.baseApiUrl + 'register', playerInput).pipe(
@@ -50,7 +49,7 @@ export class RegisterPlayerService {
         }
 
         return null;
-      })  
+      })
     );
   }
 
@@ -101,7 +100,7 @@ export class RegisterPlayerService {
 
   private navigateToReturnUrl(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const returnUrl = localStorage.getItem('returnUrl');  
+      const returnUrl = localStorage.getItem('returnUrl');
       if (returnUrl)
         this.router.navigate([returnUrl]);
       else

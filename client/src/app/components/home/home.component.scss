@@ -2,14 +2,15 @@ main {
     display: flex;
     flex-direction: column;
     gap: 2rem;
-
+    
     .container {
         // background-color: rgb(7, 50, 70);
         // background-color: red;
-
+        
         display: flex;
         justify-content: center;
         justify-content: space-between;
+        flex-wrap: wrap;
 
         .description {
             position: relative;
@@ -65,6 +66,7 @@ main {
         // background-color: red;
         display: flex;
         justify-content: space-evenly;
+        flex-wrap: wrap;
         gap: 1rem;
         padding-left: 2rem;
         padding-right: 2rem;
