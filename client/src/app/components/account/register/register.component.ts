@@ -81,6 +81,8 @@ export class RegisterComponent implements OnDestroy {
         next: player => console.log(player),
         error: err => this.emailExistError = err.error
       });
+
+      console.log(this.subscribedRegisterPlayer);
     }
     else {
       this.passwordsNotMatch = true;
