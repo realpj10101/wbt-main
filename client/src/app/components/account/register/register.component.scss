@@ -1,24 +1,39 @@
 section {
     display: flex;
     justify-content: flex-end;
-    justify-content: space-around;
+    // justify-content: space-around;
+    padding-right: 20rem;
     align-items: center;
     position: relative;
 
-    img {
+    .image {
         position: absolute;
         top: 5px;
         left: 5px;
     }
 
-    form {
-        // background-color: red;
+    .form {
+        display: flex;
+        position: relative;
+        // width: 500px;
 
-        mat-form-field {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        form {
+            // background-color: red;
+            z-index: 2;
+
+            mat-form-field {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        img {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            // border-bottom-left-radius: 100px;
         }
     }
 }

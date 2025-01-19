@@ -1,82 +1,92 @@
 <section>
     <div class="image">
-        <img src="undraw_greek-freak_p532.png" alt="" height="400px" width="400px">
+        <img src="undraw_greek-freak_p532.png" alt="" height="500px" width="600px">
     </div>
 
-    <form [formGroup]="registerFg" (ngSubmit)="registerFg.valid && register()">
-        <div>
-            <h1>Create Account</h1>
-            
-            <!-- Gender -->
-            <div class="gender">
-                <strong>I am a</strong>
-                <mat-radio-group formControlName="genderCtrl" aria-label="Select your gender">
-                    <mat-radio-button value="female">Female</mat-radio-button>
-                    <mat-radio-button value="male">Male</mat-radio-button>
-                    <mat-radio-button value="other">Other</mat-radio-button>
-                </mat-radio-group>
-            </div>
-            
-            <!-- Email -->
-            <mat-form-field appearance="outline">
-                <mat-label>Email</mat-label>
-                <input type="email" formControlName="emailCtrl" placeholder="example@example.com" matInput>
-                <mat-hint>Enter your email.</mat-hint>
-                @if (EmailCtrl.hasError("required")) {
+    <div class="form">
+        <form [formGroup]="registerFg" (ngSubmit)="registerFg.valid && register()">
+            <div>
+                <h1>Create Account</h1>
+
+                <!-- Gender -->
+                <div class="gender">
+                    <strong>I am a</strong>
+                    <mat-radio-group formControlName="genderCtrl" aria-label="Select your gender">
+                        <mat-radio-button value="female">Female</mat-radio-button>
+                        <mat-radio-button value="male">Male</mat-radio-button>
+                        <mat-radio-button value="other">Other</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+
+                <!-- Email -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input type="email" formControlName="emailCtrl" placeholder="example@example.com" matInput>
+                    <mat-hint>Enter your email.</mat-hint>
+                    @if (EmailCtrl.hasError("required")) {
                     <mat-error>This field is required.</mat-error>
-                }
-                @else if (EmailCtrl.hasError("pattern")) {
+                    }
+                    @else if (EmailCtrl.hasError("pattern")) {
                     <mat-error>Enter a valid email.</mat-error>
-                }
-            </mat-form-field>
-            
-            <!-- UserName -->
-            <mat-form-field appearance="outline">
-                <mat-label>UserName</mat-label>
-                <input type="email" formControlName="userNameCtrl" placeholder="Your username" matInput>
-                <mat-hint>Between 1 to 30 characters..</mat-hint>
-                @if (UserNameCtrl.hasError("required")) {
+                    }
+                </mat-form-field>
+
+                <!-- UserName -->
+                <mat-form-field appearance="outline">
+                    <mat-label>UserName</mat-label>
+                    <input type="email" formControlName="userNameCtrl" placeholder="Your username" matInput>
+                    <mat-hint>Between 1 to 30 characters..</mat-hint>
+                    @if (UserNameCtrl.hasError("required")) {
                     <mat-error>This field is required.</mat-error>
-                }
-            </mat-form-field>
-            
-            <!-- Password -->
-            <mat-form-field appearance="outline">
-                <mat-label>Password</mat-label>
-                <input type="password" formControlName="passwordCtrl" placeholder="Your password" matInput>
-                @if (PasswordCtrl.hasError("required")) {
+                    }
+                </mat-form-field>
+
+                <!-- Password -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input type="password" formControlName="passwordCtrl" placeholder="Your password" matInput>
+                    @if (PasswordCtrl.hasError("required")) {
                     <mat-error>This field is required.</mat-error>
-                }
-                @else if (PasswordCtrl.errors && PasswordCtrl.hasError("minlength")) {
-                    <mat-error>It's too short. Min: {{PasswordCtrl.errors['minlength'].requiredLength}} is required.</mat-error>
-                }
-                @else if(PasswordCtrl.errors && PasswordCtrl.hasError('maxlength')) {
-                    <mat-error>It's too long. Max: {{PasswordCtrl.errors['maxlength'].requiredLength}} characters.</mat-error>
-                }
-            </mat-form-field>
-            
-            <!-- Confirm Password -->
-            <mat-form-field appearance="outline">
-                <mat-label>Confirm password</mat-label>
-                <input type="password" formControlName="confirmPasswordCtrl" placeholder="Confirm Password" matInput>
-                @if (ConfirmPasswordCtrl.hasError("required")) {
+                    }
+                    @else if (PasswordCtrl.errors && PasswordCtrl.hasError("minlength")) {
+                    <mat-error>It's too short. Min: {{PasswordCtrl.errors['minlength'].requiredLength}} is
+                        required.</mat-error>
+                    }
+                    @else if(PasswordCtrl.errors && PasswordCtrl.hasError('maxlength')) {
+                    <mat-error>It's too long. Max: {{PasswordCtrl.errors['maxlength'].requiredLength}}
+                        characters.</mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- Confirm Password -->
+                <mat-form-field appearance="outline">
+                    <mat-label>Confirm password</mat-label>
+                    <input type="password" formControlName="confirmPasswordCtrl" placeholder="Confirm Password"
+                        matInput>
+                    @if (ConfirmPasswordCtrl.hasError("required")) {
                     <mat-error>This field is required.</mat-error>
-                }
-                @else if (ConfirmPasswordCtrl.errors && ConfirmPasswordCtrl.hasError("minlength")) {
-                    <mat-error>It's too short. Min: {{ConfirmPasswordCtrl.errors['minlength'].requiredLength}} is required.</mat-error>
-                }
-                @else if(ConfirmPasswordCtrl.errors && ConfirmPasswordCtrl.hasError('maxlength')) {
-                    <mat-error>It's too long. Max: {{ConfirmPasswordCtrl.errors['maxlength'].requiredLength}} characters.</mat-error>
-                }
-            </mat-form-field>
-            
-            <button type="submit" [disabled]="registerFg.invalid" mat-raised-button routerLink="/players">Register</button>
-            
-            @if (passwordsNotMatch) {
+                    }
+                    @else if (ConfirmPasswordCtrl.errors && ConfirmPasswordCtrl.hasError("minlength")) {
+                    <mat-error>It's too short. Min: {{ConfirmPasswordCtrl.errors['minlength'].requiredLength}} is
+                        required.</mat-error>
+                    }
+                    @else if(ConfirmPasswordCtrl.errors && ConfirmPasswordCtrl.hasError('maxlength')) {
+                    <mat-error>It's too long. Max: {{ConfirmPasswordCtrl.errors['maxlength'].requiredLength}}
+                        characters.</mat-error>
+                    }
+                </mat-form-field>
+
+                <button type="submit" [disabled]="registerFg.invalid" mat-raised-button
+                    routerLink="/players">Register</button>
+
+                @if (passwordsNotMatch) {
                 <p>Passwords don't match!</p>
-            }
-            
-            <mat-error>{{emailExistError}}</mat-error>
-        </div>
-    </form>
+                }
+
+                <mat-error>{{emailExistError}}</mat-error>
+            </div>
+        </form>
+
+        <img src="ball.jpeg" alt="" height="100px" width="100px">
+    </div>
 </section>
