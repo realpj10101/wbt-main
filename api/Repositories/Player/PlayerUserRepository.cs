@@ -160,14 +160,14 @@ public class PlayerUserRepository : IPlayerUserRepository
         if (playerId is null) return null;
 
         Photo photo = await _collection.AsQueryable()
-            .Where(appUser => appUser.Id == playerId)
-            .SelectMany(appUser => appUser.Photos)
-            .Where(photo => photo.Url_165 == url_165_In)
-            .FirstOrDefaultAsync(cancellationToken);
+            .Where(appUser => appUser.Id == playerId) // filter by user email
+            .SelectMany(appUser => appUser.Photos) // flatten the photos array
+            .Where(photo => photo.Url_165 == url_165_In) // filter by photo url
+            .FirstOrDefaultAsync(cancellationToken); // return the photo url
 
-        if (photo is null) return null;
+        if (photo is null) return null; // Warning: should be handled with Exception handling Middlewear to log the app's bug since it's a bug
 
-        if (photo.IsMain) return null;
+        if (photo.IsMain) return null; // prevent from deleting main photo!
 
         bool isDeleteSuccess = await _photoService.DeletePhotoFormDisk(photo);
         if (!isDeleteSuccess)
@@ -178,7 +178,7 @@ public class PlayerUserRepository : IPlayerUserRepository
         }
         
         var update = Builders<AppUser>.Update
-            .PullFilter(appUser =>  appUser.Photos, photo => photo.Url_165 == url_165_In);
+            .PullFilter(appUser => appUser.Photos, photo => photo.Url_165 == url_165_In);
         
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, update, null, cancellationToken);
     }
