@@ -69,6 +69,98 @@ public class PlayerUserRepository : IPlayerUserRepository
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
     }
     #endregion
-    
-    
+
+    #region Photo Managemnet
+
+    public async Task<Photo?> UploadPhotoAsync(IFormFile file, string? hashedUserId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(hashedUserId)) return null;
+
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (playerId is null) return null;
+
+        AppUser? appUser = await GetByIdAsync(playerId.Value, cancellationToken);
+        if (appUser is null)
+        {
+            _logger.LogError("appUser is null / not found");
+
+            return null;
+        }
+        
+        // userId, appUser, file
+        // save file in Storage using PhotoService / userId makes the folder name
+        string[]? imageUrls = await _photoService.AddPhotoToDisk(file, playerId.Value);
+
+        if (imageUrls is not null)
+        {
+            Photo photo;
+
+            photo = appUser.Photos.Count == 0
+                ? Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: true)
+                : Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: false);
+            
+            appUser.Photos.Add(photo);
+
+            var updatePlayer = Builders<AppUser>.Update
+                .Set(doc => doc.Photos, appUser.Photos);
+            
+            UpdateResult result = 
+                await _collection.UpdateOneAsync<AppUser>(doc => doc.Id == playerId, updatePlayer, null, cancellationToken);
+            
+            return result.ModifiedCount == 1 ? photo : null;
+        }
+        
+        _logger.LogError("PhotoService saving photo to disk failed");
+        return null;
+    }
+
+    public async Task<UpdateResult?> SetMainPhotoAsync(string hashedUserId, string photoUrlIn,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (playerId is null) return null;
+
+        #region Unset the previous main photo: Find the photo with IsMain True; update IsMain to False
+
+        FilterDefinition<AppUser>? filterOld = Builders<AppUser>.Filter
+            .Where(appUser =>
+                appUser.Id == playerId && appUser.Photos.Any<Photo>(photo => photo.IsMain == true));
+
+        UpdateDefinition<AppUser>? updateOld = Builders<AppUser>.Update
+            .Set(appUser => appUser.Photos.FirstMatchingElement().IsMain, false);
+
+        await _collection.UpdateOneAsync(filterOld, updateOld, null, cancellationToken);
+
+        #endregion
+
+        #region SET the new main photo: find new photo by its Url_165; update IsMain to True
+
+        FilterDefinition<AppUser>? filterNew = Builders<AppUser>.Filter
+            .Where(appUser =>
+                appUser.Id == playerId && appUser.Photos.Any<Photo>(photo => photo.Url_165== photoUrlIn));
+
+        UpdateDefinition<AppUser>? updateNew = Builders<AppUser>.Update
+            .Set(appUser => appUser.Photos.FirstMatchingElement().IsMain, true);
+
+        return await _collection.UpdateOneAsync(filterNew, updateNew, null, cancellationToken);
+
+        #endregion
+    }
+
+    public async Task<UpdateResult?> DeletePhotoAsync(string hashedUserId, string? url_165_In,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(url_165_In)) return null;
+
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (playerId is null) return null;
+        
+        
+    }
+
+    #endregion
 }
