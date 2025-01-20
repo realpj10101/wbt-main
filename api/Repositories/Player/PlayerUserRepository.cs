@@ -158,8 +158,29 @@ public class PlayerUserRepository : IPlayerUserRepository
         ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
 
         if (playerId is null) return null;
+
+        Photo photo = await _collection.AsQueryable()
+            .Where(appUser => appUser.Id == playerId)
+            .SelectMany(appUser => appUser.Photos)
+            .Where(photo => photo.Url_165 == url_165_In)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (photo is null) return null;
+
+        if (photo.IsMain) return null;
+
+        bool isDeleteSuccess = await _photoService.DeletePhotoFormDisk(photo);
+        if (!isDeleteSuccess)
+        {
+            _logger.LogError("Delete Photo form disk failed");
+
+            return null;
+        }
         
+        var update = Builders<AppUser>.Update
+            .PullFilter(appUser =>  appUser.Photos, photo => photo.Url_165 == url_165_In);
         
+        return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, update, null, cancellationToken);
     }
 
     #endregion
