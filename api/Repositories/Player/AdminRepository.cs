@@ -39,7 +39,7 @@ public class AdminRepository : IAdminRepository
                 );
         }
 
-        return playersWithRoleDto;
+        return playersWithRoleDto;  
     }
 
     public async Task<DeleteResult?> DeleteUserAsync(string targetUserName, CancellationToken cancellationToken)

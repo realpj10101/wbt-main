@@ -47,6 +47,6 @@ public class RegisterPlayerController(IRegisterPlayerRepository _registerPlayerR
                 ? Ok(loggedInDto)
                 : loggedInDto.IsWrongCreds
                 ? Unauthorized("Wrong email ir password.")
-                : BadRequest("Rgistration has failed. Try again or contact the support.");
+                : BadRequest("Registration has failed. Try again or contact the support.");
     }
 }

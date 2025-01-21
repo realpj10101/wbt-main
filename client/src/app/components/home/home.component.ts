@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-home',
@@ -14,5 +15,7 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  apiUrl: string = environment.apiUrl;
 
+  links: string[] = [];
 }

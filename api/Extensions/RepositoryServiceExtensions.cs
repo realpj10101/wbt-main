@@ -18,6 +18,7 @@ public static class RepositoryServiceExtensions
         services.AddScoped<IFollowRepository, FollowRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
+        services.AddScoped<IAdminRepository, AdminRepository>();
         
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IPhotoModifySaveService, PhotoModifySaveService>();
