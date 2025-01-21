@@ -1,4 +1,6 @@
+using api.Interfaces.Coach;
 using api.Interfaces.Player;
+using api.Repositories.Coach;
 using api.Repositories.Player;
 using image_processing.Interfaces;
 using image_processing.Services;
@@ -27,7 +29,7 @@ public static class RepositoryServiceExtensions
 
         #region Coach
 
-        services.AddScoped<IRegisterPlayerRepository, RegisterPlayerRepository>();
+        services.AddScoped<IRegisterCoachRepository, RegisterCoachRepository>();
         
         #endregion
 
