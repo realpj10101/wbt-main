@@ -22,6 +22,7 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
 
     #region Photo Management
 
+    // only jpeg, png, jpg, Between 250KB(500 * 500) and 4MB(2000 * 2000)
     [HttpPost("add-photo")]
     public async Task<ActionResult<Photo>> AddPhoto(
         [AllowedFileExtensions, FileSize(250_000, 4_000_000)]
