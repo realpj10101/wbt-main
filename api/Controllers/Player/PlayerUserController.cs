@@ -35,5 +35,37 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
 
         return photo is null ? BadRequest("Add photo failed. See logger.") : photo;
     }
+
+    [HttpPut("set-main-photo")]
+    public async Task<ActionResult> SetMainPhoto(string photoUrlIn, CancellationToken cancellationToken)
+    {
+        string? hashedUserId = User.GetHashedUserId();
+
+        if (string.IsNullOrEmpty(hashedUserId))
+            return Unauthorized("You are not logged in. Please login again.");
+
+        UpdateResult? updateResult =
+            await _playerUserRepository.SetMainPhotoAsync(hashedUserId, photoUrlIn, cancellationToken);
+        
+        return updateResult is null || !updateResult.IsModifiedCountAvailable
+            ? BadRequest("Update failed. Try again later.")
+            : Ok(new { message = "Player has been updated successfully." });
+    }
+
+    [HttpPut("delete-photo")]
+    public async Task<ActionResult> DeletePhoto(string photoUrlIn, CancellationToken cancellationToken)
+    {
+        string? hashedUserId = User.GetHashedUserId();
+
+        if (string.IsNullOrEmpty(hashedUserId))
+            return Unauthorized("The player is not logged in. Please login again.");
+
+        UpdateResult? updateResult =
+            await _playerUserRepository.DeletePhotoAsync(hashedUserId, photoUrlIn, cancellationToken);
+        
+        return updateResult is null || !updateResult.IsModifiedCountAvailable
+            ? BadRequest("Photo deletion failed. Try again later. if the issue persists, please contact the administrator.")
+            : Ok(new { message = "Photo deleted successfully." });
+    }
     #endregion
-}
+}   

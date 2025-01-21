@@ -169,14 +169,14 @@ public class PlayerUserRepository : IPlayerUserRepository
 
         if (photo.IsMain) return null; // prevent from deleting main photo!
 
-        bool isDeleteSuccess = await _photoService.DeletePhotoFormDisk(photo);
+        bool isDeleteSuccess = await _photoService.DeletePhotoFromDisk(photo);
         if (!isDeleteSuccess)
         {
             _logger.LogError("Delete Photo form disk failed");
 
             return null;
         }
-        
+            
         var update = Builders<AppUser>.Update
             .PullFilter(appUser => appUser.Photos, photo => photo.Url_165 == url_165_In);
         
