@@ -76,8 +76,7 @@
                     }
                 </mat-form-field>
 
-                <button type="submit" [disabled]="registerFg.invalid" mat-raised-button
-                    routerLink="/login">Register</button>
+                <button type="submit" [disabled]="registerFg.invalid" mat-raised-button>Register</button>
 
                 @if (passwordsNotMatch) {
                 <p>Passwords don't match!</p>
