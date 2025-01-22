@@ -10,7 +10,7 @@ public static class RepositoryServiceExtensions
 {
     public static IServiceCollection AddRepositoryServices(this IServiceCollection services)
     {
-        // #region Player
+        #region Player
 
         services.AddScoped<ITokenService, TokenService>();
         
@@ -21,11 +21,12 @@ public static class RepositoryServiceExtensions
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IAdminRepository, AdminRepository>();
+        services.AddScoped<IPlayerDetailsRepository, PlayerDetailsRepository>();
         
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IPhotoModifySaveService, PhotoModifySaveService>();
         
-        // #endregion
+        #endregion
 
         #region Coach
 
