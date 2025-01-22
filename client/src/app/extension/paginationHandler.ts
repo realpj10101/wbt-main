@@ -1,0 +1,30 @@
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { inject } from "@angular/core";
+import { map, Observable } from "rxjs";
+import { PaginationResult } from "../models/helpers/pagination-result.model";
+
+export class PaginationHandler {
+    private http = inject(HttpClient);
+
+    getPaginationResult<T>(url: string, params: HttpParams): Observable<PaginationResult<T>> {
+        const paginatedResult = new PaginationResult<T>;
+
+        return this.http.get<T>(url, { observe: 'response', params })
+            .pipe(
+                map(response => {
+                    // get the Pagination
+                    const pagination: string | null = response.headers.get('Pagination');
+
+                    if (pagination)
+                        paginatedResult.pagination = JSON.parse(pagination); // api's response pagination values
+
+                    // get the body
+                    if (response.body)
+                        paginatedResult.body = response.body // api's response body
+
+                    // return pagination + body
+                    return paginatedResult;
+                })
+            );  
+    }
+}
