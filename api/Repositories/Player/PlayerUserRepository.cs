@@ -4,6 +4,7 @@ namespace api.Repositories.Player;
 
 public class PlayerUserRepository : IPlayerUserRepository
 {
+    
     #region Constructor
     
     private readonly IMongoCollection<AppUser> _collection;

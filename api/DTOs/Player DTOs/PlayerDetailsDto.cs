@@ -5,7 +5,6 @@ public record PlayerDetailsDto(
     string LastName,
     string NationalCode,
     int Height,
-    DateOnly Age,
     string? KnownAs,
     string? LookingFor,
     string? Records,
