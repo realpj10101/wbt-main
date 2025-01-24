@@ -63,7 +63,10 @@ export class RegisterPlayerService {
       .pipe(
         take(1))
       .subscribe({
-        next: res => console.log(res.message),
+        next: res => {
+          if (res.message)
+            console.log(res.message);
+        }, 
         error: err => {
           console.log(err.error);
           this.logOut()
@@ -104,7 +107,7 @@ export class RegisterPlayerService {
       if (returnUrl)
         this.router.navigate([returnUrl]);
       else
-        this.router.navigate(['players']);
+        this.router.navigate(['members']);
 
       if (isPlatformBrowser(this.platformId)) // we make sure this code is ran on the browser and NOT server
         localStorage.removeItem('returnUrl');

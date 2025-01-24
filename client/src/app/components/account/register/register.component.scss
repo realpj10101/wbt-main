@@ -14,13 +14,14 @@ section {
     }
 
     .form {
+        // background-color: red;
         display: flex;
         position: relative;
         // width: 500px;
 
         form {
-            // background-color: red;
             z-index: 2;
+            display: flex;
 
             mat-form-field {
                 display: flex;

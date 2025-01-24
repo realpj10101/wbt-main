@@ -68,9 +68,9 @@ public class MemberRepository : IMemberRepository
             : null;
     }
 
-    public async Task<ObjectId?> GetByRoleIdAsync(string roleName,
-        CancellationToken cancellationToken)
-    {
-        
-    }
+    // public async Task<ObjectId?> GetByRoleIdAsync(string roleName,
+    //     CancellationToken cancellationToken)
+    // {
+    //     
+    // }
 }

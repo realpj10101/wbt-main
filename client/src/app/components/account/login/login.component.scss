@@ -1,0 +1,36 @@
+section {
+    display: flex;
+    justify-content: flex-end;
+    // justify-content: space-around;
+    padding-right: 20rem;
+    align-items: center;
+    position: relative;
+    padding-top: 10rem;
+
+    .image {
+        position: absolute;
+        top: 10rem;
+        left: 10rem;
+    }
+
+    .form {
+        // background-color: red;
+        border: 2px black solid;
+        padding: 2rem;
+        display: flex;
+        position: relative;
+        border-radius: 2rem;
+        // width: 500px;
+
+        form {
+            z-index: 2;
+
+            mat-form-field {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}

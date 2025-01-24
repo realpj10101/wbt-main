@@ -12,7 +12,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
-import { C, F } from '@angular/cdk/keycodes';
 import { RouterLink } from '@angular/router';
 
 @Component({
