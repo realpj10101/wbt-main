@@ -2,6 +2,7 @@ using api.Extensions;
 using api.Helpers;
 using api.Interfaces.Player;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Repositories.Player;
 
@@ -10,15 +11,18 @@ public class MemberRepository : IMemberRepository
     private readonly IMongoCollection<AppUser>? _collection;
     private readonly ITokenService _tokenService;
     private readonly IFollowRepository _followRepository;
-
+    private readonly UserManager<AppUser> _userManager;
+    private readonly RoleManager<AppRole> _roleManager;
+        
     public MemberRepository(IMongoClient client, IMyMongoDbSettings dbSettings,
-        ITokenService tokenService, IFollowRepository followRepository)
+        ITokenService tokenService, IFollowRepository followRepository, UserManager<AppUser> userManager)
     {
         IMongoDatabase? database = client.GetDatabase(dbSettings.DatabaseName);
         _collection = database.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
         
         _tokenService = tokenService;
         _followRepository = followRepository;
+        _userManager = userManager;
     }
     
     public async Task<PagedList<AppUser>> GetAllAsync(PaginationParams paginationParams,
@@ -26,6 +30,10 @@ public class MemberRepository : IMemberRepository
     {
         IMongoQueryable<AppUser> query = _collection.AsQueryable();
 
+        // AppUser appUser = ;
+
+        // IdentityResult? roleResult = await _userManager.GetRolesAsync(); 
+            
         return await PagedList<AppUser>.CreatePagedListAsync(query, paginationParams.PageNumber,
             paginationParams.PageSize, cancellationToken);
     }
@@ -58,5 +66,11 @@ public class MemberRepository : IMemberRepository
         return appUser is not null
             ? Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing)
             : null;
+    }
+
+    public async Task<ObjectId?> GetByRoleIdAsync(string roleName,
+        CancellationToken cancellationToken)
+    {
+        
     }
 }

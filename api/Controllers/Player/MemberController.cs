@@ -3,12 +3,13 @@ using api.Helpers;
 using api.Interfaces.Player;
 using api.Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Controllers.Player;
 
 [Authorize]
 public class MemberController(IMemberRepository _memberRepository, 
-    ITokenService _tokenService, IFollowRepository _followRepository) : BaseApiController
+    ITokenService _tokenService, IFollowRepository _followRepository, UserManager<AppUser> _userManager) : BaseApiController
 {
     [AllowAnonymous]
     [HttpGet]
