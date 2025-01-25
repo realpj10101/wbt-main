@@ -6,21 +6,21 @@
     @else {
     @for (photo of memberIn.photos; track $index) {
     @if (photo.isMain) {
-        <img ngSrc="{{apiUrl + photo.url_165}}" width="128", height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
+    <img ngSrc="{{apiUrl + photo.url_165}}" width="128" , height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
     }
     }
     }
     <ul class="user-icons">
         <li>
             @if (!memberIn.isFollowing) {
-                <button mat-mini-fab>
-                    <mat-icon color="primary">person_add</mat-icon>
-                </button>
+            <button mat-mini-fab>
+                <mat-icon color="primary">person_add</mat-icon>
+            </button>
             }
             @else {
-                <button mat-mini-fab>
-                    <mat-icon color="primary">person_remove</mat-icon>
-                </button>
+            <button mat-mini-fab>
+                <mat-icon color="primary">person_remove</mat-icon>
+            </button>
             }
         </li>
         <li>
@@ -28,6 +28,28 @@
                 <mat-icon color="warn">favorite</mat-icon>
             </button>
         </li>
+        <li>
+            <button mat-mini-fab>
+                <mat-icon color="accent">mail</mat-icon>
+            </button>
+        </li>
     </ul>
+    <mat-card-header [routerLink]="['/member-details/' + memberIn.userName]">
+        <div class="title">
+            @switch (memberIn.gender) {
+            @case ('male') {
+            <mat-icon color="primary">boy</mat-icon>
+            }
+            @case ('female') {
+            <mat-icon color="primary">girl</mat-icon>
+            }
+            @default {
+            <mat-icon color="primary">group_add</mat-icon>
+            }
+            }
+            <mat-card-title>{{ memberIn.knownAs | titlecase}}, {{ memberIn.age }}</mat-card-title>
+        </div>
+        <mat-card-subtitle>{{ memberIn.city | titlecase }}</mat-card-subtitle>
+    </mat-card-header>
 </mat-card>
 }
