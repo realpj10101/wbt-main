@@ -1,1 +1,33 @@
-<p>member-card works!</p>
+@if (memberIn) {
+<mat-card class="card">
+    @if (memberIn.photos.length === 0) {
+    <img ngSrc="member.png" width="128" height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
+    }
+    @else {
+    @for (photo of memberIn.photos; track $index) {
+    @if (photo.isMain) {
+        <img ngSrc="{{apiUrl + photo.url_165}}" width="128", height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
+    }
+    }
+    }
+    <ul class="user-icons">
+        <li>
+            @if (!memberIn.isFollowing) {
+                <button mat-mini-fab>
+                    <mat-icon color="primary">person_add</mat-icon>
+                </button>
+            }
+            @else {
+                <button mat-mini-fab>
+                    <mat-icon color="primary">person_remove</mat-icon>
+                </button>
+            }
+        </li>
+        <li>
+            <button mat-mini-fab>
+                <mat-icon color="warn">favorite</mat-icon>
+            </button>
+        </li>
+    </ul>
+</mat-card>
+}
