@@ -1,5 +1,5 @@
-import { CanActivateChildFn } from '@angular/router';
+import { CanActivateFn } from '@angular/router';
 
-export const authLoggedInGuard: CanActivateChildFn = (childRoute, state) => {
+export const authLoggedInGuard: CanActivateFn = (route, state) => {
   return true;
 };
