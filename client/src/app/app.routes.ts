@@ -12,6 +12,9 @@ import { MessagesComponent } from './components/messages/messages.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { NoAccessComponent } from './components/errors/no-access/no-access.component';
+import { ServerErrorComponent } from './components/errors/server-error/server-error.component';
+import { NotFoundComponent } from './components/errors/not-found/not-found.component';
+import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -31,9 +34,15 @@ export const routes: Routes = [
       { path: 'no-access', component: NoAccessComponent},
     ]
   },
-
-  { path: 'register', component: RegisterComponent },
-  { path: 'login', component: LoginComponent },
-
-  // { path: ''}
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authLoggedInGuard],
+    children: [
+      { path: 'register', component: RegisterComponent },
+      { path: 'login', component: LoginComponent },
+    ]
+  },
+  { path: 'server-error', component: ServerErrorComponent},
+  { path: '**', component: NotFoundComponent}
 ];
