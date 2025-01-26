@@ -7,14 +7,16 @@ import { MemberParams } from '../../../models/helpers/member-params.model';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { PaginationResult } from '../../../models/helpers/pagination-result.model';
+import { MemberCardComponent } from "../member-card/member-card.component";
 
 @Component({
   selector: 'app-member-list',
   standalone: true,
   imports: [
     CommonModule,
-    MatPaginatorModule
-  ],
+    MatPaginatorModule,
+    MemberCardComponent
+],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
 })
