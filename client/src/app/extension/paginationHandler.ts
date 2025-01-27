@@ -1,13 +1,13 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject } from "@angular/core";
 import { map, Observable } from "rxjs";
-import { PaginationResult } from "../models/helpers/pagination-result.model";
+import { PaginatedResult } from "../models/helpers/pagination-result.model";
 
 export class PaginationHandler {
     private http = inject(HttpClient);
 
-    getPaginationResult<T>(url: string, params: HttpParams): Observable<PaginationResult<T>> {
-        const paginatedResult = new PaginationResult<T>;
+    getPaginatedResult<T>(url: string, params: HttpParams): Observable<PaginatedResult<T>> {
+        const paginatedResult = new PaginatedResult<T>;
 
         return this.http.get<T>(url, { observe: 'response', params })
             .pipe(
@@ -25,6 +25,6 @@ export class PaginationHandler {
                     // return pagination + body
                     return paginatedResult;
                 })
-            );  
+            );
     }
 }

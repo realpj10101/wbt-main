@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment.development';
 import { PaginationHandler } from '../extension/paginationHandler';
 import { MemberParams } from '../models/helpers/member-params.model';
 import { Observable } from 'rxjs';
-import { PaginationResult } from '../models/helpers/pagination-result.model';
+import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { Member } from '../models/member.model';
 import { P } from '@angular/cdk/keycodes';
 
@@ -17,7 +17,7 @@ export class MemberService {
   private readonly _baseApiUrl = environment.apiUrl + 'member/'
   private paginationHandler = new PaginationHandler();
 
-  getAll(memberParams: MemberParams): Observable<PaginationResult<Member[]>> {
+  getAll(memberParams: MemberParams): Observable<PaginatedResult<Member[]>> {
     let params = new HttpParams();
 
     if (memberParams) {
@@ -25,7 +25,7 @@ export class MemberService {
       params = params.append('pageSize', memberParams.pageSize);
     }
 
-    return this.paginationHandler.getPaginationResult<Member[]>(this._baseApiUrl, params);
+    return this.paginationHandler.getPaginatedResult<Member[]>(this._baseApiUrl, params);
   }
 
   getByUserName(userNameInput: string): Observable<Member | undefined> {

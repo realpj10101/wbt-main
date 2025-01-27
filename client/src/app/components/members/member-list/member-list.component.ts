@@ -6,7 +6,7 @@ import { Pagination } from '../../../models/helpers/pagination.model';
 import { MemberParams } from '../../../models/helpers/member-params.model';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { PaginationResult } from '../../../models/helpers/pagination-result.model';
+import { PaginatedResult } from '../../../models/helpers/pagination-result.model';
 import { MemberCardComponent } from "../member-card/member-card.component";
 
 @Component({
@@ -46,7 +46,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   getAll(): void {
     if (this.memberParams)
       this.subscribed = this.memberService.getAll(this.memberParams).subscribe({
-        next: (response: PaginationResult<Member[]>) => {
+        next: (response: PaginatedResult<Member[]>) => {
           if (response.body && response.pagination) {
             this.members = response.body;
             this.pagination = response.pagination;
