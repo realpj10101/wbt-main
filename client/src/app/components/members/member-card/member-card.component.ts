@@ -1,5 +1,5 @@
 import { Component, inject, Input, Output } from '@angular/core';
-import { Member } from '../../../models/member.mode';
+import { Member } from '../../../models/member.model';
 import { environment } from '../../../../environments/environment.development';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class MemberCardComponent {
   @Input('memberInput') memberIn: Member | undefined;
-  
+
   apiUrl = environment.apiUrl;
   private _snack = inject(MatSnackBar);
 }

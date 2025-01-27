@@ -5,7 +5,7 @@ import { PaginationHandler } from '../extension/paginationHandler';
 import { MemberParams } from '../models/helpers/member-params.model';
 import { Observable } from 'rxjs';
 import { PaginationResult } from '../models/helpers/pagination-result.model';
-import { Member } from '../models/member.mode';
+import { Member } from '../models/member.model';
 import { P } from '@angular/cdk/keycodes';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MemberService } from '../../../services/member.service';
 import { Observable, Subscription } from 'rxjs';
-import { Member } from '../../../models/member.mode';
+import { Member } from '../../../models/member.model';
 import { Pagination } from '../../../models/helpers/pagination.model';
 import { MemberParams } from '../../../models/helpers/member-params.model';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
@@ -16,7 +16,7 @@ import { MemberCardComponent } from "../member-card/member-card.component";
     CommonModule,
     MatPaginatorModule,
     MemberCardComponent
-],
+  ],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
 })
