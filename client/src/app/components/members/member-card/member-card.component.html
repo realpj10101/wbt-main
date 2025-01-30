@@ -13,12 +13,12 @@
     <ul class="user-icons">
         <li>
             @if (!memberIn.isFollowing) {
-            <button mat-mini-fab>
+            <button (click)="follow()" mat-mini-fab>
                 <mat-icon color="primary">person_add</mat-icon>
             </button>
             }
             @else {
-            <button mat-mini-fab>
+            <button (click)="unfollow()" mat-mini-fab>
                 <mat-icon color="primary">person_remove</mat-icon>
             </button>
             }
