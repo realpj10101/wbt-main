@@ -49,9 +49,9 @@ public class SeedController : BaseApiController
 
         #region Create Roles
         await _roleManager.CreateAsync(new AppRole { Name = "admin"});
-        await _roleManager.CreateAsync(new AppRole { Name = "moderator"});
         await _roleManager.CreateAsync(new AppRole { Name = "player"});
         await _roleManager.CreateAsync(new AppRole { Name = "coach"});
+        await _roleManager.CreateAsync(new AppRole { Name = "captain" });
         #endregion Create Roles
 
         #region Create Admin and Moderator
@@ -63,17 +63,8 @@ public class SeedController : BaseApiController
         };
 
         await _userManager.CreateAsync(admin, "Aaaaaaaa/");
-        await _userManager.AddToRolesAsync(admin, ["admin", "moderator"]);
-
-        AppUser moderator = new()
-        {
-            Email = "moderator@a.com",
-            UserName = "moderator"
-        };
-
-        await _userManager.CreateAsync(moderator, "Aaaaaaaa/");
-        await _userManager.AddToRoleAsync(moderator, "moderator");
-
+        await _userManager.AddToRolesAsync(admin, ["admin"]);
+        
         #endregion Create Admin and Moderator
 
         return Ok("Operation is completed. DO NOT FORGET ADMIN'S PASSWORD!!!");
