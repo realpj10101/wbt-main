@@ -29,7 +29,7 @@ public class LogUserActivity(ILogger<LogUserActivity> _logger) : IAsyncActionFil
             return;
         }
 
-        IRegisterPlayerRepository? registerPlayerRepository = resultNext.HttpContext.RequestServices.GetRequiredService<IRegisterPlayerRepository>();
+        IAccountRepository? registerPlayerRepository = resultNext.HttpContext.RequestServices.GetRequiredService<IAccountRepository>();
 
         if (registerPlayerRepository is null) return;
 

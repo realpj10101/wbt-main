@@ -14,7 +14,7 @@ public static class RepositoryServiceExtensions
 
         services.AddScoped<ITokenService, TokenService>();
         
-        services.AddScoped<IRegisterPlayerRepository, RegisterPlayerRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IMemberRepository, MemberRepository>();
         services.AddScoped<IPlayerUserRepository, PlayerUserRepository>();
         services.AddScoped<IFollowRepository, FollowRepository>();

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers.Player;
 
 [Authorize]
-public class RegisterPlayerController(IRegisterPlayerRepository _registerPlayerRepository) : BaseApiController
+public class AccountController(IAccountRepository accountRepository) : BaseApiController
 {
     /// <summary>
     /// Create accounts
@@ -21,7 +21,7 @@ public class RegisterPlayerController(IRegisterPlayerRepository _registerPlayerR
         if (userInput.Password != userInput.ConfirmPassword)
             return BadRequest("Passwords don't match");
         
-        LoggedInDto? loggedInDto = await _registerPlayerRepository.RegisterPlayerAsync(userInput, cancellationToken);
+        LoggedInDto? loggedInDto = await accountRepository.RegisterPlayerAsync(userInput, cancellationToken);
         
         return !string.IsNullOrEmpty(loggedInDto.Token)
             ? Ok(loggedInDto)
@@ -40,7 +40,7 @@ public class RegisterPlayerController(IRegisterPlayerRepository _registerPlayerR
     [HttpPost("login")]
     public async Task<ActionResult<LoggedInDto>> Login(LoginDto userInput, CancellationToken cancellationToken)
     {
-        LoggedInDto? loggedInDto = await _registerPlayerRepository.LoginAsync(userInput, cancellationToken);
+        LoggedInDto? loggedInDto = await accountRepository.LoginAsync(userInput, cancellationToken);
 
         return
             !string.IsNullOrEmpty(loggedInDto.Token)
