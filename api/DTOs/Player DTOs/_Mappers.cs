@@ -21,7 +21,6 @@ public static class Mappers
         {
             Token = tokenValue,
             UserName = appUser.NormalizedUserName,
-            KnownAs = appUser.KnownAs,
             Gender = appUser.Gender,
             ProfilePhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
         };
@@ -34,14 +33,11 @@ public static class Mappers
             UserName: appUser.NormalizedUserName!,
             Name: appUser.Name,
             LastName: appUser.LastName,
-            NationalCode: appUser.NationalCode,
             Height: appUser.Height,
             Age: CustomDateTimeExtensions.CalculateAge(appUser.Age),
-            KnownAs: appUser.KnownAs,
             Created: appUser.CreatedOn,
             LastActive: appUser.LastActive,
             Gender: appUser.Gender,
-            LookingFor: appUser.LookingFor,
             City: appUser.City,
             Country: appUser.Country,
             Photos: appUser.Photos,

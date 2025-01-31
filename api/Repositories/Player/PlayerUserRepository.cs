@@ -69,7 +69,7 @@ public class PlayerUserRepository : IPlayerUserRepository
     //     
     //     return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
     // }
-    // #endregion
+    #endregion
 
     #region Photo Managemnet
 

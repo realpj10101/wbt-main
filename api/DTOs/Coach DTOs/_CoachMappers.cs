@@ -18,7 +18,6 @@ public static class CoachMappers
         {
             Token = tokenValue,
             UserName = appUser.NormalizedUserName,
-            KnownAs = appUser.KnownAs,
             Gender = appUser.Gender,
             ProfilePhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
         };
