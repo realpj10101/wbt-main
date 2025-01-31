@@ -8,16 +8,16 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
 {
     #region User Management
 
-    [HttpPut]
-    public async Task<ActionResult> UpdatePlayer(PlayerUpdateDto playerUpdateDto, CancellationToken cancellationToken)
-    {
-        UpdateResult? updateResult = await _playerUserRepository.UpdatePlayerAsync(playerUpdateDto, User.GetHashedUserId(), cancellationToken);
-
-        return updateResult is null || !updateResult.IsModifiedCountAvailable
-            ? BadRequest("Update failed. Try again later.")
-            : Ok(new { message = "User has been updated successfully." });
-    }
-    
+    // [HttpPut]
+    // public async Task<ActionResult> UpdatePlayer(PlayerUpdateDto playerUpdateDto, CancellationToken cancellationToken)
+    // {
+    //     UpdateResult? updateResult = await _playerUserRepository.UpdatePlayerAsync(playerUpdateDto, User.GetHashedUserId(), cancellationToken);
+    //
+    //     return updateResult is null || !updateResult.IsModifiedCountAvailable
+    //         ? BadRequest("Update failed. Try again later.")
+    //         : Ok(new { message = "User has been updated successfully." });
+    // }
+    //
     #endregion
 
     #region Photo Management

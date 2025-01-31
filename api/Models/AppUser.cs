@@ -9,30 +9,36 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string? IdentifierHash { get; init; }    
     public string Name { get; init; } = string.Empty;
     public string LastName { get; init; } = string.Empty;
-    public string NationalCode { get; init; } = string.Empty;
-    public int Height { get; init; } = 0;
+    public int Height { get; init; }
+    public int Weight { get; init; }
     public DateOnly Age { get; init; }
-    public string KnownAs { get; init; } = string.Empty;
     public DateTime LastActive { get; init; }
     public string Gender { get; init; } = string.Empty;
-    public string? LookingFor { get; init; }
     public string City { get; init; } = string.Empty;
+    public string Region { get; init; } = string.Empty;
     public string Country { get; init; } = string.Empty;
-    public string Records { get; init; } = string.Empty;
+    public int ExperienceYears { get; init; }
+    public string Specialization { get; init; } = string.Empty;
+    public List<Photo> Certifications { get; init; } = [];
+    public string TeamsManaged  { get; init; } = string.Empty;
+    public string CurrentTeam { get; init; } = string.Empty;
+    public string TrainingStyle { get; init; } = string.Empty;
+    public string PreferredPlayers { get; init; } = string.Empty;
+    public string Position { get; init; } = string.Empty;
+    public string ExperienceLevel { get; init; } = string.Empty;
+    public string Skills { get; init; } = string.Empty;
+    public int GamesPlayed { get; init; }
+    public float PointsPerGame { get; init; }
+    public float ReboundsPerGame { get; init; }
+    public float AssistsPerGame { get; init; }
+    public string Bio { get; init; } = string.Empty;
+    public string Achievements { get; init; } = string.Empty;
     public List<Photo> Photos { get; init; } = [];
     public int FollowingsCount { get; init; }
     public int FollowersCount { get; init; }
     public int LikingsCount { get; init; }
     public int LikersCount { get; init; }
     public bool IsCaptain { get; init; }
-    public bool IsAdmin { get; init; }
-    public DateTime FoundedDate { get; init; }
-    public int NumberOfGames{ get; init;}
-    public int NumberOfWins { get; init;}
-    public int NumberOfLosses { get; init;}
-    public string GameHistory { get; init; } = string.Empty;
-    public string GameResults { get; init;} = string.Empty;
-    public int JoinersCount { get; init; }
     public int CommentingCount { get; init; }
     public int CommentersCount { get; init; }
 }

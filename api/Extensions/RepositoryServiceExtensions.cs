@@ -21,7 +21,7 @@ public static class RepositoryServiceExtensions
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IAdminRepository, AdminRepository>();
-        services.AddScoped<IPlayerDetailsRepository, PlayerDetailsRepository>();
+        // services.AddScoped<IPlayerDetailsRepository, PlayerDetailsRepository>();
         
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IPhotoModifySaveService, PhotoModifySaveService>();

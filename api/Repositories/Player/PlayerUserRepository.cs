@@ -51,25 +51,25 @@ public class PlayerUserRepository : IPlayerUserRepository
         return ValidationsExtensions.ValidateObjectId(playerId);
     }
     
-    public async Task<UpdateResult?> UpdatePlayerAsync(PlayerUpdateDto playerUpdateDto, string? hashedUserId,
-        CancellationToken cancellationToken)
-    {
-        if (string.IsNullOrEmpty(hashedUserId)) return null;
-
-        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
-
-        if (playerId is null) return null;
-
-        UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
-            .Set(appUser => appUser.Height, playerUpdateDto.Height)
-            .Set(appUser => appUser.KnownAs, playerUpdateDto.KnownAs)
-            .Set(appUser => appUser.LookingFor, playerUpdateDto.LookingFor)
-            .Set(appUser => appUser.City, playerUpdateDto.City)
-            .Set(appUser => appUser.Country, playerUpdateDto.Country);
-        
-        return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
-    }
-    #endregion
+    // public async Task<UpdateResult?> UpdatePlayerAsync(PlayerUpdateDto playerUpdateDto, string? hashedUserId,
+    //     CancellationToken cancellationToken)
+    // {
+    //     if (string.IsNullOrEmpty(hashedUserId)) return null;
+    //
+    //     ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+    //
+    //     if (playerId is null) return null;
+    //
+    //     UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
+    //         .Set(appUser => appUser.Height, playerUpdateDto.Height)
+    //         .Set(appUser => appUser.KnownAs, playerUpdateDto.KnownAs)
+    //         .Set(appUser => appUser.LookingFor, playerUpdateDto.LookingFor)
+    //         .Set(appUser => appUser.City, playerUpdateDto.City)
+    //         .Set(appUser => appUser.Country, playerUpdateDto.Country);
+    //     
+    //     return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
+    // }
+    // #endregion
 
     #region Photo Managemnet
 
