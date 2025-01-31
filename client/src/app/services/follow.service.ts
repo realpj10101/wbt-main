@@ -16,7 +16,7 @@ export class FollowService {
 
   private paginationHandler = new PaginationHandler();
 
-  private readonly _apiUrl = environment.apiUrl + 'follow';
+  private readonly _apiUrl = environment.apiUrl + 'follow/';
 
   create(targetMemberUserName: string): Observable<ApiResponse> {
     return this._http.post<ApiResponse>(this._apiUrl + 'add-follow/' + targetMemberUserName, null);
