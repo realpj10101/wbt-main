@@ -15,7 +15,7 @@ public class AccountController(IAccountRepository accountRepository) : BaseApiCo
     /// <returns>LoggedInDto</returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<LoggedInDto>> Register(RegisterPlayerDto userInput,
+    public async Task<ActionResult<LoggedInDto>> Register(AccountDto userInput,
         CancellationToken cancellationToken)
     {
         if (userInput.Password != userInput.ConfirmPassword)

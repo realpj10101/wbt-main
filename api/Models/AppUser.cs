@@ -11,7 +11,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string LastName { get; init; } = string.Empty;
     public int Height { get; init; }
     public int Weight { get; init; }
-    public DateOnly Age { get; init; }
+    public DateOnly DateOfBirth { get; init; }
     public DateTime LastActive { get; init; }
     public string Gender { get; init; } = string.Empty;
     public string City { get; init; } = string.Empty;

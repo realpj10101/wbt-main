@@ -5,13 +5,16 @@ namespace api.DTOs;
 
 public static class Mappers
 {
-    public static AppUser ConvertRegisterPlayerDtoToAppUser(RegisterPlayerDto playerInput)
+    public static AppUser ConvertRegisterPlayerDtoToAppUser(AccountDto playerInput)
     {
         return new AppUser
         {
             Email = playerInput.Email,
             UserName = playerInput.UserName,
-            Gender = playerInput.Gender
+            DateOfBirth = playerInput.DateOfBirth,
+            Gender = playerInput.Gender,
+            LastActive = DateTime.UtcNow,
+            Photos = []
         };
     }
 
@@ -33,7 +36,7 @@ public static class Mappers
             UserName: appUser.NormalizedUserName!,
             Name: appUser.Name,
             LastName: appUser.LastName,
-            Age: CustomDateTimeExtensions.CalculateAge(appUser.Age),
+            Age: CustomDateTimeExtensions.CalculateAge(appUser.DateOfBirth),
             Height: appUser.Height,
             Weight: appUser.Weight,
             ExperienceLevel: appUser.ExperienceLevel,
