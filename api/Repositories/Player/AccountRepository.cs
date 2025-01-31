@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace api.Repositories.Player;
 
-public class RegisterPlayerRepository : IRegisterPlayerRepository
+public class AccountRepository : IAccountRepository
 {
     #region Vars and Constructor
 
@@ -12,7 +12,7 @@ public class RegisterPlayerRepository : IRegisterPlayerRepository
     private readonly UserManager<AppUser> _userManager;
     private readonly ITokenService _tokenService;
 
-    public RegisterPlayerRepository(IMongoClient client, IMyMongoDbSettings dbSettings,
+    public AccountRepository(IMongoClient client, IMyMongoDbSettings dbSettings,
         UserManager<AppUser> userManager, ITokenService tokenService)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);

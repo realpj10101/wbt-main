@@ -1,6 +1,6 @@
 namespace api.Interfaces.Player;
 
-public interface IRegisterPlayerRepository
+public interface IAccountRepository
 {
     public Task<LoggedInDto> RegisterPlayerAsync(RegisterPlayerDto userInput, CancellationToken cancellationToken);
     public Task<LoggedInDto> LoginAsync(LoginDto userInput, CancellationToken cancellationToken);
