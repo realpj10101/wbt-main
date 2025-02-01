@@ -94,4 +94,13 @@ public static class Mappers
             Content: content,
             CreatedAt: DateTime.Now);
     }
+
+    public static Team ConvertTeamIdsToTeam(ObjectId creatorId, ObjectId[] memberId, string teamName)
+    {
+        return new Team(
+            CreatorId: creatorId,
+            MemberId: memberId,
+            TeamName: teamName
+        );
+    }
 }
