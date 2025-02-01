@@ -4,16 +4,16 @@ namespace api.Models;
 
 public record Team(
     [Optional][property: BsonId, BsonRepresentation(BsonType.ObjectId)] ObjectId Id,
-    string CreatorUserName,
+    string CreatorUserName, // Basic Details
     string TeamName,
     Photo TeamLogo,
-    string TeamLevel,
+    string TeamLevel, // Professional Details
     string Achievements,
     int GamesPlayed,
     int GamesWon,
     int GamesLost,
-    string UpcomingMatches,
+    string UpcomingMatches, // Team Schedule
     string PracticeSession,
-    string Description,
-    DateTime CreatedAt
+    string Description, // Additional Details
+    DateTime CreatedAt // History
     );
