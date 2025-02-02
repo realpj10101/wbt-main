@@ -8,4 +8,3 @@ public class FollowStatus
     public bool IsFollowingThemself { get; set; }
     public bool IsTargetMemberNotFound { get; set; }
 }
-    

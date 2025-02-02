@@ -8,6 +8,7 @@ public class AppVariablesExtensions
     public const string collectionFollows = "follows";
     public const string collectionComments = "comments";
     public const string collectionLikes = "likes";
+    public const string collectionTeams = "teams";
     public const string collectionExceptionLogs = "exception-logs";
 
     public readonly static string[] AppVersion = ["1", "1.0.2"];
