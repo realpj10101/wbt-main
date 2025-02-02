@@ -19,4 +19,4 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
             ? Ok(createTeamDto)
             : BadRequest("Create team failed. try again or contact administrator.");
     }
-}
+}   
