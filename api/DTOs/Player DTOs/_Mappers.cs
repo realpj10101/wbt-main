@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using api.DTOs.Team_DTOs;
 using api.Extensions;
 
 namespace api.DTOs;
@@ -95,12 +96,12 @@ public static class Mappers
             CreatedAt: DateTime.Now);
     }
 
-    public static Team ConvertTeamIdsToTeam(ObjectId creatorId, ObjectId[] memberId, string teamName)
+    public static Team ConvertCreateTeamDtoToTeam(ObjectId userId, CreateTeamDto userInput)
     {
         return new Team(
-            CreatorId: creatorId,
-            MemberId: memberId,
-            TeamName: teamName
+            CreatorId: userId,
+            MemberIds: [],
+            TeamName: userInput.TeamName
         );
     }
 }

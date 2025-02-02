@@ -1,8 +1,8 @@
-using api.Models.Helpers;
+using api.DTOs.Team_DTOs;
 
 namespace api.Interfaces.Team;
 
 public interface ITeamRepository
 {
-    public Task<TeamStatus> CreateAsync(ObjectId userId, string targetMemberUserName, CancellationToken cancellationToken);
+    public Task<CreateTeamDto> CreateAsync(ObjectId userId, CreateTeamDto userInput, CancellationToken cancellationToken);
 }
