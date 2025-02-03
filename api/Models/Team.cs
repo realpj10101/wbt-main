@@ -6,15 +6,15 @@ public record Team(
     [Optional][property: BsonId, BsonRepresentation(BsonType.ObjectId)] ObjectId Id,
     ObjectId CreatorId,
     List<ObjectId> MemberIds, // Basic Details
-    string TeamName
+    string TeamName,
+    string TeamLevel, // Professional Details
+    string Achievements,
+    int GamesPlayed,
+    int GamesWon,
+    int GamesLost,
+    DateTime CreatedAt // History
     // List<Photo> TeamLogo
-    // string TeamLevel, // Professional Details
-    // string Achievements,
-    // int GamesPlayed,
-    // int GamesWon,
-    // int GamesLost,
     // string UpcomingMatches, // Team Schedule
     // string PracticeSession,
     // string Description, // Additional Details
-    // DateTime CreatedAt // History
     );
