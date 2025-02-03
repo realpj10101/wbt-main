@@ -7,7 +7,7 @@ public record Team(
     ObjectId CreatorId,
     List<ObjectId> MemberIds, // Basic Details
     string TeamName
-    // Photo TeamLogo,
+    // List<Photo> TeamLogo
     // string TeamLevel, // Professional Details
     // string Achievements,
     // int GamesPlayed,

@@ -35,7 +35,7 @@ public class TeamRepository : ITeamRepository
     #endregion
     
     // Create team and add member in
-    public async Task<CreateTeamDto> CreateAsync(
+    public async Task<CreateTeamDto?> CreateAsync(
         ObjectId userId,
         CreateTeamDto userInput,
         CancellationToken cancellationToken)

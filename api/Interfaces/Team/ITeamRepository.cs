@@ -4,5 +4,5 @@ namespace api.Interfaces.Team;
 
 public interface ITeamRepository
 {
-    public Task<CreateTeamDto> CreateAsync(ObjectId userId, CreateTeamDto userInput, CancellationToken cancellationToken);
+    public Task<CreateTeamDto?> CreateAsync(ObjectId userId, CreateTeamDto userInput, CancellationToken cancellationToken);
 }
