@@ -93,7 +93,8 @@ public static class Mappers
             CommenterId: commenterId,
             CommentedMemberId: commentedId,
             Content: content,
-            CreatedAt: DateTime.Now);
+            CreatedAt: DateTime.Now
+            );
     }
 
     public static Team ConvertCreateTeamDtoToTeam(ObjectId userId, CreateTeamDto userInput)
@@ -101,7 +102,13 @@ public static class Mappers
         return new Team(
             CreatorId: userId,
             MemberIds: [],
-            TeamName: userInput.TeamName
+            TeamName: userInput.TeamName,
+            TeamLevel: userInput.TeamLevel,
+            Achievements: userInput.Achievements,
+            GamesPlayed: userInput.GamesPlayed,
+            GamesWon: userInput.GamesWon,
+            GamesLost: userInput.GamesLost,
+            CreatedAt: DateTime.UtcNow
         );
     }
 }
