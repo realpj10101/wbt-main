@@ -19,7 +19,7 @@ export class RegisterPlayerService {
   platformId = inject(PLATFORM_ID);
   loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
 
-  private readonly baseApiUrl = environment.apiUrl + 'registerplayer/';
+  private readonly baseApiUrl = environment.apiUrl + 'account/';
 
   registerPlayer(playerInput: RegisterPlayer): Observable<LoggedInPlayer | null> {
     return this.http.post<LoggedInPlayer>(this.baseApiUrl + 'register', playerInput).pipe(
@@ -98,7 +98,7 @@ export class RegisterPlayerService {
       localStorage.clear(); // delete all browser's localStorage's items at once  
     }
 
-    this.router.navigateByUrl('registerplayer/login');
+    this.router.navigateByUrl('account/login');
   }
 
   private navigateToReturnUrl(): void {
