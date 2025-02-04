@@ -35,7 +35,7 @@ public class TeamRepository : ITeamRepository
     #endregion
     
     // Create team and add member in
-    public async Task<CreateTeamDto?> CreateAsync(
+    public async Task<ShowTeamDto?> CreateAsync(
         ObjectId userId,
         CreateTeamDto userInput,
         CancellationToken cancellationToken)
@@ -43,6 +43,13 @@ public class TeamRepository : ITeamRepository
         Team? team = Mappers.ConvertCreateTeamDtoToTeam(userId, userInput);
         
         await _collection.InsertOneAsync(team, cancellationToken);
+
+        if (team is not null)
+        {
+            ShowTeamDto showTeamDto = Mappers.ConvertTeamToShowTeamDto(team);
+
+            return showTeamDto;
+        }
 
         return null;
     }
