@@ -56,7 +56,7 @@ public class TeamRepository : ITeamRepository
         return null;
     }
 
-    public async Task<bool> UpdateTeamAsync(
+    public async Task<UpdateResult?> UpdateTeamAsync(
         UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
     {
         ObjectId teamId = await _collection.AsQueryable()
@@ -78,10 +78,8 @@ public class TeamRepository : ITeamRepository
             .Set(t => t.GamesWon, userInput.GamesWon)
             .Set(t => t.GamesLost, userInput.GamesLost);
 
-        UpdateResult updatedResult = await _collection.UpdateOneAsync(
+         return await _collection.UpdateOneAsync(
             doc => doc.Id == teamId, updatedTeam, null, cancellationToken
         );
-
-        return updatedResult.ModifiedCount == 1;
     }
 }
