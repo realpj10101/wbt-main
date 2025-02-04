@@ -111,6 +111,18 @@ public static class Mappers
             CreatedAt: DateTime.UtcNow
         );
     }
-    
-    public stati
+
+    public static ShowTeamDto ConvertTeamToShowTeamDto(Team team)
+    {
+        return new ShowTeamDto
+        {
+            TeamName = team.TeamName,
+            TeamLevel = team.TeamLevel,
+            Achievements = team.Achievements,
+            GamesPlayed = team.GamesPlayed,
+            GamesWon = team.GamesWon,
+            GamesLost = team.GamesLost,
+            CreatedAt = DateTime.UtcNow
+        };
+    }
 }

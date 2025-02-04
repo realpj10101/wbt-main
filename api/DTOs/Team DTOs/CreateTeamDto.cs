@@ -17,5 +17,6 @@ public class ShowTeamDto
     public string Achievements { get; init; } = string.Empty;
     public int GamesPlayed { get; init; }
     public int GamesWon { get; init; }
+    public int GamesLost { get; init; }
     public DateTime CreatedAt { get; init; }
 }
