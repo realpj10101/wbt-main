@@ -13,6 +13,7 @@ public record CreateTeamDto(
 public class ShowTeamDto
 {
     public string TeamName { get; init; } = string.Empty;
+    public List<ObjectId> MembersIds { get; init; } = [];
     public string TeamLevel { get; init; } = string.Empty;
     public string Achievements { get; init; } = string.Empty;
     public int GamesPlayed { get; init; }

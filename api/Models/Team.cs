@@ -5,7 +5,7 @@ namespace api.Models;
 public record Team(
     [Optional][property: BsonId, BsonRepresentation(BsonType.ObjectId)] ObjectId Id,
     ObjectId CreatorId,
-    List<ObjectId> MemberIds, // Basic Details
+    List<ObjectId> MembersIds, // Basic Details
     string TeamName,
     string TeamLevel, // Professional Details
     string Achievements,
