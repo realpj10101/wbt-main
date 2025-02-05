@@ -14,9 +14,11 @@ section {
     }
 
     .form {
-        // background-color: red;
+        // background-color: rgb(233, 232, 232);
+        padding: 1rem;
         display: flex;
         position: relative;
+        border-radius: 0.5rem;
         // width: 500px;
 
         form {

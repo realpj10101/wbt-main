@@ -63,7 +63,7 @@ public class TeamRepository : ITeamRepository
             .Where(doc => doc.TeamName == targetTeamName)
             .Select(doc => doc.Id)
             .FirstOrDefaultAsync(cancellationToken);
-
+        
         ObjectId memberId = await _collectionAppUser.AsQueryable()
             .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
             .Select(doc => doc.Id)
