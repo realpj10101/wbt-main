@@ -39,8 +39,8 @@ export const routes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [authLoggedInGuard],
     children: [
-      { path: 'register', component: RegisterComponent },
-      { path: 'login', component: LoginComponent },
+      { path: 'account/register', component: RegisterComponent },
+      { path: 'account/login', component: LoginComponent },
     ]
   },
   { path: 'server-error', component: ServerErrorComponent},

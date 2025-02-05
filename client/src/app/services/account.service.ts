@@ -12,7 +12,7 @@ import { ApiResponse } from '../models/helpers/apiResponse.model';
 @Injectable({
   providedIn: 'root'
 })
-export class RegisterPlayerService {
+export class AccountService {
   //#region injects and variables
   http = inject(HttpClient);
   router = inject(Router);
@@ -66,7 +66,7 @@ export class RegisterPlayerService {
         next: res => {
           if (res.message)
             console.log(res.message);
-        }, 
+        },
         error: err => {
           console.log(err.error);
           this.logOut()

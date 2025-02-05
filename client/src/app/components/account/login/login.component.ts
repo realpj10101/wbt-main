@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RegisterPlayerService } from '../../../services/register-player.service';
+import { AccountService } from '../../../services/account.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginPlayer } from '../../../models/login-player.model';
@@ -13,7 +13,7 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ 
+  imports: [
     ReactiveFormsModule, FormsModule,
     MatFormFieldModule, MatInputModule, MatButtonModule,
     AutoFocusDirective, MatSnackBarModule
@@ -22,7 +22,7 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  registerPlayerService = inject(RegisterPlayerService);
+  registerPlayerService = inject(AccountService);
   fb = inject(FormBuilder);
   private router = inject(Router);
 

@@ -24,7 +24,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
     localStorage.setItem('returnUrl', state.url);
 
-    router.navigate(['login'], { queryParams: { 'returnUrl': state.url } })
+    router.navigate(['account/login'], { queryParams: { 'returnUrl': state.url } })
   }
 
   return false; // Block the component

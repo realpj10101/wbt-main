@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RegisterPlayer } from '../../../models/register-player.model';
-import { RegisterPlayerService } from '../../../services/register-player.service';
+import { AccountService } from '../../../services/account.service';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +28,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnDestroy {
-  registerPlayerService = inject(RegisterPlayerService);
+  registerPlayerService = inject(AccountService);
   fb = inject(FormBuilder);
 
   passwordsNotMatch: boolean | undefined;
@@ -36,7 +36,7 @@ export class RegisterComponent implements OnDestroy {
   emailExistError: string | undefined;
 
   ngOnDestroy(): void {
-      this.subscribedRegisterPlayer?.unsubscribe();
+    this.subscribedRegisterPlayer?.unsubscribe();
   }
 
   registerFg = this.fb.group({

@@ -1,5 +1,5 @@
 mat-toolbar {
-    background-color: #fbf0c3;
+    background-color: rgb(7, 50, 70);
 
     .container {
         display: flex;
@@ -41,7 +41,7 @@ mat-toolbar {
             gap: 1rem;
 
             button {
-                background-color: #0089ba;
+                background-color: orange;
                 color: white;
             }
         }

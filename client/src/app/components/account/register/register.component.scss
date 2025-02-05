@@ -14,16 +14,20 @@ section {
     }
 
     .form {
-        // background-color: rgb(233, 232, 232);
+        background-color: rgb(233, 232, 232);
         padding: 1rem;
         display: flex;
         position: relative;
         border-radius: 0.5rem;
         // width: 500px;
+        // gap: 1rem;
 
         form {
+            // background-color: red;
             z-index: 2;
             display: flex;
+            justify-content: space-around;
+            gap: 1rem;
 
             mat-form-field {
                 display: flex;

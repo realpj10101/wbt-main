@@ -2,11 +2,11 @@ import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import {RouterLink, RouterOutlet} from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { LoggedInPlayer } from '../../models/logged-in-player.model';
 import { single } from 'rxjs';
-import { RegisterPlayerService } from '../../services/register-player.service';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,20 +18,20 @@ import { RegisterPlayerService } from '../../services/register-player.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
   linksWithAsmin: string[] = ['members', 'friends', 'message', 'admin'];
   links: string[] = ['members', 'friends', 'messages'];
 
-  private registerPlayerService = inject(RegisterPlayerService);
+  private registerPlayerService = inject(AccountService);
 
   ngOnInit(): void {
-      this.loggedInUserSig = this.registerPlayerService.loggedInPlayerSig;
+    this.loggedInUserSig = this.registerPlayerService.loggedInPlayerSig;
   }
 
   logOut(): void {
-    this.registerPlayerService.logOut();  
+    this.registerPlayerService.logOut();
   }
 
 }
