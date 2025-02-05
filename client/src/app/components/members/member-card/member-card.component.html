@@ -6,7 +6,7 @@
     @else {
     @for (photo of memberIn.photos; track $index) {
     @if (photo.isMain) {
-    <img ngSrc="{{apiUrl + photo.url_165}}" width="128" , height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
+    <img ngSrc="{{apiUrl + 'playeruser' + photo.url_165}}" width="128" , height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
     }
     }
     }

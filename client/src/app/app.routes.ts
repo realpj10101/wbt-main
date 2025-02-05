@@ -26,12 +26,12 @@ export const routes: Routes = [
     children: [
       { path: 'members', component: MemberListComponent },
       { path: 'member-card', component: MemberCardComponent },
-      { path: 'member-datails/:userName', component: MemberDetailsComponent},
-      { path: 'user', component: UserComponent},
-      { path: 'message', component: MessagesComponent},
-      { path: 'friends', component: FriendsComponent},
-      { path: 'admin', component: AdminComponent},
-      { path: 'no-access', component: NoAccessComponent},
+      { path: 'member-datails/:userName', component: MemberDetailsComponent },
+      { path: 'user', component: UserComponent },
+      { path: 'message', component: MessagesComponent },
+      { path: 'friends', component: FriendsComponent },
+      { path: 'admin', component: AdminComponent },
+      { path: 'no-access', component: NoAccessComponent },
     ]
   },
   {
@@ -43,6 +43,6 @@ export const routes: Routes = [
       { path: 'account/login', component: LoginComponent },
     ]
   },
-  { path: 'server-error', component: ServerErrorComponent},
-  { path: '**', component: NotFoundComponent}
+  { path: 'server-error', component: ServerErrorComponent },
+  { path: '**', component: NotFoundComponent }
 ];

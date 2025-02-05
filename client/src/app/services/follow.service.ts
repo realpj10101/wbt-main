@@ -37,6 +37,6 @@ export class FollowService {
   }
 
   delete(unfollowedMember: string): Observable<ApiResponse> {
-    return this._http.delete<ApiResponse>(this._apiUrl + 'remove-follow' + unfollowedMember);
+    return this._http.delete<ApiResponse>(this._apiUrl + 'remove-follow/' + unfollowedMember);
   }
 }
