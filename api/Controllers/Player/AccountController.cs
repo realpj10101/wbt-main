@@ -1,10 +1,11 @@
+using api.Extensions;
 using api.Interfaces.Player;
 using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers.Player;
 
 [Authorize]
-public class AccountController(IAccountRepository accountRepository) : BaseApiController
+public class AccountController(IAccountRepository _accountRepository) : BaseApiController
 {
     /// <summary>
     /// Create accounts
@@ -21,7 +22,7 @@ public class AccountController(IAccountRepository accountRepository) : BaseApiCo
         if (userInput.Password != userInput.ConfirmPassword)
             return BadRequest("Passwords don't match");
         
-        LoggedInDto? loggedInDto = await accountRepository.RegisterPlayerAsync(userInput, cancellationToken);
+        LoggedInDto? loggedInDto = await _accountRepository.RegisterPlayerAsync(userInput, cancellationToken);
         
         return !string.IsNullOrEmpty(loggedInDto.Token)
             ? Ok(loggedInDto)
@@ -40,7 +41,7 @@ public class AccountController(IAccountRepository accountRepository) : BaseApiCo
     [HttpPost("login")]
     public async Task<ActionResult<LoggedInDto>> Login(LoginDto userInput, CancellationToken cancellationToken)
     {
-        LoggedInDto? loggedInDto = await accountRepository.LoginAsync(userInput, cancellationToken);
+        LoggedInDto? loggedInDto = await _accountRepository.LoginAsync(userInput, cancellationToken);
 
         return  
             !string.IsNullOrEmpty(loggedInDto.Token)
@@ -51,8 +52,24 @@ public class AccountController(IAccountRepository accountRepository) : BaseApiCo
     }
     
     [HttpGet]
-    public async Task<ActionResult<LoggedInDto>> ReloadLoggedInPlayer(CancellationToken cancellationToken)
+    public async Task<ActionResult<LoggedInDto>> ReloadLoggedInUser(CancellationToken cancellationToken)
     {
+        // obtain token value
+        string? token = null;
         
+        bool isTokenValid = HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader);
+
+        if (isTokenValid)
+            return Unauthorized("Token is expired or invalid. Login again.");
+        
+        // obtain userId
+        string? hashedUserId = User.GetHashedUserId();
+        if (string.IsNullOrEmpty(hashedUserId))
+            return BadRequest("No user found with this user Id");
+
+        LoggedInDto? loggedInDto =
+            await _accountRepository.ReloadLoggedInUserAsync(hashedUserId, token, cancellationToken);
+
+        return loggedInDto is null ? Unauthorized("User is logged out or unauthorized. Login again") : loggedInDto;
     }
 }
