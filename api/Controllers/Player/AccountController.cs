@@ -67,6 +67,7 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
         if (string.IsNullOrEmpty(hashedUserId))
             return BadRequest("No user found with this user Id");
 
+        // get loggedInDto
         LoggedInDto? loggedInDto =
             await _accountRepository.ReloadLoggedInUserAsync(hashedUserId, token, cancellationToken);
 
