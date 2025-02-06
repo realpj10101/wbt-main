@@ -42,11 +42,17 @@ public class AccountController(IAccountRepository accountRepository) : BaseApiCo
     {
         LoggedInDto? loggedInDto = await accountRepository.LoginAsync(userInput, cancellationToken);
 
-        return
+        return  
             !string.IsNullOrEmpty(loggedInDto.Token)
                 ? Ok(loggedInDto)
                 : loggedInDto.IsWrongCreds
                 ? Unauthorized("Wrong email ir password.")
                 : BadRequest("Registration has failed. Try again or contact the support.");
+    }
+    
+    [HttpGet]
+    public async Task<ActionResult<LoggedInDto>> ReloadLoggedInPlayer(CancellationToken cancellationToken)
+    {
+        
     }
 }
