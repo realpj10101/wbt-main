@@ -89,8 +89,7 @@ public class AccountRepository : IAccountRepository
         }
 
         string? token = await _tokenService.CreateToken(appUser, cancellationToken);
-
-
+        
         if (!string.IsNullOrEmpty(token))
         {
             return Mappers.ConvertAppUserToLoggedInDto(appUser, token);

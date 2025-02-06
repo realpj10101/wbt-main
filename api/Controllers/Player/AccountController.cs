@@ -60,6 +60,9 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
         bool isTokenValid = HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader);
 
         if (isTokenValid)
+            token = authHeader.ToString().Split(' ').Last();
+
+        if (string.IsNullOrEmpty(token))
             return Unauthorized("Token is expired or invalid. Login again.");
         
         // obtain userId
