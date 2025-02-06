@@ -4,15 +4,22 @@ export interface Member {
     userName: string;
     name: string;
     lastName: string;
-    nationalCode: string;
-    height: number;
     age: number;
-    knownAs: string;
+    height: number;
+    weight: number;
+    experienceLevel: string;
+    skills: string;
+    gamesPlayed: number;
+    pointsPerGame: number;
+    reboundsPerGame: number;
+    assistsPerGame: number;
+    bio: string
+    achievements: string;
     created: Date;
     lastActive: Date;
     gender: string;
-    lookingFor?: string;
     city: string;
+    region: string;
     country: string;
     photos: Photo[];
     isFollowing: boolean;

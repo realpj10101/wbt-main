@@ -1,12 +1,12 @@
 @if (memberIn) {
 <mat-card class="card">
     @if (memberIn.photos.length === 0) {
-    <img ngSrc="member.png" width="128" height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
+    <img ngSrc="member.png" width="128" height="128" alt="{{memberIn.name}} photo" mat-card-image>
     }
     @else {
     @for (photo of memberIn.photos; track $index) {
     @if (photo.isMain) {
-    <img ngSrc="{{apiUrl + 'playeruser' + photo.url_165}}" width="128" , height="128" alt="{{memberIn.knownAs}} photo" mat-card-image>
+    <img ngSrc="{{apiUrl + 'playeruser' + photo.url_165}}" width="128" , height="128" alt="{{memberIn.name}} photo" mat-card-image>
     }
     }
     }
@@ -47,7 +47,7 @@
             <mat-icon color="primary">group_add</mat-icon>
             }
             }
-            <mat-card-title>{{ memberIn.knownAs | titlecase}}, {{ memberIn.age }}</mat-card-title>
+            <mat-card-title>{{ memberIn.name| titlecase}}, {{ memberIn.age }}</mat-card-title>
         </div>
         <mat-card-subtitle>{{ memberIn.city | titlecase }}</mat-card-subtitle>
     </mat-card-header>
