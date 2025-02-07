@@ -24,4 +24,5 @@ export interface Member {
     photos: Photo[];
     isFollowing: boolean;
     isCaptain: boolean;
+    isLiking: boolean;
 }

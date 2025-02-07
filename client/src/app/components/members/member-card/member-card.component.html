@@ -25,9 +25,16 @@
             }
         </li>
         <li>
-            <button mat-mini-fab>
-                <mat-icon color="warn">favorite</mat-icon>
-            </button>
+            @if (!memberIn.isLiking) {
+                <button (click)="like()" mat-mini-fab>
+                    <mat-icon color="primary">thumb_up</mat-icon>
+                </button>
+            }
+            @else {
+                <button (click)="dislike()" mat-mini-fab>
+                    <mat-icon color="warn">thumb_down</mat-icon>
+                </button>
+            }
         </li>
         <li>
             <button mat-mini-fab>

@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FollowService } from '../../../services/follow.service';
 import { take } from 'rxjs';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
+import { LikeService } from '../../../services/like.service';
 
 @Component({
   selector: 'app-member-card',
@@ -26,6 +27,7 @@ export class MemberCardComponent {
   @Output('unfollowUsernameOut') unfollowUserNameOut = new EventEmitter<string>();
   apiUrl = environment.apiUrl;
   private _followService = inject(FollowService);
+  private _likeService = inject(LikeService);
   private _snack = inject(MatSnackBar);
 
   follow(): void {
@@ -64,5 +66,42 @@ export class MemberCardComponent {
             })
           }
         });
+  }
+
+  like(): void {
+    if (this.memberIn)
+      this._likeService.create(this.memberIn.userName).pipe(
+        take(1))
+        .subscribe({
+          next: (res: ApiResponse) => {
+            if (this.memberIn)
+              this.memberIn.isLiking = true;
+
+            this._snack.open(res.message, 'close', {
+              duration: 7000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            })
+          }
+        })
+  }
+
+  dislike(): void {
+    if (this.memberIn)
+      this._likeService.delete(this.memberIn.userName).pipe(
+        take(1))
+        .subscribe({
+          next: (res: ApiResponse) => {
+            if (this.memberIn) {
+              this.memberIn.isLiking = false;
+            }
+
+            this._snack.open(res.message, 'close', {
+              duration: 7000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            })
+          }
+        })
   }
 }
