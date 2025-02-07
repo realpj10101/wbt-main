@@ -9,7 +9,8 @@ namespace api.Controllers.Player;
 
 [Authorize]
 public class MemberController(IMemberRepository _memberRepository, 
-    ITokenService _tokenService, IFollowRepository _followRepository, UserManager<AppUser> _userManager) : BaseApiController
+    ITokenService _tokenService, IFollowRepository _followRepository,
+    ILikeRepository _likeRepository, UserManager<AppUser> _userManager) : BaseApiController
 {
     [AllowAnonymous]
     [HttpGet]
@@ -39,11 +40,14 @@ public class MemberController(IMemberRepository _memberRepository,
         List<PlayerDto> playerDtos = [];
 
         bool isFollowing;
+        bool isLiking;
         foreach (AppUser appUser in pagedAppUsers)
         {
             isFollowing = await _followRepository.CheckIsFollowingAsync(userId.Value, appUser, cancellationToken);
+
+            isLiking = await _likeRepository.CheckIsLikingAsync(userId.Value, appUser, cancellationToken);
             
-            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing, isLiking));
         }
 
         return playerDtos;

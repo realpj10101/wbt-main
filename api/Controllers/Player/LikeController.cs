@@ -46,7 +46,7 @@ public class LikeController(
             : lS.IsTargetMemberNotFound
             ? NotFound($"{targetMemberUserName} was not found.")
             : lS.IsAlreadyDisLiked
-            ? BadRequest($"{targetMemberUserName} is already liked.")
+            ? BadRequest($"{targetMemberUserName} is already disliked.")
             : BadRequest("Disliking failed. Please try again or contact the administrator.");
     }
 

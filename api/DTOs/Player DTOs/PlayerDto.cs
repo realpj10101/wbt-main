@@ -24,5 +24,6 @@ public record PlayerDto(
     string Country,
     List<Photo> Photos,
     bool IsFollowing,
-    bool IsCaptain
+    bool IsCaptain,
+    bool IsLiking
 );
