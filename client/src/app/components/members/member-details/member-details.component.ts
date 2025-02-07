@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment.development';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
-
+import { LoggedInPlayer } from '../../../models/logged-in-player.model';
 
 @Component({
   selector: 'app-member-details',
@@ -36,6 +36,8 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   getMember(): void {
+    console.log('hi')
+
     const userName: string | null = this._route.snapshot.paramMap.get('userName');
 
     if (userName)
@@ -50,7 +52,22 @@ export class MemberDetailsComponent implements OnInit {
               this.setGalleryImages();
             }
           }
-        })
+        });
+    // const userName: string | null = this._route.snapshot.paramMap.get('userName');
+
+    // if (userName)
+    //   this._memberService.getByUserName(userName)
+    //     .pipe(
+    //       take(1)
+    //     ).subscribe({
+    //       next: (res: Member | undefined) => {
+    //         if (res) {
+    //           this.member = res;
+    //           console.log(this.member);
+    //           this.setGalleryImages();
+    //         }
+    //       }
+    //     })
   }
 
   setGalleryImages(): void {
