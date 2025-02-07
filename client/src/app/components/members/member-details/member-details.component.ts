@@ -102,4 +102,26 @@ export class MemberDetailsComponent implements OnInit {
         }
       })
   }
+
+  unfollow(): void {
+    if (this.member)
+      this._followService.delete(this.member.userName).pipe(
+    take(1))
+    .subscribe({
+      next: (res: ApiResponse) => {
+        if (this.member) {
+          this.member.isFollowing = false
+        }
+
+        console.log(this.member?.isFollowing);
+        console.log(this.member);
+
+        this._snack.open(res.message, 'close', {
+          duration: 7000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top'
+        })
+      }
+    })
+  }
 }
