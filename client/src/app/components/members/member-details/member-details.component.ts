@@ -82,4 +82,24 @@ export class MemberDetailsComponent implements OnInit {
       }
     }
   }
+
+  follow(): void {
+    if (this.member)
+    this._followService.create(this.member.userName).pipe(
+      take(1))
+      .subscribe({
+        next: (res: ApiResponse) => {
+          if (this.member)
+            this.member.isFollowing = true;
+
+          console.log(this.member?.isFollowing);
+          console.log(this.member);
+          this._snack.open(res.message, 'close', {
+            duration: 7000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          })
+        }
+      })
+  }
 }
