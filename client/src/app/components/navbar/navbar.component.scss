@@ -13,37 +13,27 @@ mat-toolbar {
             color: white;
         }
 
-            .mat-icon {
-                // background-color: red;
-                animation: 2s mat-icon ease-in-out infinite;
-                @keyframes mat-icon {
-                    0% {
-                        transform: rotateX(0) rotateY(0) rotateZ(0);
-                    }
+        .mat-icon {
+            // background-color: red;
+            animation: 2s mat-icon ease-in-out infinite;
 
-                    33% {
-                        transform: rotateX(180deg) rotateY(0) rotateZ(0);
-                    }
+            @keyframes mat-icon {
+                0% {
+                    transform: rotateX(0) rotateY(0) rotateZ(0);
+                }
 
-                    67% {
-                        transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
-                    }
+                33% {
+                    transform: rotateX(180deg) rotateY(0) rotateZ(0);
+                }
 
-                    100% {
-                        transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
-                    }
+                67% {
+                    transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
+                }
+
+                100% {
+                    transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
                 }
             }
         }
-
-        .right-side {
-            // background-color: red;
-            display: flex;
-            gap: 1rem;
-
-            button {
-                background-color: orange;
-                color: white;
-            }
-        }
     }
+}

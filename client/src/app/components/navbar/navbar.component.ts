@@ -1,19 +1,24 @@
-import { Component, inject, OnInit, Signal, signal } from '@angular/core';
+import { Component, inject, OnInit, Signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
 import { LoggedInPlayer } from '../../models/logged-in-player.model';
-import { single } from 'rxjs';
 import { AccountService } from '../../services/account.service';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    MatButtonModule, MatToolbarModule, MatIconModule,
-    RouterLink, RouterOutlet
+    CommonModule, RouterModule, NgOptimizedImage,
+    MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
+    MatDividerModule, MatListModule, MatTabsModule
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
@@ -21,7 +26,7 @@ import { AccountService } from '../../services/account.service';
 export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
-  linksWithAsmin: string[] = ['members', 'friends', 'message', 'admin'];
+  linksWithAdmin: string[] = ['members', 'friends', 'message', 'admin'];
   links: string[] = ['members', 'friends', 'messages'];
 
   private registerPlayerService = inject(AccountService);

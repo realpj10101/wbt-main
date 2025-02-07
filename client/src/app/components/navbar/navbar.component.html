@@ -9,13 +9,50 @@
             <a class="brand" routerLink="/">
                 <h3>WBT</h3>
                 <mat-icon>sports_basketball</mat-icon>
-
             </a>
         </div>
+        <!-- navlinks -->
+        @if (loggedInUserSig && loggedInUserSig()) {
+        <nav mat-tab-nav-bar [backgroundColor]="'primary'" [color]="'accent'" [tabPanel]="tabPanel">
 
-        <div class="right-side">
-            <button mat-raised-button color="warn">About App</button>
-            <button routerLink="members" mat-raised-button color="warn">Members</button>
-        </div>
+            @if (loggedInUserSig()?.roles?.includes('admin')) {
+            @for (link of linksWithAdmin; track $index) {
+            <a mat-tab-link [routerLink]="['/' + link]" routerLinkActive #rla="routerLinkActive"
+                [active]="rla.isActive">
+                {{ link | titlecase}}
+            </a>
+            }
+            }
+            @else {
+            @for (link of links; track $index) {
+            <a mat-tab-link [routerLink]="['/' + link]" routerLinkActive #rla="routerLinkActive"
+                [active]="rla.isActive">
+                {{ link | titlecase}}
+            </a>
+            }
+            }
+        </nav>
+        }
+        <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+    </section>
+    <section class="right">
+        @if (loggedInUserSig && loggedInUserSig(); as user) {
+        <button [mat-menu-trigger-for]="appMenu" class="menu-button" mat-mini-fab>
+            @if (user.profilePhotoUrl) {
+            <img class="top-avatar" mat-card-avatar src="{{apiUrl + user.profilePhotoUrl}}" fill priority
+                alt="{{user.userName[0]}}">
+            }
+            @else {
+            <p>{{ user.userName[0] | titlecase }}</p>
+            }
+        </button>
+        }
+        @else {
+            <button mat-raised-button>Ex</button>
+        }
+
+        <mat-menu #appMenu>
+
+        </mat-menu>
     </section>
 </mat-toolbar>
