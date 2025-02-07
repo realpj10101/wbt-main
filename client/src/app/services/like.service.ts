@@ -1,8 +1,40 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { PaginationHandler } from '../extension/paginationHandler';
+import { environment } from '../../environments/environment.development';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../models/helpers/apiResponse.model';
+import { FollowParams } from '../models/helpers/follow-params.model';
+import { PaginatedResult } from '../models/helpers/pagination-result.model';
+import { Member } from '../models/member.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LikeService {
+  private readonly _http = inject(HttpClient);
 
+  private paginationHandler = new PaginationHandler();
+
+  private readonly _apiUrl = environment.apiUrl + 'like/';
+
+  create(targetMemberUserName: string): Observable<ApiResponse> {
+    return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetMemberUserName, null);
+  }
+
+  delete(unfollowedMember: string): Observable<ApiResponse> {
+    return this._http.delete<ApiResponse>(this._apiUrl + 'remove/' + unfollowedMember);
+  }
+
+  getAll(followParams: FollowParams): Observable<PaginatedResult<Member[]>> {
+    let params = new HttpParams();
+
+    if (followParams) {
+      params = params.append('pageNumber', followParams.pageNumber);
+      params = params.append('pageSize', followParams.pageSize);
+      params = params.append('predicate', followParams.predicate);
+    }
+
+    return this.paginationHandler.getPaginatedResult<Member[]>(this._apiUrl, params);
+  }
 }
