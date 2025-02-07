@@ -7,10 +7,11 @@ mat-toolbar {
         align-items: center;
         width: 100%;
 
-        .logo {
+        .brand {
             display: flex;
-            gap: 2px;
+            align-items: center;
             color: white;
+        }
 
             .mat-icon {
                 // background-color: red;
@@ -46,4 +47,3 @@ mat-toolbar {
             }
         }
     }
-}
