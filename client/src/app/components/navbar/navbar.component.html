@@ -48,11 +48,18 @@
         </button>
         }
         @else {
-            <button mat-raised-button>Ex</button>
+        <button mat-raised-button>Ex</button>
         }
 
-        <mat-menu #appMenu>
-
+        <mat-menu #appMenu [class]="'mat-menu">
+            @if (loggedInUserSig && loggedInUserSig(); as user) {
+            <div class="profile-image">
+                @if (user.profilePhotoUrl) {
+                <img class="top-avatar" mat-card-avatar src="{{apiUrl + user.profilePhotoUrl}}" fill priority 
+                alt="{{user.userName}}">
+                }
+            </div>
+            }
         </mat-menu>
     </section>
 </mat-toolbar>
