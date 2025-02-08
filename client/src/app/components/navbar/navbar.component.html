@@ -51,15 +51,33 @@
         <button mat-raised-button>Ex</button>
         }
 
-        <mat-menu #appMenu [class]="'mat-menu">
+        <mat-menu #appMenu>
             @if (loggedInUserSig && loggedInUserSig(); as user) {
-            <div class="profile-image">
-                @if (user.profilePhotoUrl) {
-                <img class="top-avatar" mat-card-avatar src="{{apiUrl + user.profilePhotoUrl}}" fill priority 
-                alt="{{user.userName}}">
-                }
+            <div class="user-info">
+                <div class="profile-image">
+
+                    @if (user.profilePhotoUrl) {
+                    <img class="top-avatar" mat-card-avatar src="{{apiUrl + user.profilePhotoUrl}}" fill priority
+                        alt="{{user.userName[0]}}">
+                    }
+                    @else {
+                    <p>{{ user.userName | titlecase}}</p>
+                    }
+                </div>
+                <div>
+                    <p>{{ user.userName }}</p>
+                </div>
             </div>
             }
+
+            <mat-divider></mat-divider>
+            <mat-list>
+                <mat-list-item [routerLink]="['user/user-edit']"] routerLink="router-link-active">
+                    <div class="menu-items">
+                        <mat-icon>edit_note</mat-icon>
+                    </div>
+                </mat-list-item>
+            </mat-list>
         </mat-menu>
     </section>
 </mat-toolbar>
