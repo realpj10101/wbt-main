@@ -3,10 +3,9 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { PaginationHandler } from '../extension/paginationHandler';
 import { MemberParams } from '../models/helpers/member-params.model';
-import { empty, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { Member } from '../models/member.model';
-import { P } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root'

@@ -8,6 +8,7 @@ import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { PaginatedResult } from '../../../models/helpers/pagination-result.model';
 import { MemberCardComponent } from "../member-card/member-card.component";
+import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-member-list',
@@ -23,15 +24,20 @@ import { MemberCardComponent } from "../member-card/member-card.component";
 export class MemberListComponent implements OnInit, OnDestroy {
   memberService = inject(MemberService);
   members$: Observable<Member[] | null> | undefined;
-
   subscribed: Subscription | undefined;
-
   pagination: Pagination | undefined;
   members: Member[] | undefined;
   memberParams: MemberParams | undefined;
-
   pageSizeOptions = [5, 10, 25];
   pageEvent: PageEvent | undefined;
+  orderOptions: string[] = ['lastAcitve', 'created', 'age'];
+  orderOptionsView: string[] = ['Last Active', 'Created', 'Age'];
+
+  private _fB = inject(FormBuilder);
+
+  filterFg = this._fB.group({
+    orderByCtrl: []
+  });
 
   ngOnInit(): void {
     this.memberParams = new MemberParams();
@@ -43,6 +49,10 @@ export class MemberListComponent implements OnInit, OnDestroy {
     this.subscribed?.unsubscribe();
   }
 
+  get OrderByCtrl(): AbstractControl {
+    return this.filterFg.get('orderByCtrl') as FormControl;
+  }
+
   getAll(): void {
     if (this.memberParams)
       this.subscribed = this.memberService.getAll(this.memberParams).subscribe({
@@ -51,9 +61,6 @@ export class MemberListComponent implements OnInit, OnDestroy {
             this.members = response.body;
             this.pagination = response.pagination;
           }
-
-          // console.log(response);
-          console.log(this.members);
         }
       });
   }
@@ -68,6 +75,12 @@ export class MemberListComponent implements OnInit, OnDestroy {
       this.memberParams.pageNumber = e.pageIndex + 1;
 
       this.getAll();
+    }
+  }
+
+  updateMembeParams(): void {
+    if (this.memberParams) {
+      this.memberParams.orderBy = this.OrderByCtrl.value;
     }
   }
 }
