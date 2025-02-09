@@ -7,7 +7,6 @@ import { MemberListComponent } from './components/members/member-list/member-lis
 import { MemberCardComponent } from './components/members/member-card/member-card.component';
 import { MemberDetailsComponent } from './components/members/member-details/member-details.component';
 // import { authGuard } from './guards/auth.guard';
-import { UserComponent } from './components/user/user.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -27,7 +26,6 @@ export const routes: Routes = [
       { path: 'members', component: MemberListComponent },
       { path: 'member-card', component: MemberCardComponent },
       { path: 'member-datails/:userName', component: MemberDetailsComponent },
-      { path: 'user', component: UserComponent },
       { path: 'message', component: MessagesComponent },
       { path: 'friends', component: FriendsComponent },
       { path: 'admin', component: AdminComponent },
