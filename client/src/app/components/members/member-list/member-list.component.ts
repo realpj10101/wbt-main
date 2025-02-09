@@ -8,15 +8,18 @@ import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { PaginatedResult } from '../../../models/helpers/pagination-result.model';
 import { MemberCardComponent } from "../member-card/member-card.component";
-import { AbstractControl, FormBuilder, FormControl } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-member-list',
   standalone: true,
   imports: [
     CommonModule,
-    MatPaginatorModule,
-    MemberCardComponent
+    MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+    MemberCardComponent, FormsModule, ReactiveFormsModule
   ],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'

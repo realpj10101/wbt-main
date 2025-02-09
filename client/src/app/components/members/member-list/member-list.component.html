@@ -1,5 +1,21 @@
 <section class="members-container">
     <h1>Find your Fav Coach or Player</h1>
+    <form [formGroup]="filterFg" class="">
+        <div class="order-by">
+            <p class="title">Sort members</p>
+            <mat-form-field>
+                <mat-label>Sort by</mat-label>
+                <mat-select (selectionChange)="updateMembeParams()" formControlName="orderByCtrl">
+                    @for (orderOption of orderOptions; track $index) {
+                    <mat-option [value]="orderOption" (click)="getAll()"
+                        [disabled]="orderOption === memberParams?.orderBy">
+                        {{ orderOptionsView[$index] }}
+                    </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
     <div class="members">
         @for (member of members; track $index) {
         <app-member-card [memberInput]="member"></app-member-card>
