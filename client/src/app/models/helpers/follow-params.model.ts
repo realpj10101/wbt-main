@@ -1,5 +1,5 @@
-export class FollowParams {
-    pageNumber: number = 1;
-    pageSize: number = 3;
+import { PaginationParams } from "./paginationParams.model";
+
+export class FollowParams extends PaginationParams{
     predicate: number = 0; // 0 => 'followings'; 1 => 'followers'
 }

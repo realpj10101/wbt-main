@@ -1,4 +1,5 @@
-export class MemberParams {
-    pageNumber = 1;
-    pageSize = 5;
+import { PaginationParams } from "./paginationParams.model";
+
+export class MemberParams extends PaginationParams {
+    orderBy = 'lastAcive';
 }
