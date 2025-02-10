@@ -24,18 +24,28 @@ public class MemberRepository : IMemberRepository
         _followRepository = followRepository;
         _userManager = userManager;
     }
-    
-    public async Task<PagedList<AppUser>> GetAllAsync(PaginationParams paginationParams,
-        CancellationToken cancellationToken)
+
+    private IMongoQueryable<AppUser> CreateQuery(MemberParams memberParams)
     {
         IMongoQueryable<AppUser> query = _collection.AsQueryable();
 
-        // AppUser appUser = ;
+        query = memberParams.OrderBy switch
+        {
+            "age" => query.OrderByDescending(appUser => appUser.DateOfBirth).ThenBy(appUser => appUser.Id),
+            "created" => query.OrderByDescending(appUser => appUser.CreatedOn).ThenBy(appUser => appUser.Id),
+            _ => query.OrderByDescending(appUser => appUser.LastActive).ThenBy(appUser => appUser.Id)
+        };
 
-        // IdentityResult? roleResult = await _userManager.GetRolesAsync(); 
-            
-        return await PagedList<AppUser>.CreatePagedListAsync(query, paginationParams.PageNumber,
-            paginationParams.PageSize, cancellationToken);
+        return query;
+    }
+    
+    public async Task<PagedList<AppUser>?> GetAllAsync(MemberParams memberParams,
+        CancellationToken cancellationToken)
+    {
+        PagedList<AppUser> appUsers = await PagedList<AppUser>.CreatePagedListAsync(
+            CreateQuery(memberParams), memberParams.PageNumber, memberParams.PageSize, cancellationToken);
+
+        return appUsers;
     }
 
     public async Task<PlayerDto?> GetByIdAsync(string playerId, CancellationToken cancellationToken)
