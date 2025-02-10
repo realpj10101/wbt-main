@@ -14,10 +14,10 @@ public class MemberController(IMemberRepository _memberRepository,
 {
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll([FromQuery] PaginationParams paginationParams,
+    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll([FromQuery] MemberParams memberParams,
         CancellationToken cancellationToken)
     {
-        PagedList<AppUser> pagedAppUsers = await _memberRepository.GetAllAsync(paginationParams, cancellationToken);
+        PagedList<AppUser>? pagedAppUsers = await _memberRepository.GetAllAsync(memberParams, cancellationToken);
 
         if (pagedAppUsers.Count == 0)
             return NoContent();
