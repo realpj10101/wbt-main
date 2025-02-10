@@ -25,7 +25,7 @@ export const routes: Routes = [
   //   children: [
       { path: 'members', component: MemberListComponent },
       { path: 'member-card', component: MemberCardComponent },
-      { path: 'member-datails/:userName', component: MemberDetailsComponent },
+      { path: 'member-details/:userName', component: MemberDetailsComponent },
       { path: 'message', component: MessagesComponent },
       { path: 'friends', component: FriendsComponent },
       { path: 'admin', component: AdminComponent },

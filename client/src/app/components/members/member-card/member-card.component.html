@@ -1,48 +1,49 @@
 @if (memberIn) {
 <mat-card class="card">
-    @if (memberIn.photos.length === 0) {
-    <img ngSrc="member.png" width="128" height="128" alt="{{memberIn.name}} photo" mat-card-image>
-    }
-    @else {
-    @for (photo of memberIn.photos; track $index) {
-    @if (photo.isMain) {
-    <img ngSrc="{{apiUrl + 'playeruser' + photo.url_165}}" width="128" , height="128" alt="{{memberIn.name}} photo"
-        mat-card-image>
-    }
-    }
-    }
-    <ul class="user-icons">
-        <li>
-            @if (!memberIn.isFollowing) {
-            <button (click)="follow()" mat-mini-fab>
-                <mat-icon color="primary">person_add</mat-icon>
-            </button>
-            }
-            @else {
-            <button (click)="unfollow()" mat-mini-fab>
-                <mat-icon color="primary">person_remove</mat-icon>
-            </button>
-            }
-        </li>
-        <li>
-            @if (!memberIn.isLiking) {
-                <button (click)="like()" mat-mini-fab>
-                    <mat-icon color="primary">thumb_up</mat-icon>
+    <div class="card-img-wrapper">
+        @if (memberIn.photos.length === 0) {
+        <img ngSrc="../assets/images/defaults/member.png" width="128" height="128" alt="{{memberIn.userName}} photo"
+            mat-card-image>
+        } @else {
+        @for (photo of memberIn.photos; track $index) {
+        @if (photo.isMain) {
+        <img ngSrc="{{apiUrl + photo.url_165}}" width="128" height="128" alt="{{memberIn.userName}}  photo"
+            mat-card-image>
+        }
+        }
+        }
+        <ul class="user-icons">
+            <li>
+                @if (!memberIn.isFollowing) {
+                <button (click)="follow()" mat-mini-fab>
+                    <mat-icon color="primary">person_add</mat-icon>
                 </button>
-            }
-            @else {
-                <button (click)="dislike()" mat-mini-fab>
-                    <mat-icon color="warn">thumb_down</mat-icon>
+                } @else {
+                <button (click)="unfollow()" mat-mini-fab>
+                    <mat-icon color="primary">person_remove</mat-icon>
                 </button>
-            }
-        </li>
-        <li>
-            <button mat-mini-fab>
-                <mat-icon color="accent">mail</mat-icon>
-            </button>
-        </li>
-    </ul>
-    <mat-card-header [routerLink]="['/member-datails/' + memberIn.userName]">
+                }
+            </li>
+            <li>
+                @if (!memberIn.isLiking) {
+                <button mat-mini-fab (click)="like()">
+                    <mat-icon>favorite</mat-icon>
+                </button>
+                }
+                @else {
+                    <button mat-mini-fab (click)="dislike()">
+                        <mat-icon color="warn">favorite</mat-icon>
+                    </button>
+                }
+            </li>
+            <li>
+                <button mat-mini-fab>
+                    <mat-icon color="accent">mail</mat-icon>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <mat-card-header [routerLink]="['/member-details/' + memberIn.userName]">
         <div class="title">
             @switch (memberIn.gender) {
             @case ('male') {
@@ -55,7 +56,7 @@
             <mat-icon color="primary">group_add</mat-icon>
             }
             }
-            <mat-card-title>{{ memberIn.name | titlecase}}, {{ memberIn.age }}</mat-card-title>
+            <mat-card-title>{{ memberIn.userName | titlecase }}, {{ memberIn.age }}</mat-card-title>
         </div>
         <mat-card-subtitle>{{ memberIn.city | titlecase }}</mat-card-subtitle>
     </mat-card-header>
