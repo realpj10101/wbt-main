@@ -1,4 +1,53 @@
-@if (memberIn) {
+<div class="card">
+    <img src="member.png" alt="" height="200px" width="400px">
+    <div class="card__content">
+        <img class="thumb-image" src="member.png" alt="" height="50px" width="50px"
+            [routerLink]="['/member-details/' + memberIn?.userName]">
+        <br>
+        <div class="user-icons">
+            @if (!memberIn?.isFollowing) {
+            <button mat-mini-fab (click)="follow()">
+                <mat-icon>person_add</mat-icon>
+            </button>
+            }
+            @else {
+            <button mat-mini-fab (click)="unfollow()">
+                <mat-icon>person_remove</mat-icon>
+            </button>
+            }
+
+            @if (!memberIn?.isLiking) {
+            <button mat-mini-fab (click)="like()">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            }
+            @else {
+            <button mat-mini-fab (click)="dislike()">
+                <mat-icon color="warn">favorite</mat-icon>
+            </button>
+            }
+            <button mat-mini-fab>
+                <mat-icon>message</mat-icon>
+            </button>
+        </div>
+        <div class="title">
+            @switch (memberIn?.gender) {
+            @case ('male') {
+            <mat-icon color="primary">boy</mat-icon>
+            }
+            @case ('female') {
+            <mat-icon color="primary">girl</mat-icon>
+            }
+            @default {
+            <mat-icon color="primary">group_add</mat-icon>
+            }
+            }
+            <mat-card-title>{{memberIn?.userName}}, {{memberIn?.age}}</mat-card-title>
+        </div>
+    </div>
+
+
+    <!-- @if (memberIn) {
 <mat-card class="card">
     <div class="card-img-wrapper">
         @if (memberIn.photos.length === 0) {
@@ -61,4 +110,4 @@
         <mat-card-subtitle>{{ memberIn.city | titlecase }}</mat-card-subtitle>
     </mat-card-header>
 </mat-card>
-}
+} -->

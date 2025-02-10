@@ -32,7 +32,7 @@ export class FriendsComponent implements OnInit {
   pageEvent: PageEvent | undefined;
 
   ngOnInit(): void {
-
+    this.getAll();
   }
 
   getAll(): void {

@@ -23,7 +23,7 @@ export class MemberDetailsComponent implements OnInit {
 
   images: GalleryItem[] = [];
 
-  @Output('unfollowUserNameOut') unfollowUserNameOut = new EventEmitter<string>();
+  @Output('unfollowUsernameOut') unfollowUserNameOut = new EventEmitter<string>();
   private _memberService = inject(MemberService);
   private _followService = inject(FollowService);
   _apiUrl = environment.apiUrl;

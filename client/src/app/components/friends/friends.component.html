@@ -1,1 +1,35 @@
-<p>friends works!</p>
+<main>
+    <mat-tab-group mat-stretch-tabs="true" mat-align-tabs="center" (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="{{followings}}">
+            <div class="members">
+                @if (members && members.length > 0) {
+                @for (member of members; track $index) {
+                <app-member-card [memberInput]="member" (unfollowUsernameOut)="removeUnfollowedFromMembers($event)" />
+                }
+                }
+                @else {
+                <p>You've not followed anyone so far.</p>
+                }
+            </div>
+        </mat-tab>
+        <mat-tab label="Followers">
+            <div class="members">
+                @if (members && members.length > 0) {
+                @for (member of members; track $index) {
+                <app-member-card [memberInput]="member" />
+                }
+                }
+                @else {
+                <p>More communications brings more people</p>
+                }
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    @if (pagination && followParams) {
+    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
+        [pageSize]="followParams.pageSize" [disabled]="followParams.pageSize === 0" [showFirstLastButtons]="true"
+        [pageSizeOptions]="pageSizeOption" [hidePageSize]="false" [pageIndex]="followParams.pageNumber - 1"
+        aria-label="Select page" class="paginator">
+    </mat-paginator>
+    }
+</main>
