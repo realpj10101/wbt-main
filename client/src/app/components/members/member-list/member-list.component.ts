@@ -81,7 +81,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateMembeParams(): void {
+  updateMemberParams(): void {
     if (this.memberParams) {
       this.memberParams.orderBy = this.OrderByCtrl.value;
     }

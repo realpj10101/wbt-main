@@ -5,7 +5,7 @@
             <p class="title">Sort members</p>
             <mat-form-field>
                 <mat-label>Sort by</mat-label>
-                <mat-select (selectionChange)="updateMembeParams()" formControlName="orderByCtrl">
+                <mat-select (selectionChange)="updateMemberParams()" formControlName="orderByCtrl">
                     @for (orderOption of orderOptions; track $index) {
                     <mat-option [value]="orderOption" (click)="getAll()"
                         [disabled]="orderOption === memberParams?.orderBy">
