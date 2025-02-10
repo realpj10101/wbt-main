@@ -1,39 +1,184 @@
 mat-toolbar {
     background-color: rgb(7, 50, 70);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    .container {
+    .left {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
+        gap: 2rem;
 
-        .brand {
+        .left-side {
             display: flex;
+            // flex-direction: row;
             align-items: center;
-            color: white;
-        }
 
-        .mat-icon {
-            // background-color: red;
-            animation: 2s mat-icon ease-in-out infinite;
 
-            @keyframes mat-icon {
-                0% {
-                    transform: rotateX(0) rotateY(0) rotateZ(0);
-                }
+            .brand {
+                display: flex;
+                color: white;
 
-                33% {
-                    transform: rotateX(180deg) rotateY(0) rotateZ(0);
-                }
+                .mat-icon {
+                    // background-color: red;
+                    animation: 2s mat-icon ease-in-out infinite;
 
-                67% {
-                    transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
-                }
+                    @keyframes mat-icon {
+                        0% {
+                            transform: rotateX(0) rotateY(0) rotateZ(0);
+                        }
 
-                100% {
-                    transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
+                        33% {
+                            transform: rotateX(180deg) rotateY(0) rotateZ(0);
+                        }
+
+                        67% {
+                            transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
+                        }
+
+                        100% {
+                            transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
+                        }
+                    }
                 }
             }
         }
     }
+
+    .right {
+        display: flex;
+        gap: 1rem;
+
+        .menu-button {
+            font-size: 2rem;
+            display: grid;
+            place-items: center;
+
+            height: 40px;
+            width: 40px;
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.699);
+
+            p {
+                color: black;
+            }
+
+            .top-avatar {
+                border-radius: 50%;
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+
 }
+
+::ng-deep .mat-menu {
+    .user-info {
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 2rem;
+
+        * {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-image {
+            * {
+                margin: 0;
+            }
+
+            font-size: 3rem;
+            background-color: rgb(246, 209, 164);
+
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            box-shadow: 3px 3px 3px rgb(144, 144, 144);
+
+            img {
+                height: 100%;
+                width: 100%;
+                border-radius: 50%;
+            }
+        }
+
+        .userName {
+            color: gray;
+        }
+    }
+
+    .logout {
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    mat-list {
+        padding: 0;
+        margin: 0;
+
+        mat-list-item {
+            padding: 0;
+        }
+
+        .menu-items {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            line-height: 47px;
+            padding-left: 1rem;
+            padding-right: 5rem;
+
+            &:hover {
+                background-color: rgb(255, 176, 255);
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+// mat-toolbar {
+//     background-color: rgb(7, 50, 70);
+
+//     .container {
+//         display: flex;
+//         justify-content: space-between;
+//         align-items: center;
+//         width: 100%;
+
+//         .brand {
+//             display: flex;
+//             align-items: center;
+//             color: white;
+//         }
+
+//         .mat-icon {
+//             // background-color: red;
+//             animation: 2s mat-icon ease-in-out infinite;
+
+//             @keyframes mat-icon {
+//                 0% {
+//                     transform: rotateX(0) rotateY(0) rotateZ(0);
+//                 }
+
+//                 33% {
+//                     transform: rotateX(180deg) rotateY(0) rotateZ(0);
+//                 }
+
+//                 67% {
+//                     transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
+//                 }
+
+//                 100% {
+//                     transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
+//                 }
+//             }
+//         }
+//     }
+// }

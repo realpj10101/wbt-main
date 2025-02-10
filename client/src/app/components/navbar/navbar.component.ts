@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
     this.loggedInUserSig = this.registerPlayerService.loggedInPlayerSig;
   }
 
-  logOut(): void {
+  logout(): void {
     this.registerPlayerService.logOut();
   }
 
