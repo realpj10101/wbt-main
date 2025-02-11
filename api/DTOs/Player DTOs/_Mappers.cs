@@ -61,6 +61,14 @@ public static class Mappers
         );
     }
 
+    public static TestPlayer ConvertPlayerUpdateDtoToTestPlayer(PlayerUpdateDto playerUpdateDto)
+    {
+        return new TestPlayer(
+            Name: playerUpdateDto.Name,
+            LastName: playerUpdateDto.LastName
+        );
+    }
+
     public static Photo ConvertPhotoUrlsToPhoto(string[] photoUrls, bool isMain)
     {
         return new Photo(

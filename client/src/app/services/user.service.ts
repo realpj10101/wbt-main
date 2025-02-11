@@ -16,6 +16,7 @@ export class UserService {
   private readonly apiUrl = environment.apiUrl + 'playeruser';
 
   updateUser(userUpdate: UserUpdate): Observable<ApiResponse> {
+    console.log("ok")
     return this.http.put<ApiResponse>(this.apiUrl, userUpdate);
   }
 

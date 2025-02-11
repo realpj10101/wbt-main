@@ -1,1 +1,85 @@
-<p>user-edit works!</p>
+<section class="contents">
+    <div class="left">
+        <div class="top">
+            <img src="member.png" alt="" height="250px" width="250px">
+            @switch (member?.gender) {
+            @case ('male') {
+            <mat-icon>boy</mat-icon>
+            }
+            @case ('female') {
+            <mat-icon>girl</mat-icon>
+            }
+            @default {
+            <mat-icon>person</mat-icon>
+            }
+            }
+        </div>
+        <div class="bottom">
+            <div>
+                <strong>Name and LasName</strong>
+                <p>{{member?.name}}, {{member?.lastName}} </p>
+            </div>
+            <div>
+                <strong>Location</strong>
+                <p>{{member?.city}}, {{member?.region}}, {{member?.country}}</p>
+            </div>
+            <div>
+                <strong>Age</strong>
+                <p>{{member?.age}}</p>
+            </div>
+            <div>
+                <strong>Games Played</strong>
+                <p>{{member?.gamesPlayed}}</p>
+            </div>
+        </div>
+
+        <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid"
+         mat-raised-button color="primary">  
+            Save Changes
+        </button>
+    </div>
+
+    <div class="right">
+        <mat-tab-group class="user-info">
+            <mat-tab label="Professional Details">
+                <div class="tab-contents">
+                    <!-- <input type="text">
+                    <input type="text">
+                    <input type="text"> -->
+                    <!-- <mat-radio-group formControlName="genderCtrl" aria-label="Select yout gender">
+                        <mat-radio-button value="female">Female</mat-radio-button>
+                        <mat-radio-button value="male">Male</mat-radio-button>
+                        <mat-radio-button value="other">Other</mat-radio-button>
+                    </mat-radio-group> -->
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input type="text" formControlName="nameCtrl" matInput>
+                        <mat-hint>{{ NameCtrl.value?.length }} of {{ maxInpuChars }}</mat-hint>
+                        @if (NameCtrl.hasError('maxlength')) {
+                        <mat-error>Max of {{ maxInpuChars }} characters is reached.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input type="text" formControlName="lastNameCtrl" matInput>
+                        <mat-hint>{{ LastNameCtrl.value?.length }} of {{ maxInpuChars }}</mat-hint>
+                        @if (LastNameCtrl.hasError('maxlength')) {
+                        <mat-error>Max of {{ maxInpuChars }} characters is reached.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline">
+                        <mat-label>Position</mat-label>
+                        <input type="text" matInput>
+                    </mat-form-field> -->
+
+                </div>
+            </mat-tab>
+            <mat-tab label="Statistics"></mat-tab>
+            <mat-tab label="Location"></mat-tab>
+            <mat-tab label="Additional Details"></mat-tab>
+        </mat-tab-group>
+    </div>
+</section>
