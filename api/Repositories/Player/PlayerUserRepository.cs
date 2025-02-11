@@ -63,23 +63,23 @@ public class PlayerUserRepository : IPlayerUserRepository
         if (playerId is null) return null;
         
         UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
-            .Set(appUser => appUser.Name, playerUpdateDto.Name)
-            .Set(appUser => appUser.LastName, playerUpdateDto.LastName)
+            .Set(appUser => appUser.Name, playerUpdateDto.Name?.Trim().ToLower())
+            .Set(appUser => appUser.LastName, playerUpdateDto.LastName?.Trim().ToLower())
             .Set(appUser => appUser.Height, playerUpdateDto.Height)
             .Set(appUser => appUser.Weight, playerUpdateDto.Weight)
-            .Set(appUser => appUser.Gender, playerUpdateDto.Gender)
-            .Set(appUser => appUser.Position, playerUpdateDto.Position)
-            .Set(appUser => appUser.ExperienceLevel, playerUpdateDto.ExperienceLevel)
-            .Set(appUser => appUser.Skills, playerUpdateDto.Skills)
+            .Set(appUser => appUser.Gender, playerUpdateDto.Gender?.Trim().ToLower())
+            .Set(appUser => appUser.Position, playerUpdateDto.Position?.Trim().ToLower())
+            .Set(appUser => appUser.ExperienceLevel, playerUpdateDto.ExperienceLevel?.Trim().ToLower())
+            .Set(appUser => appUser.Skills, playerUpdateDto.Skills?.Trim().ToLower())
             .Set(appUser => appUser.GamesPlayed, playerUpdateDto.GamesPlayed)
             .Set(appUser => appUser.PointsPerGame, playerUpdateDto.PointsPerGame)
             .Set(appUser => appUser.ReboundsPerGame, playerUpdateDto.ReboundsPerGame)
             .Set(appUser => appUser.AssistsPerGame, playerUpdateDto.AssistsPerGame)
-            .Set(appUser => appUser.Bio, playerUpdateDto.Bio)
-            .Set(appUser => appUser.Achievements, playerUpdateDto.Achievements)
-            .Set(appUser => appUser.City, playerUpdateDto.City)
-            .Set(appUser => appUser.Region, playerUpdateDto.Region)
-            .Set(appUser => appUser.Country, playerUpdateDto.Country);
+            .Set(appUser => appUser.Bio, playerUpdateDto.Bio?.Trim().ToLower())
+            .Set(appUser => appUser.Achievements, playerUpdateDto.Achievements?.Trim().ToLower())
+            .Set(appUser => appUser.City, playerUpdateDto.City?.Trim().ToLower())
+            .Set(appUser => appUser.Region, playerUpdateDto.Region?.Trim().ToLower())
+            .Set(appUser => appUser.Country, playerUpdateDto.Country?.Trim().ToLower());
             
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
     }
