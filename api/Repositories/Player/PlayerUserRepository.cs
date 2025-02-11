@@ -74,7 +74,10 @@ public class PlayerUserRepository : IPlayerUserRepository
             .Set(appUser => appUser.ReboundsPerGame, playerUpdateDto.ReboundsPerGame)
             .Set(appUser => appUser.AssistsPerGame, playerUpdateDto.AssistsPerGame)
             .Set(appUser => appUser.Bio, playerUpdateDto.Bio)
-            .Set(appUser => appUser.Achievements, playerUpdateDto.Achievements);
+            .Set(appUser => appUser.Achievements, playerUpdateDto.Achievements)
+            .Set(appUser => appUser.City, playerUpdateDto.City)
+            .Set(appUser => appUser.Region, playerUpdateDto.Region)
+            .Set(appUser => appUser.Country, playerUpdateDto.Country);
             
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
     }

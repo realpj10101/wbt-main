@@ -16,5 +16,6 @@ public record PlayerUpdateDto(
     string Bio,
     string Achievements,
     [Length(3, 20)]string City,
+    [Length(3, 20)]string Region,
     [Length(3, 20)]string Country
 );
