@@ -6,11 +6,15 @@ public record PlayerUpdateDto(
     int Height,
     int Weight,
     string Gender,
+    string Position,
     string ExperienceLevel,
     string Skills,
-    string GamesPlayed,
-    string PointsPerGame,
-    string Rebounds,
+    int GamesPlayed,
+    float PointsPerGame,
+    float ReboundsPerGame,
+    float AssistsPerGame,
+    string Bio,
+    string Achievements,
     [Length(3, 20)]string City,
     [Length(3, 20)]string Country
 );

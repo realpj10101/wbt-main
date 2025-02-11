@@ -51,24 +51,33 @@ public class PlayerUserRepository : IPlayerUserRepository
         return ValidationsExtensions.ValidateObjectId(playerId);
     }
     
-    // public async Task<UpdateResult?> UpdatePlayerAsync(PlayerUpdateDto playerUpdateDto, string? hashedUserId,
-    //     CancellationToken cancellationToken)
-    // {
-    //     if (string.IsNullOrEmpty(hashedUserId)) return null;
-    //
-    //     ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
-    //
-    //     if (playerId is null) return null;
-    //
-    //     UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
-    //         .Set(appUser => appUser.Height, playerUpdateDto.Height)
-    //         .Set(appUser => appUser.KnownAs, playerUpdateDto.KnownAs)
-    //         .Set(appUser => appUser.LookingFor, playerUpdateDto.LookingFor)
-    //         .Set(appUser => appUser.City, playerUpdateDto.City)
-    //         .Set(appUser => appUser.Country, playerUpdateDto.Country);
-    //     
-    //     return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
-    // }
+    public async Task<UpdateResult?> UpdatePlayerAsync(PlayerUpdateDto playerUpdateDto, string? hashedUserId,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(hashedUserId)) return null;
+    
+        ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+    
+        if (playerId is null) return null;
+
+        UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
+            .Set(appUser => appUser.Name, playerUpdateDto.Name)
+            .Set(appUser => appUser.LastName, playerUpdateDto.LastName)
+            .Set(appUser => appUser.Height, playerUpdateDto.Height)
+            .Set(appUser => appUser.Weight, playerUpdateDto.Weight)
+            .Set(appUser => appUser.Gender, playerUpdateDto.Gender)
+            .Set(appUser => appUser.Position, playerUpdateDto.Position)
+            .Set(appUser => appUser.ExperienceLevel, playerUpdateDto.ExperienceLevel)
+            .Set(appUser => appUser.Skills, playerUpdateDto.Skills)
+            .Set(appUser => appUser.GamesPlayed, playerUpdateDto.GamesPlayed)
+            .Set(appUser => appUser.PointsPerGame, playerUpdateDto.PointsPerGame)
+            .Set(appUser => appUser.ReboundsPerGame, playerUpdateDto.ReboundsPerGame)
+            .Set(appUser => appUser.AssistsPerGame, playerUpdateDto.AssistsPerGame)
+            .Set(appUser => appUser.Bio, playerUpdateDto.Bio)
+            .Set(appUser => appUser.Achievements, playerUpdateDto.Achievements);
+            
+        return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
+    }
     #endregion
 
     #region Photo Managemnet
