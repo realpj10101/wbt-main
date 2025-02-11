@@ -1,4 +1,6 @@
+using api.Enums;
 using api.Extensions;
+using api.Helpers;
 
 namespace api.Repositories.Player;
 
@@ -59,7 +61,7 @@ public class PlayerUserRepository : IPlayerUserRepository
         ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
     
         if (playerId is null) return null;
-
+        
         UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
             .Set(appUser => appUser.Name, playerUpdateDto.Name)
             .Set(appUser => appUser.LastName, playerUpdateDto.LastName)

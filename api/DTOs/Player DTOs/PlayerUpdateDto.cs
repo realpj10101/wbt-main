@@ -1,3 +1,6 @@
+using api.Enums;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
+
 namespace api.DTOs;
 
 public record PlayerUpdateDto(

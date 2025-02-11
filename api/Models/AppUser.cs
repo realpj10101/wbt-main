@@ -1,4 +1,6 @@
+using api.Enums;
 using AspNetCore.Identity.MongoDbCore.Models;
+using Microsoft.CodeAnalysis.Elfie.Diagnostics;
 using MongoDbGenericRepository.Attributes;
 
 namespace api.Models;
@@ -25,6 +27,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string TrainingStyle { get; init; } = string.Empty;
     public string PreferredPlayers { get; init; } = string.Empty;
     public string Position { get; init; } = string.Empty;
+    // public PositionsEnum Position { get; init; }
     public string ExperienceLevel { get; init; } = string.Empty;
     public string Skills { get; init; } = string.Empty;
     public int GamesPlayed { get; init; }
