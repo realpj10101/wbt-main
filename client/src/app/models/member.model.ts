@@ -9,6 +9,7 @@ export interface Member {
     weight: number;
     experienceLevel: string;
     skills: string;
+    position: string;
     gamesPlayed: number;
     pointsPerGame: number;
     reboundsPerGame: number;
