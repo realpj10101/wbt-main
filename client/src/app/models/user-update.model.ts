@@ -1,7 +1,19 @@
 export interface UserUpdate {
+    name: string;
+    lastName: string;
     height: number;
-    knownAs: string;
-    lookingFor: string;
+    weight: number;
+    gender: string;
+    position: string;
+    exprienceLevel: string;
+    skills: string;
+    gamesPlayed: number;
+    pointsPerGame: number;
+    reboundsPerGame: number;
+    assistsPerGame: number;
+    bio: string;
+    achievements: string;
     city: string;
-    country: string;      
+    region: string;
+    country: string;    
 }
