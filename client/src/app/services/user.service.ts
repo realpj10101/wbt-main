@@ -13,7 +13,7 @@ export class UserService {
   http = inject(HttpClient);
 
   members: Member[] = [];
-  private readonly apiUrl = environment.apiUrl + 'playeruser';
+  private readonly apiUrl = environment.apiUrl + 'api/playeruser';
 
   updateUser(userUpdate: UserUpdate): Observable<ApiResponse> {
     console.log("ok")

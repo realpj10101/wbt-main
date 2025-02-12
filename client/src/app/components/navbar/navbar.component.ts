@@ -25,7 +25,6 @@ import { MatListModule } from '@angular/material/list';
 })
 export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl;
-  photoUrl: string = environment.photoUrl;
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'admin'];
   links: string[] = ['members', 'friends', 'messages'];

@@ -16,7 +16,7 @@ export class LikeService {
 
   private paginationHandler = new PaginationHandler();
 
-  private readonly _apiUrl = environment.apiUrl + 'like/';
+  private readonly _apiUrl = environment.apiUrl + 'api/like/';
 
   create(targetMemberUserName: string): Observable<ApiResponse> {
     return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetMemberUserName, null);

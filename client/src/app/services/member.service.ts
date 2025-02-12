@@ -13,7 +13,7 @@ import { Member } from '../models/member.model';
 export class MemberService {
   private http = inject(HttpClient);
 
-  private readonly _baseApiUrl = environment.apiUrl + 'member/'
+  private readonly _baseApiUrl = environment.apiUrl + 'api/member/'
   private paginationHandler = new PaginationHandler();
 
   getAll(memberParams: MemberParams): Observable<PaginatedResult<Member[]>> {

@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-photo-editor',
@@ -29,8 +30,8 @@ export class PhotoEditorComponent implements OnInit {
   @Input('memberInput') member: Member | undefined;
   loggedInPlayer: LoggedInPlayer | null | undefined;
   errorGlob: string | undefined;
-  // apiUrl: string | undefined;
-  photoUrl: string | undefined;
+  apiUrl = environment.apiUrl;
+  // photoUrl: string | undefined;
   uploader: FileUploader | undefined;
   hasBaseDropZoneOver = false;
   private _accountService = inject(AccountService);
@@ -52,7 +53,7 @@ export class PhotoEditorComponent implements OnInit {
   initialUploader(): void {
     if (this.loggedInPlayer) {
       this.uploader = new FileUploader({
-        url:  'http://localhost:5000/api/playeruser/add-photo',
+        url: this.apiUrl + 'api/playeruser/add-photo',
         authToken: 'Bearer' + this.loggedInPlayer.token,
         isHTML5: true,
         allowedFileType: ['image'],

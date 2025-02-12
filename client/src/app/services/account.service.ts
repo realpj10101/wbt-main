@@ -19,7 +19,7 @@ export class AccountService {
   platformId = inject(PLATFORM_ID);
   loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
 
-  private readonly baseApiUrl = environment.apiUrl + 'account/';
+  private readonly baseApiUrl = environment.apiUrl + 'api/account/';
 
   registerPlayer(playerInput: RegisterPlayer): Observable<LoggedInPlayer | null> {
     return this.http.post<LoggedInPlayer>(this.baseApiUrl + 'register', playerInput).pipe(

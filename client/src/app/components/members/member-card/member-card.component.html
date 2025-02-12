@@ -7,7 +7,7 @@
         @else {
         @for (photo of memberIn?.photos; track $index) {
         @if (photo.isMain) {
-        <img src="{{photoUrl + photo.url_165}}" width="200px" height="200px" >
+        <img src="{{apiUrl + photo.url_165}}" width="200px" height="200px" >
         }
         }
         }
