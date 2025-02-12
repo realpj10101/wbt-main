@@ -9,17 +9,17 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
     #region User Management
 
     [HttpPut]
-    public async Task<ActionResult<TestPlayer>> UpdatePlayer(PlayerUpdateDto playerUpdateDto, CancellationToken cancellationToken)
+    public async Task<ActionResult> UpdatePlayer(PlayerUpdateDto playerUpdateDto, CancellationToken cancellationToken)
     {
-        TestPlayer? testPlayer = await _playerUserRepository.UpdatePlayerAsync(playerUpdateDto, User.GetHashedUserId(), cancellationToken);
+        UpdateResult? updateResult = await _playerUserRepository.UpdatePlayerAsync(playerUpdateDto, User.GetHashedUserId(), cancellationToken);
 
-        return testPlayer is null
+        return updateResult is null || !updateResult.IsModifiedCountAvailable
             ? BadRequest("Update failed. Try again later.")
-            : Ok(testPlayer);
-
-        // return updateResult is null || !updateResult.IsModifiedCountAvailable
+            : Ok(new { message = "User has been updated successfully." });
+        
+        // return testPlayer is null
         //     ? BadRequest("Update failed. Try again later.")
-        //     : Ok(new { message = "User has been updated successfully." });
+        //     : Ok(testPlayer);
     }
     
     #endregion

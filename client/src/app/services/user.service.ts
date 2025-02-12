@@ -15,9 +15,9 @@ export class UserService {
   members: Member[] = [];
   private readonly apiUrl = environment.apiUrl + 'playeruser';
 
-  updateUser(userUpdate: UserUpdate): Observable<UserUpdate> {
+  updateUser(userUpdate: UserUpdate): Observable<ApiResponse> {
     console.log("ok")
-    return this.http.put<UserUpdate>(this.apiUrl, userUpdate);
+    return this.http.put<ApiResponse>(this.apiUrl, userUpdate);
   }
 
   setMainPhoto(url_165In: string): Observable<ApiResponse> {
