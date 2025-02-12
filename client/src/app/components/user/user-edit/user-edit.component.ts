@@ -23,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
+import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 
 @Component({
   selector: 'app-user-edit',
@@ -30,8 +31,9 @@ import { MatRadioModule } from '@angular/material/radio';
   imports: [
     MatCardModule, MatIconModule, MatButtonModule,
     MatTabsModule, MatFormFieldModule, MatInputModule,
-    MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule
-  ],
+    MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule,
+    PhotoEditorComponent
+],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.scss'
 })

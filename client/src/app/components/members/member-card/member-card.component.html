@@ -1,5 +1,17 @@
 <div class="card">
-    <img src="member.png" alt="" height="200px" width="200px">
+    <mat-card class="card">
+        @if (memberIn?.photos?.length === 0) {
+        <img ngSrc="member.png" alt="" height="200px" width="200px" alt="{{memberIn?.userName}} photo"
+            mat-card-image>
+        }
+        @else {
+        @for (photo of memberIn?.photos; track $index) {
+        @if (photo.isMain) {
+        <img src="{{apiUrl + photo.url_165}}" width="200px" height="200px" >
+        }
+        }
+        }
+    </mat-card>
     <div class="card__content">
         <img class="thumb-image" src="member.png" alt="" height="50px" width="50px"
             [routerLink]="['/member-details/' + memberIn?.userName]">

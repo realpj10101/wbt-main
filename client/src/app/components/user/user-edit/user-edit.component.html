@@ -83,6 +83,11 @@
             <mat-tab label="Statistics"></mat-tab>
             <mat-tab label="Location"></mat-tab>
             <mat-tab label="Additional Details"></mat-tab>
+            <mat-tab label="Edit Photos">
+                <div class="tab-contents">
+                    <app-photo-editor [memberInput]="member"></app-photo-editor>
+                </div>
+            </mat-tab>
         </mat-tab-group>
     </div>
 </section>

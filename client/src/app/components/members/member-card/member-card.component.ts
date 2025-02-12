@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, output, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Member } from '../../../models/member.model';
 import { environment } from '../../../../environments/environment.development';
 import { MatSnackBar } from '@angular/material/snack-bar';
