@@ -64,10 +64,10 @@ public class PlayerUserRepository : IPlayerUserRepository
 
         UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
             .Set(appUser => appUser.Name, playerUpdateDto.Name?.Trim().ToLower())
-            .Set(appUser => appUser.LastName, playerUpdateDto.LastName?.Trim().ToLower());
+            .Set(appUser => appUser.LastName, playerUpdateDto.LastName?.Trim().ToLower())
             // .Set(appUser => appUser.Height, playerUpdateDto.Height)
             // .Set(appUser => appUser.Weight, playerUpdateDto.Weight)
-            // .Set(appUser => appUser.Gender, playerUpdateDto.Gender?.Trim().ToLower())
+            .Set(appUser => appUser.Gender, playerUpdateDto.Gender?.Trim().ToLower());
             // .Set(appUser => appUser.Position, playerUpdateDto.Position?.Trim().ToLower())
             // .Set(appUser => appUser.ExperienceLevel, playerUpdateDto.ExperienceLevel?.Trim().ToLower())
             // .Set(appUser => appUser.Skills, playerUpdateDto.Skills?.Trim().ToLower())

@@ -5,10 +5,10 @@ namespace api.DTOs;
 
 public record PlayerUpdateDto(
     [MaxLength(50)]string? Name,
-    [MaxLength(50)]string? LastName
+    [MaxLength(50)]string? LastName,
     // int? Height,
     // int? Weight,
-    // [MaxLength(50)]string? Gender,
+    [MaxLength(50)]string? Gender
     // string? Position,
     // [MaxLength(50)]string? ExperienceLevel,
     // [MaxLength(50)]string? Skills,
