@@ -33,8 +33,8 @@
             </div>
         </div>
 
-        <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid"
-         mat-raised-button color="primary">  
+        <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid" mat-raised-button
+            color="primary">
             Save Changes
         </button>
     </div>
@@ -43,32 +43,35 @@
         <mat-tab-group class="user-info">
             <mat-tab label="Professional Details">
                 <div class="tab-contents">
-                    <!-- <input type="text">
-                    <input type="text">
-                    <input type="text"> -->
-                    <!-- <mat-radio-group formControlName="genderCtrl" aria-label="Select yout gender">
-                        <mat-radio-button value="female">Female</mat-radio-button>
-                        <mat-radio-button value="male">Male</mat-radio-button>
-                        <mat-radio-button value="other">Other</mat-radio-button>
-                    </mat-radio-group> -->
+                    <form [formGroup]="userEditFg" (ngSubmit)="updatePlayer()" class="about-contents">
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Name</mat-label>
-                        <input type="text" formControlName="nameCtrl" matInput>
-                        <mat-hint>{{ NameCtrl.value?.length }} of {{ maxInpuChars }}</mat-hint>
-                        @if (NameCtrl.hasError('maxlength')) {
-                        <mat-error>Max of {{ maxInpuChars }} characters is reached.</mat-error>
-                        }
-                    </mat-form-field>
+                        <!-- <input type="text">
+                        <input type="text">
+                        <input type="text"> -->
+                        <mat-radio-group formControlName="genderCtrl" aria-label="Select yout gender">
+                            <mat-radio-button value="female">Female</mat-radio-button>
+                            <mat-radio-button value="male">Male</mat-radio-button>
+                            <mat-radio-button value="other">Other</mat-radio-button>
+                        </mat-radio-group>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Last Name</mat-label>
-                        <input type="text" formControlName="lastNameCtrl" matInput>
-                        <mat-hint>{{ LastNameCtrl.value?.length }} of {{ maxInpuChars }}</mat-hint>
-                        @if (LastNameCtrl.hasError('maxlength')) {
-                        <mat-error>Max of {{ maxInpuChars }} characters is reached.</mat-error>
-                        }
-                    </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Name</mat-label>
+                            <input type="text" formControlName="nameCtrl" matInput>
+                            <mat-hint>{{ NameCtrl.value?.length }} of {{ maxInpuChars }}</mat-hint>
+                            @if (NameCtrl.hasError('maxlength')) {
+                            <mat-error>Max of {{ maxInpuChars }} characters is reached.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input type="text" formControlName="lastNameCtrl" matInput>
+                            <mat-hint>{{ LastNameCtrl.value?.length }} of {{ maxInpuChars }}</mat-hint>
+                            @if (LastNameCtrl.hasError('maxlength')) {
+                            <mat-error>Max of {{ maxInpuChars }} characters is reached.</mat-error>
+                            }
+                        </mat-form-field>
+                    </form>
 
                     <!-- <mat-form-field appearance="outline">
                         <mat-label>Position</mat-label>

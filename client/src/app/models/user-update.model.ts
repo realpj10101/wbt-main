@@ -3,7 +3,7 @@ export interface UserUpdate {
     lastName: string;
     // height: number;
     // weight: number;
-    // gender: string;
+    gender: string;
     // position: string;
     // exprienceLevel: string;
     // skills: string;

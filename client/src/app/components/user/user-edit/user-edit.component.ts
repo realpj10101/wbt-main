@@ -50,7 +50,7 @@ export class UserEditComponent implements OnInit {
     lastNameCtrl: ['', [Validators.maxLength(this.maxInpuChars)]],
     // heightCtrl: '',
     // weightCtrl: '',
-    // genderCtrl: 'female',
+    genderCtrl: 'female',
     // positionCtrl: '',
     // exprienceLevelCtrl: ['', [Validators.maxLength(this.maxInpuChars)]],
     // skillsCtrl: ['', [Validators.maxLength(this.maxInpuChars)]],
@@ -86,9 +86,9 @@ export class UserEditComponent implements OnInit {
   //   return this.userEditFg.get('weightCtrl') as FormControl;
   // }
 
-  // get GenderCtrl(): AbstractControl {
-  //   return this.userEditFg.get('genderCtrl') as FormControl;
-  // }
+  get GenderCtrl(): AbstractControl {
+    return this.userEditFg.get('genderCtrl') as FormControl;
+  }
 
   // get PositionCtrl(): AbstractControl {
   //   return this.userEditFg.get('positionCtrl') as FormControl;
@@ -167,7 +167,7 @@ export class UserEditComponent implements OnInit {
     this.LastNameCtrl.setValue(member.lastName.toUpperCase());
     // this.HeightCtrl.setValue(member.height);
     // this.WeightCtrl.setValue(member.weight);
-    // this.GenderCtrl.setValue(member.gender.toUpperCase());
+    this.GenderCtrl.setValue(member.gender.toUpperCase());
     // this.PositionCtrl.setValue(member.position.toUpperCase());
     // this.ExprienceLevelCtrl.setValue(member.experienceLevel.toUpperCase());
     // this.SkillsCtrl.setValue(member.skills.toUpperCase());
@@ -191,7 +191,7 @@ export class UserEditComponent implements OnInit {
         lastName: this.LastNameCtrl.value,
         // height: this.HeightCtrl.value,
         // weight: this.WeightCtrl.value,
-        // gender: this.GenderCtrl.value,
+        gender: this.GenderCtrl.value,
         // position: this.PositionCtrl.value,
         // exprienceLevel: this.ExprienceLevelCtrl.value,
         // skills: this.SkillsCtrl.value,
@@ -209,18 +209,14 @@ export class UserEditComponent implements OnInit {
       this._userService.updateUser(updateUser)
         .pipe(take(1))
         .subscribe({
-          next: (response: ApiResponse) => {
-            if (response.message) {
-              this.matSnackBar.open(response.message, 'close', {
-                horizontalPosition: 'center',
-                verticalPosition: 'bottom',
-                duration: 7000
-              });
-            }
-          }
+          next: (res: UserUpdate) => console.log(res)
         });
-
-      this.userEditFg.markAsPristine();
+      // if (response) {
+      //   this.matSnackBar.open(response.message, 'close', {
+      //     horizontalPosition: 'center',
+      //     verticalPosition: 'bottom',
+      //     duration: 7000
     }
   }
 }
+
