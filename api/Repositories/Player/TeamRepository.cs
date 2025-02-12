@@ -77,7 +77,7 @@ public class TeamRepository : ITeamRepository
             .Set(t => t.GamesPlayed, userInput.GamesPlayed)
             .Set(t => t.GamesWon, userInput.GamesWon)
             .Set(t => t.GamesLost, userInput.GamesLost);
-
+        
          return await _collection.UpdateOneAsync(
             doc => doc.Id == teamId, updatedTeam, null, cancellationToken
         );
