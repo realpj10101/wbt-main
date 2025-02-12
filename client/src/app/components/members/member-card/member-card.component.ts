@@ -25,7 +25,7 @@ import { LikeService } from '../../../services/like.service';
 export class MemberCardComponent {
   @Input('memberInput') memberIn: Member | undefined;
   @Output('unfollowUsernameOut') unfollowUserNameOut = new EventEmitter<string>();
-  apiUrl = environment.apiUrl;
+  photoUrl = environment.photoUrl;
   private _followService = inject(FollowService);
   private _likeService = inject(LikeService);
   private _snack = inject(MatSnackBar);

@@ -29,7 +29,8 @@ export class PhotoEditorComponent implements OnInit {
   @Input('memberInput') member: Member | undefined;
   loggedInPlayer: LoggedInPlayer | null | undefined;
   errorGlob: string | undefined;
-  apiUrl: string | undefined;
+  // apiUrl: string | undefined;
+  photoUrl: string | undefined;
   uploader: FileUploader | undefined;
   hasBaseDropZoneOver = false;
   private _accountService = inject(AccountService);

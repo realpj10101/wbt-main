@@ -42,7 +42,7 @@
         <button [mat-menu-trigger-for]="appMenu" class="menu-button" mat-mini-fab>
           <!-- <span>{{user.knownAs[0] | titlecase}}</span> Use span to not have padding/margin -->
           @if (user.profilePhotoUrl) {
-          <img class="top-avatar" mat-card-avatar src="{{apiUrl + user.profilePhotoUrl}}" fill priority
+          <img class="top-avatar" mat-card-avatar src="{{photoUrl + user.profilePhotoUrl}}" fill priority
             alt="{{user.userName[0]}}">
           <!-- // localhost:5000/storage/photo/sldkfjlsj92374.web -->
           } @else {
