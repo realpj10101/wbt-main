@@ -17,7 +17,7 @@
         .top {
             // background-color: green;
             margin: 1rem;
-            
+
             img {
                 border-radius: 34px;
             }
@@ -42,5 +42,34 @@
         background: #e0e0e0;
         box-shadow: -27px 27px 40px #a1a1a1,
             27px -27px 40px #ffffff;
+
+        .image-contents {
+            // background-color: red;
+            display: flex;
+            flex-direction: column;
+
+            .gallery {
+                // background-color: blue;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+                padding: 1rem;
+
+                .photo {
+                    position: relative;
+
+                    img {
+                        border-radius: 10px;
+                    }
+
+                    mat-icon {
+                        position: absolute;
+                        top: 5px;
+                        left: 5px;
+                    }
+                }
+            }
+        }
     }
 }

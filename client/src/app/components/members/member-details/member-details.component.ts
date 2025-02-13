@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, OnInit, Output, output } from '@angular/core';
 import { Member } from '../../../models/member.model';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { interval, Observable, take } from 'rxjs';
 import { Gallery, GalleryItem, GalleryModule, ImageItem } from "ng-gallery";
 import { MemberService } from '../../../services/member.service';
@@ -13,13 +13,16 @@ import { LoggedInPlayer } from '../../../models/logged-in-player.model';
 import { MatIconModule } from '@angular/material/icon';
 import { IntlModule} from "angular-ecmascript-intl";
 import { LightboxModule } from "ng-gallery/lightbox";
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from "@angular/material/tabs";
 
 @Component({
   selector: 'app-member-details',
   standalone: true,
   imports: [
     CommonModule,
-    MatIconModule,
+    MatIconModule, MatButtonModule, MatTabsModule,
+    GalleryModule, LightboxModule, NgOptimizedImage,
     IntlModule
   ],
   templateUrl: './member-details.component.html',
@@ -88,6 +91,9 @@ export class MemberDetailsComponent implements OnInit {
           }
         ));
       }
+
+      const galleryRef = this.gallery.ref();
+      galleryRef.load(this.images);
     }
   }
 
