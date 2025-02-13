@@ -1,3 +1,39 @@
-<h1>
-    {{member?.userName}}
-</h1>
+<section class="container">
+    <div class="left">
+        <div class="top">
+            <img src="member.png" alt="" width="250px" height="250px">
+            @switch (member?.gender) {
+            @case ('male') {
+            <mat-icon>boy</mat-icon>
+            }
+            @case ('female') {
+            <mat-icon>girl</mat-icon>
+            }
+            @default {
+            <mat-icon>person</mat-icon>
+            }
+            }
+        </div>
+        <div class="bottom">
+            <div>
+                <strong>Name and LastName</strong>
+                <p>{{member?.name}}, {{member?.lastName}}</p>
+            </div>
+            <div>
+                <strong>Age</strong>
+                <p>{{member?.age}}</p>
+            </div>
+            <div>
+                <strong>LastActive</strong>
+                <p>{{member?.lastActive | intlRelativeTime }}</p>
+            </div>
+            <div>
+                <strong>Experience Level</strong>
+                <p>{{member?.experienceLevel}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="right">
+        <h1>hi</h1>
+    </div>
+</section>

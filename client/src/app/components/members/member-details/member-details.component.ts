@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, OnInit, Output, output } from '@angular/core';
 import { Member } from '../../../models/member.model';
-import { Observable, take } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { interval, Observable, take } from 'rxjs';
 import { Gallery, GalleryItem, GalleryModule, ImageItem } from "ng-gallery";
 import { MemberService } from '../../../services/member.service';
 import { FollowService } from '../../../services/follow.service';
@@ -9,11 +10,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { MatIconModule } from '@angular/material/icon';
+import { IntlModule} from "angular-ecmascript-intl";
 
 @Component({
   selector: 'app-member-details',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    IntlModule
+  ],
   templateUrl: './member-details.component.html',
   styleUrl: './member-details.component.scss'
 })
