@@ -12,6 +12,7 @@ import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LoggedInPlayer } from '../../../models/logged-in-player.model';
 import { MatIconModule } from '@angular/material/icon';
 import { IntlModule} from "angular-ecmascript-intl";
+import { LightboxModule } from "ng-gallery/lightbox";
 
 @Component({
   selector: 'app-member-details',

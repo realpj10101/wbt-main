@@ -1,8 +1,18 @@
+@if (member) {
 <section class="container">
     <div class="left">
         <div class="top">
-            <img src="member.png" alt="" width="250px" height="250px">
-            @switch (member?.gender) {
+            @if (member.photos.length > 0) {
+            @for (photo of member.photos; track $index) {
+            @if (photo.isMain) {
+            <img src="{{_apiUrl + photo.url_165}}" priority alt="" height="250px" width="250px" mat-card-image>
+            }
+            }
+            }
+            @else {
+            <img src="member.png" alt="" height="250px" width="250px" mat-card-image>
+            }
+            @switch (member.gender) {
             @case ('male') {
             <mat-icon>boy</mat-icon>
             }
@@ -17,19 +27,19 @@
         <div class="bottom">
             <div>
                 <strong>Name and LastName</strong>
-                <p>{{member?.name}}, {{member?.lastName}}</p>
+                <p>{{member.name}}, {{member.lastName}}</p>
             </div>
             <div>
                 <strong>Age</strong>
-                <p>{{member?.age}}</p>
+                <p>{{member.age}}</p>
             </div>
             <div>
                 <strong>LastActive</strong>
-                <p>{{member?.lastActive | intlRelativeTime }}</p>
+                <p>{{member.lastActive | intlRelativeTime }}</p>
             </div>
             <div>
                 <strong>Experience Level</strong>
-                <p>{{member?.experienceLevel}}</p>
+                <p>{{member.experienceLevel}}</p>
             </div>
         </div>
     </div>
@@ -37,3 +47,4 @@
         <h1>hi</h1>
     </div>
 </section>
+}
