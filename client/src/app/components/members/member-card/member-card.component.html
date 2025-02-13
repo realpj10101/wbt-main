@@ -1,20 +1,45 @@
 <div class="card">
     <mat-card class="card">
         @if (memberIn?.photos?.length === 0) {
-        <img ngSrc="member.png" alt="" height="200px" width="200px" alt="{{memberIn?.userName}} photo"
-            mat-card-image>
+        <img src="member.png" alt="" height="200px" width="200px" alt="{{memberIn?.userName}} photo" mat-card-image>
         }
         @else {
         @for (photo of memberIn?.photos; track $index) {
         @if (photo.isMain) {
-        <img src="{{apiUrl + photo.url_165}}" width="200px" height="200px" >
+        <img src="{{apiUrl + photo.url_165}}" width="200px" height="200px">
         }
         }
         }
     </mat-card>
     <div class="card__content">
-        <img class="thumb-image" src="member.png" alt="" height="50px" width="50px"
-            [routerLink]="['/member-details/' + memberIn?.userName]">
+        <div class="top">
+            @if (memberIn?.photos?.length === 0) {
+            <img class="thumb-image" src="member.png" alt="" height="50px" width="50px"
+                [routerLink]="['/member-details/' + memberIn?.userName]">
+            }
+            @else {
+            @for (photo of memberIn?.photos; track $index) {
+            @if (photo.isMain) {
+            <img class="thumb-image" src="{{apiUrl + photo.url_165}}" alt="" height="50px" width="50px"
+                [routerLink]="['/member-details/' + memberIn?.userName]">
+            }
+            }
+            }
+            <div class="title" [routerLink]="['/member-details/' + memberIn?.userName]">
+                <mat-card-title>{{memberIn?.userName}}</mat-card-title>
+                @switch (memberIn?.gender) {
+                @case ('male') {
+                <mat-icon color="primary">boy</mat-icon>
+                }
+                @case ('female') {
+                <mat-icon color="primary">girl</mat-icon>
+                }
+                @default {
+                <mat-icon color="primary">group_add</mat-icon>
+                }
+                }
+            </div>
+        </div>
         <br>
         <div class="user-icons">
             @if (!memberIn?.isFollowing) {
@@ -42,7 +67,7 @@
                 <mat-icon>message</mat-icon>
             </button>
         </div>
-        <div class="title">
+        <!-- <div class="title">
             @switch (memberIn?.gender) {
             @case ('male') {
             <mat-icon color="primary">boy</mat-icon>
@@ -54,8 +79,7 @@
             <mat-icon color="primary">group_add</mat-icon>
             }
             }
-            <mat-card-title>{{memberIn?.userName}}, {{memberIn?.age}}</mat-card-title>
-        </div>
+        </div> -->
     </div>
     <!-- <h1>test</h1> -->
 
