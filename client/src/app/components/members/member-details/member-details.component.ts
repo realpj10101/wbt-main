@@ -15,16 +15,20 @@ import { IntlModule} from "angular-ecmascript-intl";
 import { LightboxModule } from "ng-gallery/lightbox";
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from "@angular/material/tabs";
+import {ChangeDetectionStrategy, signal} from '@angular/core';
+import {matExpansionAnimations, MatExpansionModule} from '@angular/material/expansion';
+
 
 @Component({
   selector: 'app-member-details',
   standalone: true,
   imports: [
     CommonModule,
-    MatIconModule, MatButtonModule, MatTabsModule,
+    MatIconModule, MatButtonModule, MatTabsModule, MatExpansionModule,
     GalleryModule, LightboxModule, NgOptimizedImage,
     IntlModule
   ],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './member-details.component.html',
   styleUrl: './member-details.component.scss'
 })
@@ -41,6 +45,7 @@ export class MemberDetailsComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private gallery = inject(Gallery);
   private _snack = inject(MatSnackBar);
+  readonly panelOpenState = signal(false);
 
   ngOnInit(): void {
       this.getMember();

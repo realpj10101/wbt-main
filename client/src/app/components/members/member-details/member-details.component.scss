@@ -78,5 +78,14 @@
                 }
             }
         }
+
+        .tab-contents {
+            // background-color: red;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem;
+        }
     }
 }
