@@ -40,6 +40,7 @@ public static class Mappers
             Age: CustomDateTimeExtensions.CalculateAge(appUser.DateOfBirth),
             Height: appUser.Height,
             Weight: appUser.Weight,
+            Position: appUser.Position,
             ExperienceLevel: appUser.ExperienceLevel,
             Skills: appUser.Skills,
             GamesPlayed: appUser.GamesPlayed,

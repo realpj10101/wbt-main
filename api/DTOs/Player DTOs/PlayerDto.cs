@@ -8,6 +8,7 @@ public record PlayerDto(
     int Age,
     int Height,
     int Weight,
+    string Position,
     string ExperienceLevel,
     string Skills,
     int GamesPlayed,
