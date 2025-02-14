@@ -1,9 +1,25 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { LoggedInPlayer } from '../models/logged-in-player.model';
+import { environment } from '../../environments/environment.development';
+import { CommentInput } from '../models/comment.model';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../models/helpers/apiResponse.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
+  private readonly _http = inject(HttpClient);
+  router = inject(Router);
+  platformId = inject(PLATFORM_ID);
+  loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
 
-  constructor() { }
+  private readonly _apiUrl = environment.apiUrl + 'api/comment/';
+
+  add(targetMemberUserName: string, content: CommentInput): Observable<ApiResponse> {
+    return this._http.post<ApiResponse>(this._apiUrl + 'add' + targetMemberUserName, content);
+  }
+
 }
