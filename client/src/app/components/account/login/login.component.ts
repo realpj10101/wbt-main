@@ -12,7 +12,7 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
+  standalone: true,   
   imports: [
     ReactiveFormsModule, FormsModule,
     MatFormFieldModule, MatInputModule, MatButtonModule,

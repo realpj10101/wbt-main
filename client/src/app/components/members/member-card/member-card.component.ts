@@ -11,6 +11,8 @@ import { FollowService } from '../../../services/follow.service';
 import { take } from 'rxjs';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LikeService } from '../../../services/like.service';
+import { CommentService } from '../../../services/comment.service';
+import { CommentInput } from '../../../models/comment.model';
 
 @Component({
   selector: 'app-member-card',
@@ -30,6 +32,7 @@ export class MemberCardComponent {
   private _followService = inject(FollowService);
   private _likeService = inject(LikeService);
   private _snack = inject(MatSnackBar);
+  private _commentService = inject(CommentService);
 
   follow(): void {
     if (this.memberIn)

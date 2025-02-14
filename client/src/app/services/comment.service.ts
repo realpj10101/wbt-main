@@ -18,8 +18,9 @@ export class CommentService {
 
   private readonly _apiUrl = environment.apiUrl + 'api/comment/';
 
-  add(targetMemberUserName: string, content: CommentInput): Observable<ApiResponse> {
-    return this._http.post<ApiResponse>(this._apiUrl + 'add' + targetMemberUserName, content);
+  add(targetMemberUserName: string | undefined, content: CommentInput): Observable<ApiResponse> {
+    console.log('com serv')
+    return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetMemberUserName, content);
   }
 
 }

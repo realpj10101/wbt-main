@@ -1,12 +1,71 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { CommentService } from '../../services/comment.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Member } from '../../models/member.model';
+import { environment } from '../../../environments/environment.development';
+import { take } from 'rxjs';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommentInput } from '../../models/comment.model';
+import { ApiResponse } from '../../models/helpers/apiResponse.model';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { MemberService } from '../../services/member.service';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [],
+  imports: [
+    FormsModule, ReactiveFormsModule
+  ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
 })
-export class CommentComponent {
+export class CommentComponent implements OnInit {
+  @Input('memberInput') memberInput: Member | undefined;
+  apiUrl = environment.apiUrl;
+  private _commentService = inject(CommentService);
+  private _snack = inject(MatSnackBar);
+  private _fb = inject(FormBuilder);
+  private _route = inject(ActivatedRoute);
+  private _memberService = inject(MemberService);
+  http = inject(HttpClient);
 
+  comFg: FormGroup = this._fb.group({
+    contentCtrl: ''
+  })
+
+  get ContetCtrl(): FormControl {
+    return this.comFg.get('contentCtrl') as FormControl;
+  }
+
+  ngOnInit(): void {
+      this.getMember();
+  }
+
+  getMember(): void {
+
+    const userName: string | null = this._route.snapshot.paramMap.get('userName');
+
+    if (userName)
+      this._memberService.getByUserName(userName)
+        .pipe(
+          take(1))
+          .subscribe({
+            next: (res: Member | undefined) => {
+              if (res) {
+                this.memberInput = res;
+              }
+            }
+          })
+  }
+
+  add(): void {
+    let commetnIn: CommentInput = {
+      content: this.ContetCtrl.value
+    }
+
+    this._commentService.add(this.memberInput?.userName, commetnIn).subscribe();
+
+    console.log('com compo')
+  }
 }
