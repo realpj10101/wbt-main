@@ -32,6 +32,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 1rem;
+
+            .actions {
+                // background-color: red;
+                display: flex;
+                gap: 10px;
+            }
         }
     }
 
