@@ -50,7 +50,17 @@ public class CommentRepository : ICommentRepository
             return cS;
         }
         
-        Comment comment = Mappers.ConvertCommentIdsToComment(userId, targetId.Value, content);
+        string? commenterName = await _collectionUsers.AsQueryable()
+            .Where(doc => doc.Id == userId)
+            .Select(doc => doc.UserName)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        string? commentedMemberName = await _collectionUsers.AsQueryable()
+            .Where(doc => doc.Id == targetId)
+            .Select(doc => doc.UserName)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        Comment comment = Mappers.ConvertCommentIdsToComment(userId, targetId.Value, commenterName, commentedMemberName, content);
 
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
         
