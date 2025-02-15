@@ -11,13 +11,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LoggedInPlayer } from '../../../models/logged-in-player.model';
 import { MatIconModule } from '@angular/material/icon';
-import { IntlModule} from "angular-ecmascript-intl";
+import { IntlModule } from "angular-ecmascript-intl";
 import { LightboxModule } from "ng-gallery/lightbox";
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from "@angular/material/tabs";
-import {ChangeDetectionStrategy, signal} from '@angular/core';
-import {matExpansionAnimations, MatExpansionModule} from '@angular/material/expansion';
-
+import { ChangeDetectionStrategy, signal } from '@angular/core';
+import { matExpansionAnimations, MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-member-details',
@@ -48,7 +47,7 @@ export class MemberDetailsComponent implements OnInit {
   readonly panelOpenState = signal(false);
 
   ngOnInit(): void {
-      this.getMember();
+    this.getMember();
   }
 
   getMember(): void {
@@ -104,43 +103,43 @@ export class MemberDetailsComponent implements OnInit {
 
   follow(): void {
     if (this.member)
-    this._followService.create(this.member.userName).pipe(
-      take(1))
-      .subscribe({
-        next: (res: ApiResponse) => {
-          if (this.member)
-            this.member.isFollowing = true;
+      this._followService.create(this.member.userName).pipe(
+        take(1))
+        .subscribe({
+          next: (res: ApiResponse) => {
+            if (this.member)
+              this.member.isFollowing = true;
 
-          console.log(this.member?.isFollowing);
-          console.log(this.member);
-          this._snack.open(res.message, 'close', {
-            duration: 7000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top'
-          })
-        }
-      })
+            console.log(this.member?.isFollowing);
+            console.log(this.member);
+            this._snack.open(res.message, 'close', {
+              duration: 7000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            })
+          }
+        })
   }
 
   unfollow(): void {
     if (this.member)
       this._followService.delete(this.member.userName).pipe(
-    take(1))
-    .subscribe({
-      next: (res: ApiResponse) => {
-        if (this.member) {
-          this.member.isFollowing = false
-        }
+        take(1))
+        .subscribe({
+          next: (res: ApiResponse) => {
+            if (this.member) {
+              this.member.isFollowing = false
+            }
 
-        console.log(this.member?.isFollowing);
-        console.log(this.member);
+            console.log(this.member?.isFollowing);
+            console.log(this.member);
 
-        this._snack.open(res.message, 'close', {
-          duration: 7000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top'
+            this._snack.open(res.message, 'close', {
+              duration: 7000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            })
+          }
         })
-      }
-    })
   }
 }

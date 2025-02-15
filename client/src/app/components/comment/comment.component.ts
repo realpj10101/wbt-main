@@ -11,14 +11,17 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MemberService } from '../../services/member.service';
 import { MatIconModule } from '@angular/material/icon';
-import { IntlModule} from "angular-ecmascript-intl";
+import { IntlModule } from "angular-ecmascript-intl";
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from "@angular/material/tabs";
 
 @Component({
   selector: 'app-comment',
   standalone: true,
   imports: [
     FormsModule, ReactiveFormsModule,
-    MatIconModule, IntlModule
+    MatIconModule, MatButtonModule, MatTabsModule,
+    IntlModule
   ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
@@ -42,7 +45,7 @@ export class CommentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.getMember();
+    this.getMember();
   }
 
   getMember(): void {
@@ -53,13 +56,13 @@ export class CommentComponent implements OnInit {
       this._memberService.getByUserName(userName)
         .pipe(
           take(1))
-          .subscribe({
-            next: (res: Member | undefined) => {
-              if (res) {
-                this.memberInput = res;
-              }
+        .subscribe({
+          next: (res: Member | undefined) => {
+            if (res) {
+              this.memberInput = res;
             }
-          })
+          }
+        })
   }
 
   add(): void {

@@ -43,13 +43,26 @@
             </div>
         </div>
     </div>
-    <div class="right"></div>
+    <div class="right">
+        <mat-tab-group mat-align-tabs="center">
+            <mat-tab label="{{memberInput.userName}} Comments">
+                <div class="tab-contents">
+                    <form [formGroup]="comFg">
+                        <input class="input" formControlName="contentCtrl" name="text" type="text"
+                            placeholder="Add your comment..." />
+
+                        <button (click)="add()"> Add 
+                            <span></span>
+                        </button>
+                    </form>
+                </div>
+            </mat-tab>
+            <mat-tab label="{{memberInput.userName}} Chat">
+                <div class="tab-contents">
+
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
 </section>
 }
-
-<form [formGroup]="comFg">
-    <label>Comment</label>
-    <input type="text" formControlName="contentCtrl">
-
-    <button (click)="add()">Add Comment</button>
-</form>
