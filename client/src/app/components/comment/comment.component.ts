@@ -14,27 +14,32 @@ import { MatIconModule } from '@angular/material/icon';
 import { IntlModule } from "angular-ecmascript-intl";
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from "@angular/material/tabs";
+import { UserComment } from '../../models/user-comment.model';
+import { matExpansionAnimations, MatExpansionModule } from '@angular/material/expansion';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule, ReactiveFormsModule,
     MatIconModule, MatButtonModule, MatTabsModule,
-    IntlModule
+    IntlModule, MatExpansionModule
   ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
 })
 export class CommentComponent implements OnInit {
   @Input('memberInput') memberInput: Member | undefined;
-  apiUrl = environment.apiUrl;
   private _commentService = inject(CommentService);
   private _snack = inject(MatSnackBar);
   private _fb = inject(FormBuilder);
   private _route = inject(ActivatedRoute);
   private _memberService = inject(MemberService);
   http = inject(HttpClient);
+  apiUrl = environment.apiUrl;
+  userComments: UserComment[] | undefined;
 
   comFg: FormGroup = this._fb.group({
     contentCtrl: ''
@@ -46,6 +51,7 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMember();
+    this.getUserComments();
   }
 
   getMember(): void {
@@ -73,5 +79,16 @@ export class CommentComponent implements OnInit {
     this._commentService.add(this.memberInput?.userName, commetnIn).subscribe();
 
     console.log('com compo')
+  }
+
+  getUserComments(): void {
+      this._commentService.gerAllUserComments('a1').pipe(take(1))
+      .subscribe({
+        next: (res: UserComment[]) => 
+        ( 
+          console.log(res),
+          this.userComments = res
+        ) 
+      });
   }
 }

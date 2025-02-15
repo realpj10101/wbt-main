@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment.development';
 import { CommentInput } from '../models/comment.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../models/helpers/apiResponse.model';
+import { UserComment } from '../models/user-comment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,4 +24,7 @@ export class CommentService {
     return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetMemberUserName, content);
   }
 
+  gerAllUserComments(targetUserName: string | undefined): Observable<UserComment[]> {
+    return this._http.get<UserComment[]>(this._apiUrl + 'get-user-comments/' + targetUserName);
+  }
 }

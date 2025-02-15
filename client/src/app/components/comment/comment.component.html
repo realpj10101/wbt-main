@@ -51,10 +51,24 @@
                         <input class="input" formControlName="contentCtrl" name="text" type="text"
                             placeholder="Add your comment..." />
 
-                        <button (click)="add()"> Add 
+                        <button (click)="add()"> Add
                             <span></span>
                         </button>
                     </form>
+
+                    @if (userComments) {
+                    @for (userCom of userComments; track $index) {
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>{{userCom.createdAt | date}}</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>{{userCom.content}}</p>
+                    </mat-expansion-panel>
+                    }
+                    }
+                    @else {
+                    <h4>This user is so alone</h4>
+                    }
                 </div>
             </mat-tab>
             <mat-tab label="{{memberInput.userName}} Chat">
