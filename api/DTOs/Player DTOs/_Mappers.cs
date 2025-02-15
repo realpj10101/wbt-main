@@ -97,11 +97,13 @@ public static class Mappers
         );
     }
 
-    public static Comment ConvertCommentIdsToComment(ObjectId commenterId, ObjectId commentedId, string content)
+    public static Comment ConvertCommentIdsToComment(ObjectId commenterId, ObjectId commentedId, string commenterName, string commentedMemberName, string content)
     {
         return new Comment(
             CommenterId: commenterId,
             CommentedMemberId: commentedId,
+            CommenterName: commenterName,
+            CommentedMemberName: commentedMemberName,
             Content: content,
             CreatedAt: DateTime.Now
             );
