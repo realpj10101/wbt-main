@@ -207,4 +207,14 @@ public class CommentRepository : ICommentRepository
 
         return [];
     }
+
+    public async Task<List<Comment>?> GetCommentsByUserNameAsync(string userName, CancellationToken cancellationToken)
+    {
+        List<Comment> userComments =
+            await _collection.Find(c => c.CommentedMemberName == userName).ToListAsync(cancellationToken);
+        
+        // PagedList<Comment> userComments = await PagedList<Comment>.CreatePagedListAsync(c => c.CommentedMemberName == userName)
+            
+        return userComments;
+    }
 }

@@ -88,4 +88,26 @@ public class CommentController(
 
         return playerDtos;
     }
+
+    [HttpGet("get-user-comments/{targetMemberUserName}")]
+    public async Task<ActionResult<IEnumerable<UserCommentDto>>> GetUserCommets(string targetMemberUserName,
+        CancellationToken cancellationToken)
+    {
+        List<Comment>? comments = await _commentRepository.GetCommentsByUserNameAsync(targetMemberUserName, cancellationToken);
+
+        if (comments.Count == 0) return NoContent();
+        
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+        
+        if (userId is null) return Unauthorized("You are not logged in. Please login again.");
+
+        List<UserCommentDto> userCommentDtos = [];
+
+        foreach (var comment in comments)
+        {   
+            userCommentDtos.Add(Mappers.ConvertCommentToUserCommentDto(comment));
+        }
+
+        return userCommentDtos;
+    }
 }
