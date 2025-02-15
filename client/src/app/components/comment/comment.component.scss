@@ -1,0 +1,38 @@
+.container {
+    // background-color: red;
+    display: flex;
+    margin: 3rem;
+    gap: 2rem;
+    min-height: fit-content;
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 34px;
+        background: #e0e0e0;
+        box-shadow: 27px 27px 40px #a1a1a1,
+            -27px -27px 40px #ffffff;
+
+        .top {
+            // background-color: green;
+            margin: 1rem;
+
+            img {
+                border-radius: 34px;
+            }
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1rem;
+        }
+    }
+}

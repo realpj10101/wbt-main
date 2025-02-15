@@ -1,12 +1,51 @@
-<section class="contaier">
+@if (memberInput) {
+<section class="container">
     <div class="left">
         <div class="top">
-
+            @if (memberInput.photos.length > 0) {
+            @for (photo of memberInput.photos; track $index) {
+            @if (photo.isMain) {
+            <img src="{{apiUrl + photo.url_165}}" priority alt="" height="250px" width="250px" mat-card-image>
+            }
+            }
+            }
+            @else {
+            <img src="member.png" alt="" height="250px" width="250px" mat-card-image>
+            }
+            @switch (memberInput.gender) {
+            @case ('male') {
+            <mat-icon>boy</mat-icon>
+            }
+            @case ('female') {
+            <mat-icon>girl</mat-icon>
+            }
+            @default {
+            <mat-icon>person</mat-icon>
+            }
+            }
+        </div>
+        <div class="bottom">
+            <div>
+                <strong>Name and LastName</strong>
+                <p>{{memberInput.name}}, {{memberInput.lastName}}</p>
+            </div>
+            <div>
+                <strong>Age</strong>
+                <p>{{memberInput.age}}</p>
+            </div>
+            <div>
+                <strong>LastActive</strong>
+                <p>{{memberInput.lastActive | intlRelativeTime }}</p>
+            </div>
+            <div>
+                <strong>Location</strong>
+                <p>{{memberInput.city}}, {{memberInput.region}}, {{memberInput.country}}</p>
+            </div>
         </div>
     </div>
     <div class="right"></div>
 </section>
-
+}
 
 <form [formGroup]="comFg">
     <label>Comment</label>

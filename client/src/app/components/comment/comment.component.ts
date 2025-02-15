@@ -10,12 +10,15 @@ import { ApiResponse } from '../../models/helpers/apiResponse.model';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { MemberService } from '../../services/member.service';
+import { MatIconModule } from '@angular/material/icon';
+import { IntlModule} from "angular-ecmascript-intl";
 
 @Component({
   selector: 'app-comment',
   standalone: true,
   imports: [
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule,
+    MatIconModule, IntlModule
   ],
   templateUrl: './comment.component.html',
   styleUrl: './comment.component.scss'
