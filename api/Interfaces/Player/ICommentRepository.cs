@@ -7,5 +7,5 @@ public interface ICommentRepository
 {
     public Task<CommentStatus> CreateAsync(ObjectId userId, string targetMemberUserName, string content, CancellationToken cancellationToken);
     public Task<CommentStatus> DeleteAsync(ObjectId userId, string targetMemberUserName, CancellationToken cancellationToken);
-    public Task<PagedList<AppUser>> GetAllAsync(CommentParams commentParams, CancellationToken cancellationToken);  
+    public Task<PagedList<AppUser>> GetAllAsync(CommentParams commentParams, CancellationToken cancellationToken);
 }

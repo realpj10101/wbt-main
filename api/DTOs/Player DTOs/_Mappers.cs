@@ -138,4 +138,14 @@ public static class Mappers
             CreatedAt = DateTime.UtcNow
         };
     }
+
+    public static UserCommentDto ConvertCommentToUserCommentDto(Comment comment)
+    {
+        return new UserCommentDto(
+            CommenterName: comment.CommenterName,
+            CommentedMemberName: comment.CommentedMemberName,
+            Content: comment.Content,
+            CreatedAt: comment.CreatedAt
+        );
+    }
 }
