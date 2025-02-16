@@ -14,7 +14,7 @@
             }
             }
         </div>
-        <div class="bottom">
+        <!-- <div class="bottom">
             <div>
                 <strong>Name and LastName</strong>
                 <p>{{member?.name}}, {{member?.lastName}} </p>
@@ -31,23 +31,20 @@
                 <strong>Games Played</strong>
                 <p>{{member?.gamesPlayed}}</p>
             </div>
-        </div>
+        </div> -->
 
-        <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid" mat-raised-button
+        <!-- <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid" mat-raised-button
             color="primary">
             Save Changes
-        </button>
+        </button> -->
     </div>
 
     <div class="right">
         <mat-tab-group class="user-info">
-            <mat-tab label="Professional Details">
+            <!-- <mat-tab label="Professional Details">
                 <div class="tab-contents">
                     <form [formGroup]="userEditFg" (ngSubmit)="updatePlayer()" class="about-contents">
 
-                        <!-- <input type="text">
-                        <input type="text">
-                        <input type="text"> -->
                         <mat-radio-group formControlName="genderCtrl" aria-label="Select yout gender">
                             <mat-radio-button value="female">Female</mat-radio-button>
                             <mat-radio-button value="male">Male</mat-radio-button>
@@ -73,16 +70,11 @@
                         </mat-form-field>
                     </form>
 
-                    <!-- <mat-form-field appearance="outline">
-                        <mat-label>Position</mat-label>
-                        <input type="text" matInput>
-                    </mat-form-field> -->
-
                 </div>
             </mat-tab>
             <mat-tab label="Statistics"></mat-tab>
             <mat-tab label="Location"></mat-tab>
-            <mat-tab label="Additional Details"></mat-tab>
+            <mat-tab label="Additional Details"></mat-tab> -->
             <mat-tab label="Edit Photos">
                 <div class="tab-contents">
                     <app-photo-editor [memberInput]="member"></app-photo-editor>
