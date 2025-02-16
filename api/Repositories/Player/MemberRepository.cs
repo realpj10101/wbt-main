@@ -36,6 +36,8 @@ public class MemberRepository : IMemberRepository
             _ => query.OrderByDescending(appUser => appUser.LastActive).ThenBy(appUser => appUser.Id)
         };
 
+        query = query.Where(doc => doc.NormalizedUserName != "ADMIN");
+
         return query;
     }
     

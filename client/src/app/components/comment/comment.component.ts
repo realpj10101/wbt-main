@@ -55,7 +55,6 @@ export class CommentComponent implements OnInit {
   }
 
   getMember(): void {
-
     const userName: string | null = this._route.snapshot.paramMap.get('userName');
 
     if (userName)
