@@ -43,7 +43,7 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.initialUploader();
+    this.initialUploader();
   }
 
   fileOverBase(event: boolean): void {
@@ -55,7 +55,7 @@ export class PhotoEditorComponent implements OnInit {
     if (this.loggedInPlayer) {
       this.uploader = new FileUploader({
         url: this.apiUrl + 'api/playeruser/add-photo',
-        authToken: 'Bearer' + this.loggedInPlayer.token,
+        authToken: 'Bearer ' + this.loggedInPlayer.token,
         isHTML5: true,
         allowedFileType: ['image'],
         removeAfterUpload: true,
@@ -72,6 +72,8 @@ export class PhotoEditorComponent implements OnInit {
           const photo: Photo = JSON.parse(response);
           this.member?.photos.push(photo);
 
+          console.log(photo);
+
           // set navbar profile photo when first photo is uploaded
           if (this.member?.photos.length === 1)
             this.setNavbarProfilePhoto(photo.url_165);
@@ -79,7 +81,6 @@ export class PhotoEditorComponent implements OnInit {
       }
     }
   }
-
 
   // set navbar photo only when first photo is uploaded
   setNavbarProfilePhoto(url_165: string): void {

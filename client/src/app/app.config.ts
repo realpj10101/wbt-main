@@ -7,12 +7,13 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
 import { loadingInterceptor } from './interceptors/loading.interceptor';
 import { errorInterceptor } from './interceptors/error.interceptor';
+import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-  provideZoneChangeDetection({ eventCoalescing: true }), 
-  provideRouter(routes),
-  provideAnimationsAsync(), provideAnimationsAsync(),
-  provideHttpClient(withInterceptors([jwtInterceptor, loadingInterceptor, errorInterceptor]))
+    provideRouter(routes),
+    provideClientHydration(),
+    provideAnimationsAsync(), provideAnimationsAsync(),
+    provideHttpClient(withInterceptors([jwtInterceptor, loadingInterceptor, errorInterceptor]))
   ]
 };
