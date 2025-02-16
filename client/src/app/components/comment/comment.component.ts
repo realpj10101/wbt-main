@@ -40,8 +40,8 @@ export class CommentComponent implements OnInit {
   private _memberService = inject(MemberService);
   http = inject(HttpClient);
   apiUrl = environment.apiUrl;
-  userComments: UserComment[] | undefined;
-  // userName: string | null = this._route.snapshot.paramMap.get('userName');
+  comments: UserComment[] | undefined;
+  userName: string | null = this._route.snapshot.paramMap.get('userName');
 
   comFg: FormGroup = this._fb.group({
     contentCtrl: ''
@@ -53,7 +53,7 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMember();
-    this.getUserComments();
+    this.getComments(); 
   }
 
   getMember(): void {
@@ -81,6 +81,17 @@ export class CommentComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (res: ApiResponse) => {
+          if(this.userName && this.memberInput?.userName) {
+
+            const newComment: UserComment  = {
+              commenterName: this.userName,
+              commentedMemberName: this.memberInput?.userName,
+              content: commetnIn.content,
+              createdAt: new Date()
+            }
+            this.comments?.push(newComment);
+          }
+            
           this._snack.open(res.message, 'close', {
             duration: 7000,
             horizontalPosition: 'center',
@@ -92,7 +103,7 @@ export class CommentComponent implements OnInit {
     console.log('com compo')
   }
 
-  getUserComments(): void {
+  getComments(): void {
       const userName: string | null = this._route.snapshot.paramMap.get('userName');
       // console.log('user comment', userName);
 
@@ -101,7 +112,7 @@ export class CommentComponent implements OnInit {
           next: (res: UserComment[]) =>
           (
             console.log(res),
-            this.userComments = res
+            this.comments = res
           )
         });
   }

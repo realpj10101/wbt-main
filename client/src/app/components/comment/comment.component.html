@@ -56,8 +56,8 @@
                         </button>
                     </form>
 
-                    @if (userComments) {
-                    @for (userCom of userComments; track $index) {
+                    @if (comments) {
+                    @for (userCom of comments; track $index) {
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
                             <mat-panel-title>{{userCom.commenterName | uppercase}} for {{userCom.commentedMemberName | uppercase}} 
