@@ -60,7 +60,8 @@
                     @for (userCom of userComments; track $index) {
                     <mat-expansion-panel hideToggle>
                         <mat-expansion-panel-header>
-                            <mat-panel-title>{{userCom.createdAt | date}}</mat-panel-title>
+                            <mat-panel-title>{{userCom.commenterName | uppercase}} for {{userCom.commentedMemberName | uppercase}} 
+                                at {{userCom.createdAt | date}}</mat-panel-title>
                         </mat-expansion-panel-header>
                         <p>{{userCom.content}}</p>
                     </mat-expansion-panel>
@@ -69,14 +70,11 @@
                     @else {
                     <h4>This user is so alone</h4>
                     }
-                    <!-- <button (click)="getUserComments()">
-                        get Comments
-                    </button> -->
                 </div>
             </mat-tab>
             <mat-tab label="{{memberInput.userName}} Chat">
                 <div class="tab-contents">
-
+                    
                 </div>
             </mat-tab>
         </mat-tab-group>

@@ -1,6 +1,6 @@
 export interface UserComment {
-    commenterUserName: string;
-    commentedMemberUserName: string;
+    commenterName: string;
+    commentedMemberName: string;
     content: string;
     createdAt: Date
 }
