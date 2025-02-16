@@ -17,6 +17,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { UserComment } from '../../models/user-comment.model';
 import { matExpansionAnimations, MatExpansionModule } from '@angular/material/expansion';
 import { CommonModule } from '@angular/common';
+import { P } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-comment',
@@ -40,6 +41,7 @@ export class CommentComponent implements OnInit {
   http = inject(HttpClient);
   apiUrl = environment.apiUrl;
   userComments: UserComment[] | undefined;
+  // userName: string | null = this._route.snapshot.paramMap.get('userName');
 
   comFg: FormGroup = this._fb.group({
     contentCtrl: ''
@@ -75,19 +77,32 @@ export class CommentComponent implements OnInit {
       content: this.ContetCtrl.value
     }
 
-    this._commentService.add(this.memberInput?.userName, commetnIn).subscribe();
+    this._commentService.add(this.memberInput?.userName, commetnIn)
+      .pipe(take(1))
+      .subscribe({
+        next: (res: ApiResponse) => {
+          this._snack.open(res.message, 'close', {
+            duration: 7000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          })
+        }
+      });
 
     console.log('com compo')
   }
 
   getUserComments(): void {
-      this._commentService.gerAllUserComments('a1').pipe(take(1))
-      .subscribe({
-        next: (res: UserComment[]) => 
-        ( 
-          console.log(res),
-          this.userComments = res
-        ) 
-      });
+      const userName: string | null = this._route.snapshot.paramMap.get('userName');
+      // console.log('user comment', userName);
+
+      this._commentService.gerAllUserComments(userName).pipe(take(1))
+        .subscribe({
+          next: (res: UserComment[]) =>
+          (
+            console.log(res),
+            this.userComments = res
+          )
+        });
   }
 }

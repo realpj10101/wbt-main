@@ -90,7 +90,7 @@ public class CommentController(
     }
 
     [HttpGet("get-user-comments/{targetMemberUserName}")]
-    public async Task<ActionResult<IEnumerable<UserCommentDto>>> GetUserCommets(string targetMemberUserName,
+    public async Task<ActionResult<IEnumerable<UserCommentDto>>> GetUserComments(string targetMemberUserName,
         CancellationToken cancellationToken)
     {
         List<Comment>? comments = await _commentRepository.GetCommentsByUserNameAsync(targetMemberUserName, cancellationToken);

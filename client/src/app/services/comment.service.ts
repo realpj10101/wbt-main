@@ -24,7 +24,8 @@ export class CommentService {
     return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetMemberUserName, content);
   }
 
-  gerAllUserComments(targetUserName: string | undefined): Observable<UserComment[]> {
+  gerAllUserComments(targetUserName: string | undefined | null): Observable<UserComment[]> {
+    console.log('service', targetUserName);
     return this._http.get<UserComment[]>(this._apiUrl + 'get-user-comments/' + targetUserName);
   }
 }
