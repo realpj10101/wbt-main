@@ -28,4 +28,6 @@ export class CommentService {
     console.log('service', targetUserName);
     return this._http.get<UserComment[]>(this._apiUrl + 'get-user-comments/' + targetUserName);
   }
+
+  delete(targetUSerName)
 }
