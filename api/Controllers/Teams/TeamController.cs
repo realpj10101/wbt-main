@@ -50,7 +50,15 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(userIdHashed, cancellationToken);
         
         if (userId is null) return Unauthorized("You are not logged in. Please login again.");
-        
+
+        List<ShowTeamDto> playerDtos = [];
+
+        foreach (Team team in pagedTeams)
+        {
+            playerDtos.Add(Mappers.ConvertTeamToShowTeamDto(team));
+        }
+
+        return playerDtos;
     }
 
     [HttpPut("update-team/{teamName}")]
