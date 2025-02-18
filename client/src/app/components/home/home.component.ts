@@ -3,6 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { environment } from '../../../environments/environment.development';
+import { LoggedInPlayer } from '../../models/logged-in-player.model';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,5 @@ import { environment } from '../../../environments/environment.development';
 })
 export class HomeComponent {
   apiUrl: string = environment.apiUrl;
-
-  links: string[] = [];
+  loggedInPlayerSig: Signal<LoggedInPlayer | null> | undefined;
 }
