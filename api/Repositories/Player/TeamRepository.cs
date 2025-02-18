@@ -1,6 +1,7 @@
 using api.DTOs.Team_DTOs;
 using api.Extensions;
-using api.Interfaces.Team;
+using api.Helpers;
+using api.Interfaces.Teams;
 using api.Models.Helpers;
 
 namespace api.Repositories.Player;
@@ -97,5 +98,15 @@ public class TeamRepository : ITeamRepository
          return await _collection.UpdateOneAsync(
             doc => doc.Id == teamId, updatedTeam, null, cancellationToken
         );
+    }
+
+    public async Task<PagedList<Team>?> GetAllAsync(PaginationParams paginationParams, CancellationToken cancellationToken)
+    {
+        IMongoQueryable<Team> query = _collection.AsQueryable();
+
+        PagedList<Team> teams = await PagedList<Team>.CreatePagedListAsync(
+            query, paginationParams.PageNumber, paginationParams.PageSize, cancellationToken);
+
+        return teams;
     }
 }
