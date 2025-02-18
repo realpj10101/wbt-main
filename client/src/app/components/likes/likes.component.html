@@ -25,11 +25,13 @@
             </div>
         </mat-tab>
     </mat-tab-group>
-    @if (pagination && likeParams) {
+    @if (members) {
+    @if (pagination && likeParams && members.length > 0) {
     <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
         [pageSize]="likeParams.pageSize" [disabled]="likeParams.pageSize === 0" [showFirstLastButtons]="true"
         [pageSizeOptions]="pageSizeOption" [hidePageSize]="false" [pageIndex]="likeParams.pageNumber - 1"
         aria-label="Select page" class="paginator">
     </mat-paginator>
+    }
     }
 </main>
