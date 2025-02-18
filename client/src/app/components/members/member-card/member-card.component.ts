@@ -27,6 +27,7 @@ import { CommentInput } from '../../../models/comment.model';
 export class MemberCardComponent {
   @Input('memberInput') memberIn: Member | undefined;
   @Output('unfollowUsernameOut') unfollowUserNameOut = new EventEmitter<string>();
+  @Output('dislikeUsernameOut') dislikeUserNameOut = new EventEmitter<string>();
   apiUrl = environment.apiUrl
   // photoUrl = environment.photoUrl;
   private _followService = inject(FollowService);
@@ -98,6 +99,7 @@ export class MemberCardComponent {
           next: (res: ApiResponse) => {
             if (this.memberIn) {
               this.memberIn.isLiking = false;
+              this.dislikeUserNameOut.emit(this.memberIn.userName);
             }
 
             this._snack.open(res.message, 'close', {

@@ -29,7 +29,6 @@ export class FollowService {
       params = params.append('pageNumber', followParams.pageNumber);
       params = params.append('pageSize', followParams.pageSize);
       params = params.append('predicate', followParams.predicate);
-
     }
 
     // Use the generic method and make it reusabel for all components.

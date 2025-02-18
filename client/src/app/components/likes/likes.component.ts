@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LikeService } from '../../services/like.service';
+import { Member } from '../../models/member.model';
 
 @Component({
   selector: 'app-likes',
@@ -8,5 +10,7 @@ import { Component } from '@angular/core';
   styleUrl: './likes.component.scss'
 })
 export class LikesComponent {
-
+  private _likeService = inject(LikeService);
+  members: Member[] | undefined;
+  // paginatio
 }

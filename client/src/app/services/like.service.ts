@@ -7,6 +7,7 @@ import { ApiResponse } from '../models/helpers/apiResponse.model';
 import { FollowParams } from '../models/helpers/follow-params.model';
 import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { Member } from '../models/member.model';
+import { LikeParams } from '../models/helpers/like-params.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,13 +27,13 @@ export class LikeService {
     return this._http.delete<ApiResponse>(this._apiUrl + 'remove/' + unfollowedMember);
   }
 
-  getAll(followParams: FollowParams): Observable<PaginatedResult<Member[]>> {
+  getAll(likeParams: LikeParams): Observable<PaginatedResult<Member[]>> {
     let params = new HttpParams();
 
-    if (followParams) {
-      params = params.append('pageNumber', followParams.pageNumber);
-      params = params.append('pageSize', followParams.pageSize);
-      params = params.append('predicate', followParams.predicate);
+    if (likeParams) {
+      params = params.append('pageNumber', likeParams.pageNumber);
+      params = params.append('pageSize', likeParams.pageSize);
+      params = params.append('predicate', likeParams.predicate);
     }
 
     return this.paginationHandler.getPaginatedResult<Member[]>(this._apiUrl, params);
