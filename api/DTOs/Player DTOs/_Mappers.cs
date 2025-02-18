@@ -114,6 +114,7 @@ public static class Mappers
         return new Team(
             CreatorId: userId,
             MembersIds: [],
+            MembersUserNames: [],
             TeamName: userInput.TeamName,
             TeamLevel: userInput.TeamLevel,
             Achievements: userInput.Achievements,
@@ -129,7 +130,7 @@ public static class Mappers
         return new ShowTeamDto
         {
             TeamName = team.TeamName,
-            MembersIds = team.MembersIds,
+            MembersUserNames = team.MembersUserNames,
             TeamLevel = team.TeamLevel,
             Achievements = team.Achievements,
             GamesPlayed = team.GamesPlayed,

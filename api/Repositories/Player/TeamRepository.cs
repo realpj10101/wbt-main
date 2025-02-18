@@ -42,10 +42,14 @@ public class TeamRepository : ITeamRepository
         CreateTeamDto userInput,
         CancellationToken cancellationToken)
     {
+        Team userTeam = await _collection.Find(t => t.TeamName == userInput.TeamName).FirstOrDefaultAsync(cancellationToken);
+
+        if (userTeam is not null) return null;
+        
         Team? team = Mappers.ConvertCreateTeamDtoToTeam(userId, userInput);
         
         await _collection.InsertOneAsync(team, cancellationToken);
-
+        
         if (team is not null)
         {
             ShowTeamDto showTeamDto = Mappers.ConvertTeamToShowTeamDto(team);
@@ -71,6 +75,7 @@ public class TeamRepository : ITeamRepository
 
         UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
             .AddToSet(t => t.MembersIds, memberId)
+            .AddToSet(t => t.MembersUserNames, userInput.UserName.ToLower().Trim())
             .Set(t => t.TeamName, userInput.TeamName)
             .Set(t => t.TeamLevel, userInput.TeamLevel)
             .Set(t => t.Achievements, userInput.Achievements)
@@ -78,6 +83,11 @@ public class TeamRepository : ITeamRepository
             .Set(t => t.GamesWon, userInput.GamesWon)
             .Set(t => t.GamesLost, userInput.GamesLost);
 
+        Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (team is not null) return null;
+        
         UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
             .AddToSet(appUser => appUser.EnrolledTeams, teamId);
         

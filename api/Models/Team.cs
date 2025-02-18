@@ -6,6 +6,7 @@ public record Team(
     [Optional][property: BsonId, BsonRepresentation(BsonType.ObjectId)] ObjectId Id,
     ObjectId CreatorId,
     List<ObjectId> MembersIds, // Basic Details
+    List<string> MembersUserNames,
     string TeamName,
     string TeamLevel, // Professional Details
     string Achievements,
