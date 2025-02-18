@@ -29,7 +29,7 @@ export class CommentService {
     return this._http.get<UserComment[]>(this._apiUrl + 'get-user-comments/' + targetUserName);
   }
 
-  delete(targetUserName: string | null): Observable<ApiResponse> {
+  remove(targetUserName: string | null): Observable<ApiResponse> {
     return this._http.delete<ApiResponse>(this._apiUrl + 'remove/' + targetUserName);
   }
 }
