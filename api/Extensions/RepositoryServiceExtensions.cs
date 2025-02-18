@@ -1,6 +1,6 @@
 using api.Interfaces.Coach;
 using api.Interfaces.Player;
-using api.Interfaces.Team;
+using api.Interfaces.Teams;
 using api.Repositories.Coach;
 using api.Repositories.Player;
 using image_processing.Interfaces;
