@@ -36,6 +36,10 @@
         <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
     </section>
     <section class="right">
+      <div class="about">
+        <button mat-flat-button>About App</button>
+        <button mat-flat-button>About Us</button>
+      </div>
         <!-- if logged-in: show appMenu
             else: show signup/login -->
         @if (loggedInUserSig && loggedInUserSig(); as user) {
@@ -49,10 +53,7 @@
           <p>{{ user.userName[0] | titlecase }}</p>
           }
         </button>
-        } @else {
-          
-        }
-    
+        } 
         <mat-menu #appMenu [class]="'mat-menu'">
           <!-- profile -->
           @if (loggedInUserSig && loggedInUserSig(); as user) {
@@ -68,10 +69,6 @@
               <!-- <p>
                   {{ user.knownAs[0] | titlecase }}
                 </p> -->
-            </div>
-            <div>
-              <p>{{ user.userName }}</p>
-              <p class="userName">{{ user.userName }}</p>
             </div>
           </div>
           }
