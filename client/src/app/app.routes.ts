@@ -15,6 +15,7 @@ import { ServerErrorComponent } from './components/errors/server-error/server-er
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { LikesComponent } from './components/likes/likes.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'no-access', component: NoAccessComponent },
       { path: 'user/user-edit', component: UserEditComponent},
       { path: 'comment/:userName', component: CommentComponent},
+      { path: 'likes', component: LikesComponent},
   //   ]
   // },
   // {

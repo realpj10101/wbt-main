@@ -26,7 +26,7 @@ export class LikesComponent implements OnInit {
   pageEvent: PageEvent | undefined;
 
   ngOnInit(): void {
-      this.getAll();
+    this.getAll();
   }
 
   getAll(): void {
@@ -71,6 +71,4 @@ export class LikesComponent implements OnInit {
 
     this.getAll();
   }
-
-
 }
