@@ -56,7 +56,7 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMember();
-    this.getComments(); 
+    this.getComments();
   }
 
   getMember(): void {
@@ -85,18 +85,18 @@ export class CommentComponent implements OnInit {
       .subscribe({
         next: (res: ApiResponse) => {
           this.getComments();
-          if(this.userName && this.memberInput?.userName) {
+          if (this.userName && this.memberInput?.userName) {
 
-            const newComment: UserComment  = {
+            const newComment: UserComment = {
               commenterName: this.userName,
               commentedMemberName: this.memberInput?.userName,
               content: commetnIn.content,
               createdAt: new Date()
             }
-            console.log(newComment); 
+            console.log(newComment);
             this.comments?.push(newComment);
           }
-            
+
           this._snack.open(res.message, 'close', {
             duration: 7000,
             horizontalPosition: 'center',
@@ -114,6 +114,7 @@ export class CommentComponent implements OnInit {
         take(1))
         .subscribe({
           next: (res: ApiResponse) => {
+            this.getComments();
             if (this.memberInput) {
               this.removeCommentOut.emit(this.memberInput?.userName);
             }
@@ -128,16 +129,22 @@ export class CommentComponent implements OnInit {
   }
 
   getComments(): void {
-      const userName: string | null = this._route.snapshot.paramMap.get('userName');
-      // console.log('user comment', userName);
+    const userName: string | null = this._route.snapshot.paramMap.get('userName');
+    // console.log('user comment', userName);
 
-      this._commentService.gerAllUserComments(userName).pipe(take(1))
-        .subscribe({
-          next: (res: UserComment[]) =>
-          (
-            console.log(res),
-            this.comments = res
-          )
-        });
+    this._commentService.gerAllUserComments(userName).pipe(take(1))
+      .subscribe({
+        next: (res: UserComment[]) =>
+        (
+          console.log(res),
+          this.comments = res
+        )
+      });
+  }
+
+  removeDeletedCommentsFromComments(userName: string): void {
+    const comments = this.comments?.filter(c => c.commenterName !== userName);
+    this.comments = comments;
+    console.log(comments);
   }
 }

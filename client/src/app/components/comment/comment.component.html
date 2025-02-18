@@ -59,7 +59,7 @@
                     @if (comments) {
                     @for (userCom of comments; track $index) {
 
-                    <mat-accordion class="example-headers-align" multi>
+                    <mat-accordion class="example-headers-align">
                         <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title> {{userCom.commenterName | uppercase}} for
@@ -70,6 +70,7 @@
                                     <button mat-mini-fab (click)="remove()">
                                         <mat-icon color="warn">delete</mat-icon>
                                     </button>
+                                    <!-- <button (click)="removeDeletedCommentsFromComments(memberInput.userName)">update list</button> -->
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
                             <p>{{userCom.content}}</p>
