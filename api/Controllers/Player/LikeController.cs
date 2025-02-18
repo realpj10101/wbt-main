@@ -51,7 +51,7 @@ public class LikeController(
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAllAsync([FromQuery] LikeParams likeParams,
+    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll([FromQuery] LikeParams likeParams,
         CancellationToken cancellationToken)
     {
         ObjectId? playerId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
@@ -75,11 +75,14 @@ public class LikeController(
         List<PlayerDto> playerDtos = [];
 
         bool isFollowing;
+        bool isLiking;
         foreach (AppUser appUser in pagedAppUsers)
         {
             isFollowing = await _followRepository.CheckIsFollowingAsync(playerId.Value, appUser, cancellationToken);
+
+            isLiking = await _likeRepository.CheckIsLikingAsync(playerId.Value, appUser, cancellationToken);
             
-            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing, isLiking));
         }
 
         return playerDtos;

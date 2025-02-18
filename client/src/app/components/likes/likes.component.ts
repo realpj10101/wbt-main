@@ -3,15 +3,21 @@ import { LikeService } from '../../services/like.service';
 import { Member } from '../../models/member.model';
 import { Pagination } from '../../models/helpers/pagination.model';
 import { LikeParams } from '../../models/helpers/like-params.model';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PaginatedResult } from '../../models/helpers/pagination-result.model';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { LikePredicate } from '../../enums/like-predicate-enum';
+import { MemberCardComponent } from '../members/member-card/member-card.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-likes',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    MemberCardComponent,
+    MatTabsModule, MatPaginatorModule
+  ],
   templateUrl: './likes.component.html',
   styleUrl: './likes.component.scss'
 })

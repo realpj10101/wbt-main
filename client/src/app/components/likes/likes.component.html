@@ -1,1 +1,35 @@
-<p>likes works!</p>
+<main>
+    <mat-tab-group mat-stretch-tabs="true" mat-align-tabs="center" (selectedTabChange)="onTabChange($event)">
+        <mat-tab label="{{likings}}">
+            <div class="members">
+                @if (members && members.length > 0) {
+                @for (member of members; track $index) {
+                <app-member-card [memberInput]="member" (dislikeUsernameOut)="removeDislikedUserFromMembers($event)" />
+                }
+                }
+                @else {
+                <p>You've not liked anyone so far.</p>
+                }
+            </div>
+        </mat-tab>
+        <mat-tab label="members who liked you">
+            <div class="members">
+                @if (members && members.length > 0) {
+                @for (member of members; track $index) {
+                <app-member-card [memberInput]="member" />
+                }
+                }
+                @else {
+                <p>More communications brings more people.</p>
+                }
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    @if (pagination && likeParams) {
+    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
+        [pageSize]="likeParams.pageSize" [disabled]="likeParams.pageSize === 0" [showFirstLastButtons]="true"
+        [pageSizeOptions]="pageSizeOption" [hidePageSize]="false" [pageIndex]="likeParams.pageNumber - 1"
+        aria-label="Select page" class="paginator">
+    </mat-paginator>
+    }
+</main>
