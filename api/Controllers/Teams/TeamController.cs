@@ -62,18 +62,43 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
     }
 
     [HttpPut("update-team/{teamName}")]
-    public async Task<ActionResult> Update(UpdateTeamDto userInput, string teamName, CancellationToken cancellationToken)
+    public async Task<ActionResult<Response>> Update(UpdateTeamDto userInput, string teamName,
+        CancellationToken cancellationToken)
     {
-        UpdateResult? updateRes = await _teamRepository.UpdateTeamAsync(userInput, teamName, cancellationToken);
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
         
-        return updateRes is null
-            ? BadRequest("Username is already exists.")
-            : !updateRes.IsModifiedCountAvailable
-            ? BadRequest("Update failed. Try again later.")
-            : Ok("Team has been updated successfully.");
+        if (userId is null) 
+            return Unauthorized("You are not logged in. Please login again.");
 
-        // return updateRes is null || !updateRes.IsModifiedCountAvailable
-        //     ? BadRequest("Update failed. Try again later.")
-        //     : Ok(new { message = "Team has been updated successfully." });
+        TeamStatus? tS = await _teamRepository.UpdateTeamAsync(userId.Value, userInput, teamName, cancellationToken);
+        
+        return tS.IsSuccess
+            ? Ok(new Response(Message: $"You updated the team {teamName} successfully."))
+            : tS.IsTargetMemberNotFound
+            ? NotFound($"{userInput.UserName} is not found.")
+            : tS.IsTargetTeamNotFound
+            ? NotFound($"Team {teamName} is not found.")
+            : tS.IsAlreadyJoined
+            ? BadRequest($"{userInput.UserName} is already joined.")
+            : tS.IsJoiningThemself
+            ? BadRequest("You are the owner of this team.")
+            : BadRequest("Updated team failed. Please contact administrator.");
     }
+    
+    // old code
+    // [HttpPut("update-team/{teamName}")]
+    // public async Task<ActionResult> Update(UpdateTeamDto userInput, string teamName, CancellationToken cancellationToken)
+    // {
+    //     UpdateResult? updateRes = await _teamRepository.UpdateTeamAsync(userInput, teamName, cancellationToken);
+    //     
+    //     return updateRes is null
+    //         ? BadRequest("Username is already exists.")
+    //         : !updateRes.IsModifiedCountAvailable
+    //         ? BadRequest("Update failed. Try again later.")
+    //         : Ok("Team has been updated successfully.");
+    //
+    //     // return updateRes is null || !updateRes.IsModifiedCountAvailable
+    //     //     ? BadRequest("Update failed. Try again later.")
+    //     //     : Ok(new { message = "Team has been updated successfully." });
+    // }
 }       

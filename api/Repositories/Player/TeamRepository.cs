@@ -61,25 +61,53 @@ public class TeamRepository : ITeamRepository
         return null;
     }
 
-    public async Task<UpdateResult?> UpdateTeamAsync(
+    public async Task<TeamStatus> UpdateTeamAsync(
+        ObjectId userId,
         UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
     {
+        TeamStatus tS = new();
+        
         ObjectId teamId = await _collection.AsQueryable()
             .Where(doc => doc.TeamName == targetTeamName)
             .Select(doc => doc.Id)
             .FirstOrDefaultAsync(cancellationToken);
+        
+        Team teamName = await _collection.Find(t => t.TeamName == targetTeamName).FirstOrDefaultAsync(cancellationToken);
+
+        if (teamName is null)
+        {
+            tS.IsTargetTeamNotFound = true;
+
+            return tS;
+        }
         
         ObjectId memberId = await _collectionAppUser.AsQueryable()
             .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
             .Select(doc => doc.Id)
             .FirstOrDefaultAsync(cancellationToken);
 
+        if (userId == memberId)
+        {
+            tS.IsJoiningThemself = true;
+
+            return tS;
+        }
+
+        AppUser user = await _collectionAppUser.Find(u => u.Id == memberId).FirstOrDefaultAsync(cancellationToken); //not found
+
+        if (user is null) // check the user is exists
+        {
+            tS.IsTargetMemberNotFound = true;
+
+            return tS;
+        }
+        
         UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
             .AddToSet(t => t.MembersIds, memberId)
             .AddToSet(t => t.MembersUserNames, userInput.UserName.ToLower().Trim())
-            .Set(t => t.TeamName, userInput.TeamName)
-            .Set(t => t.TeamLevel, userInput.TeamLevel)
-            .Set(t => t.Achievements, userInput.Achievements)
+            .Set(t => t.TeamName, userInput.TeamName.ToLower().Trim())
+            .Set(t => t.TeamLevel, userInput.TeamLevel.ToLower().Trim())
+            .Set(t => t.Achievements, userInput.Achievements.ToLower().Trim())
             .Set(t => t.GamesPlayed, userInput.GamesPlayed)
             .Set(t => t.GamesWon, userInput.GamesWon)
             .Set(t => t.GamesLost, userInput.GamesLost);
@@ -87,7 +115,12 @@ public class TeamRepository : ITeamRepository
         Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (team is not null) return null;
+        if (team is not null)
+        {
+            tS.IsAlreadyJoined = true;
+
+            return tS;
+        }
         
         UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
             .AddToSet(appUser => appUser.EnrolledTeams, teamId);
@@ -95,9 +128,11 @@ public class TeamRepository : ITeamRepository
         await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
             appUser.Id == memberId, updatedUser, null, cancellationToken);
         
-         return await _collection.UpdateOneAsync(
+        await _collection.UpdateOneAsync(
             doc => doc.Id == teamId, updatedTeam, null, cancellationToken
         );
+
+        return tS;
     }
 
     public async Task<PagedList<Team>?> GetAllAsync(PaginationParams paginationParams, CancellationToken cancellationToken)
