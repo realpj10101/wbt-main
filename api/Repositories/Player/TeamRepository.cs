@@ -104,10 +104,10 @@ public class TeamRepository : ITeamRepository
         
         UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
             .AddToSet(t => t.MembersIds, memberId)
-            .AddToSet(t => t.MembersUserNames, userInput.UserName.ToLower().Trim())
-            .Set(t => t.TeamName, userInput.TeamName.ToLower().Trim())
-            .Set(t => t.TeamLevel, userInput.TeamLevel.ToLower().Trim())
-            .Set(t => t.Achievements, userInput.Achievements.ToLower().Trim())
+            .AddToSet(t => t.MembersUserNames, userInput.UserName?.ToLower().Trim())
+            .Set(t => t.TeamName, userInput.TeamName?.ToLower().Trim())
+            .Set(t => t.TeamLevel, userInput.TeamLevel?.ToLower().Trim())
+            .Set(t => t.Achievements, userInput.Achievements?.ToLower().Trim())
             .Set(t => t.GamesPlayed, userInput.GamesPlayed)
             .Set(t => t.GamesWon, userInput.GamesWon)
             .Set(t => t.GamesLost, userInput.GamesLost);
@@ -132,6 +132,8 @@ public class TeamRepository : ITeamRepository
             doc => doc.Id == teamId, updatedTeam, null, cancellationToken
         );
 
+        tS.IsSuccess = true;
+        
         return tS;
     }
 
