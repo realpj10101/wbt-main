@@ -3,7 +3,6 @@ using api.Helpers;
 using api.Interfaces.Player;
 using api.Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api.Controllers.Player;
 
