@@ -1,9 +1,9 @@
 namespace api.DTOs.Team_DTOs;
 
 public record CreateTeamDto(
-    string TeamName,
-    string TeamLevel,
-    string Achievements,
+    [MaxLength(50)]string TeamName,
+    [MaxLength(20)]string TeamLevel,
+    [MaxLength(50)]string Achievements,
     int GamesPlayed,
     int GamesWon,
     int GamesLost,
