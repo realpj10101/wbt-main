@@ -7,7 +7,6 @@ import { CommentInput } from '../models/comment.model';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../models/helpers/apiResponse.model';
 import { UserComment } from '../models/user-comment.model';
-import { LikeParams } from '../models/helpers/like-params.model';
 import { CommentParams } from '../models/helpers/comment-params.model';
 import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { Member } from '../models/member.model';

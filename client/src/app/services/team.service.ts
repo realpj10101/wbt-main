@@ -14,7 +14,7 @@ export class TeamService {
   
   private readonly _apiUrl = environment.apiUrl + 'api/team/'
 
-  create(userInput: CreateTeam): Observable<ShowTeam | null> {
+  create(userInput: CreateTeam): Observable<ShowTeam> {
     return this.http.post<ShowTeam>(this._apiUrl + 'create', userInput);
   }
 }
