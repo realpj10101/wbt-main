@@ -16,6 +16,7 @@ import { NotFoundComponent } from './components/errors/not-found/not-found.compo
 import { UserEditComponent } from './components/user/user-edit/user-edit.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { LikesComponent } from './components/likes/likes.component';
+import { CreateTeamComponent } from './components/create-team/create-team.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -36,6 +37,7 @@ export const routes: Routes = [
       { path: 'user/user-edit', component: UserEditComponent},
       { path: 'comment/:userName', component: CommentComponent},
       { path: 'likes', component: LikesComponent},
+      { path: 'create-team', component: CreateTeamComponent},
   //   ]
   // },
   // {

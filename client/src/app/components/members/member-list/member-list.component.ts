@@ -12,6 +12,7 @@ import { AbstractControl, FormBuilder, FormControl, FormsModule, ReactiveFormsMo
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-member-list',
@@ -19,7 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
   imports: [
     CommonModule,
     MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-    MemberCardComponent, FormsModule, ReactiveFormsModule
+    MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
   ],
   templateUrl: './member-list.component.html',
   styleUrl: './member-list.component.scss'
