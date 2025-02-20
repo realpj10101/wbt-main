@@ -1,1 +1,155 @@
-<p>create-team works!</p>
+<section class="container">
+    <div class="photo">
+        <img src="team3.jpg" alt="" height="500px" width="500px">
+    </div>
+
+    <div>
+        <mat-stepper linear #stepper>
+            <mat-step [stepControl]="firstFg">
+                <form [formGroup]="firstFg">
+                    <ng-template matStepLabel>Fill Out Team Name, Level and Achievements</ng-template>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Team Name</mat-label>
+                        <input type="text" formControlName="teamNameCtrl" matInput>
+                        @if (TeamNameCtrl.hasError("required")) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                        <!-- @else if (TeamNameCtrl.hasError("maxlength")) {action=""
+                        <mat-error>Max 50 characters.</mat-error>
+                        } -->
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Team Level</mat-label>
+                        <input type="text" formControlName="teamLevelCtrl" matInput>
+                        @if (TeamLevelCtrl.hasError("required")) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                        @else if (TeamLevelCtrl.hasError("maxlength")) {
+                        <mat-error>Max 20 characters.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Team Achievements</mat-label>
+                        <input type="text" formControlName="achievementsCtrl" matInput>
+                        @if (AchievementsCtrl.hasError("required")) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                        @else if (AchievementsCtrl.hasError("maxlength")) {
+                        <mat-error>Max 50 characters.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <div class="actions">
+                        <button mat-flat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step [stepControl]="secFg">
+                <form [formGroup]="secFg">
+                    <ng-template matStepLabel>Fill out Team Games properties </ng-template>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Games Played</mat-label>
+                        <input type="number" formControlName="gamesPlayedCtrl" matInput>
+                        @if (GamesPlayedCtrl.hasError("required")) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Games Won</mat-label>
+                        <input type="number" formControlName="gamesWonCtrl" matInput>
+                        @if (GamesWonCtrl.hasError("required")) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Games Lost</mat-label>
+                        <input type="number" formControlName="gamesLostCtrl" matInput>
+                        @if (GamesLostCtrl.hasError("required")) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <div class="actions">
+                        <button mat-flat-button matStepperPrevious>Back</button>
+                        <button mat-flat-button matStepperNext>Next</button>
+                    </div>
+                </form>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>Done</ng-template>
+                <div class="actions">
+                    <button mat-flat-button [disabled]="firstFg.invalid && secFg.invalid" (click)="create()">Create</button>
+                    <button mat-flat-button (click)="stepper.reset()">Reset</button>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </div>
+</section>
+
+<!-- <div>
+        <h1>Create your Team</h1>
+        <form [formGroup]="teamFg">
+            <mat-form-field appearance="outline">
+                <mat-label>Team Name</mat-label>
+                <input type="text" formControlName="teamNameCtrl" matInput>
+                @if (TeamNameCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+                }
+                @else if (TeamNameCtrl.hasError("maxlength")) {
+                <mat-error>Max 50 characters.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Team Level</mat-label>
+                <input type="text" formControlName="teamLevelCtrl" matInput>
+                @if (TeamLevelCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+                }
+                @else if (TeamLevelCtrl.hasError("maxlength")) {
+                <mat-error>Max 20 characters.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Team Achievements</mat-label>
+                <input type="text" formControlName="achievementsCtrl" matInput>
+                @if (AchievementsCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+                }
+                @else if (AchievementsCtrl.hasError("maxlength")) {
+                <mat-error>Max 50 characters.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Games Played</mat-label>
+                <input type="number" formControlName="gamesPlayedCtrl" matInput>
+                @if (GamesPlayedCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Games Won</mat-label>
+                <input type="number" formControlName="gamesWonCtrl" matInput>
+                @if (GamesWonCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Games Lost</mat-label>
+                <input type="number" formControlName="gamesLostCtrl" matInput>
+                @if (GamesLostCtrl.hasError("required")) {
+                <mat-error>This field is required.</mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-flat-button (click)="create()">Create</button>
+        </form>
+    </div> -->
