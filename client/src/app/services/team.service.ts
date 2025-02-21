@@ -1,11 +1,14 @@
 import { inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CreateTeam } from '../models/create.team.model';
 import { map, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../environments/environment.development';
 import { ShowTeam } from '../models/show-team.model';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { PaginationParams } from '../models/helpers/paginationParams.model';
+import { PaginatedResult } from '../models/helpers/pagination-result.model';
+import { PaginationHandler } from '../extension/paginationHandler';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +19,7 @@ export class TeamService {
   router = inject(Router);
 
   private readonly _apiUrl = environment.apiUrl + 'api/team/'
+  private paginationHandler = new PaginationHandler();
 
   create(userInput: CreateTeam): Observable<ShowTeam> {
     return this.http.post<ShowTeam>(this._apiUrl + 'create', userInput).pipe(
@@ -25,6 +29,23 @@ export class TeamService {
         return res;
       })
     );
+  }
+
+  getAll(paginationParams: PaginationParams): Observable<PaginatedResult<ShowTeam[]>> {
+    const params = this.getHttpParams(paginationParams);
+
+    return this.paginationHandler.getPaginatedResult<ShowTeam[]>(this._apiUrl, params);
+  }
+
+  private getHttpParams(paginationParams: PaginationParams): HttpParams {
+    let params = new HttpParams();
+
+    if (paginationParams) {
+      params = params.append('pageSize', paginationParams.pageSize);
+      params = params.append('pageNumber', paginationParams.pageNumber);
+    }
+
+    return params;
   }
 
   private navigateToReturnUrl(): void {

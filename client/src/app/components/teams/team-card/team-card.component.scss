@@ -1,0 +1,63 @@
+.card {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    // background-color: red;
+    // height: 150px;
+    height: fit-content;
+    width: 300px;
+    padding: 10px;
+
+    .image {
+        position: relative; // To make the button position relative to the image
+
+        img {
+            width: 90px;
+            height: 90px;
+            transition: all 0.3s ease; // Smooth transition for hover effects
+            border-radius: 2rem;
+        }
+
+        button {
+            background-color: orange;
+            color: white;
+            font-weight: bold;
+            position: absolute;
+            bottom: -5px; // Adjust the distance you want the button below the image
+            left: 50%;
+            transform: translateX(-50%);
+            visibility: hidden; // Initially hidden
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0s linear 0.3s; // Smooth transition for visibility and opacity
+        }
+
+        &:hover {
+            img {
+                opacity: 0.7; // Optional, for adding an effect to the image on hover
+            }
+
+            button {
+                visibility: visible; // Button becomes visible on hover
+                opacity: 1; // Button fades in
+                transition: opacity 0.3s ease, visibility 0s linear 0s; // Ensures immediate visibility transition
+            }
+        }
+    }
+
+    .details {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        // align-items: center;
+        h5 {
+            margin: 0;
+            padding: 0;
+        }
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
