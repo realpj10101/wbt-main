@@ -27,7 +27,7 @@ export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl;
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'admin'];
-  links: string[] = ['members', 'friends', 'messages'];
+  links: string[] = ['members', 'friends', 'teams'];
 
   private registerPlayerService = inject(AccountService);
 

@@ -17,6 +17,7 @@ import { UserEditComponent } from './components/user/user-edit/user-edit.compone
 import { CommentComponent } from './components/comment/comment.component';
 import { LikesComponent } from './components/likes/likes.component';
 import { CreateTeamComponent } from './components/create-team/create-team.component';
+import { TeamListComponent } from './components/teams/team-list/team-list.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -38,6 +39,7 @@ export const routes: Routes = [
       { path: 'comment/:userName', component: CommentComponent},
       { path: 'likes', component: LikesComponent},
       { path: 'create-team', component: CreateTeamComponent},
+      { path: 'teams', component: TeamListComponent},
   //   ]
   // },
   // {
