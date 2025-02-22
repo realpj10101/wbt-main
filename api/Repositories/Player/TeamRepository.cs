@@ -154,6 +154,9 @@ public class TeamRepository : ITeamRepository
 
         if (team is null) return null;
 
-        // if (team.TeamName is not null) return 
+        if (team.TeamName is not null) 
+            return Mappers.ConvertTeamToShowTeamDto(team);
+
+        return null;
     }
 }
