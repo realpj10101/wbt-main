@@ -84,6 +84,16 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
             ? BadRequest("You are the owner of this team.")
             : BadRequest("Updated team failed. Please contact administrator.");
     }
+
+    [HttpGet("get-by-name/{teamName}")]
+    public async Task<ActionResult<ShowTeamDto>> GetByName(string teamName, CancellationToken cancellationToken)
+    {
+        ShowTeamDto? teamDto = await _teamRepository.GetByTeamNameAsync(teamName, cancellationToken);
+
+        if (teamDto is null) return NotFound("No team with this Name was found.");
+
+        return teamDto;
+    }
     
     // old code
     // [HttpPut("update-team/{teamName}")]
