@@ -17,6 +17,9 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
         
         if (userId is null) return Unauthorized("You are not logged in. Please login again.");
+        
+        if ((userInput.GamesWon + userInput.GamesLost) > userInput.GamesPlayed)
+            return BadRequest("Games won and games lost are more than games played.");
 
         ShowTeamDto? showTeamDto = await _teamRepository.CreateAsync(userId.Value, userInput, cancellationToken);
         
