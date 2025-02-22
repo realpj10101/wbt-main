@@ -9,13 +9,15 @@ import { Subscription } from 'rxjs';
 import { PaginatedResult } from '../../../models/helpers/pagination-result.model';
 import { Pagination } from '../../../models/helpers/pagination.model';
 import { TeamCardComponent } from "../team-card/team-card.component";
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-team-list',
   standalone: true,
   imports: [
     MatButtonModule, MatCardModule, MatPaginatorModule,
-    TeamCardComponent
+    TeamCardComponent, RouterModule
 ],
   templateUrl: './team-list.component.html',
   styleUrl: './team-list.component.scss'
