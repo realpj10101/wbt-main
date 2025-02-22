@@ -146,4 +146,14 @@ public class TeamRepository : ITeamRepository
 
         return teams;
     }
+
+    public async Task<ShowTeamDto?> GetByTeamNameAsync(string teamName, CancellationToken cancellationToken)
+    {
+        Team team = await _collection.Find(t =>
+            t.TeamName == teamName.ToLower()).FirstOrDefaultAsync(cancellationToken);
+
+        if (team is null) return null;
+
+        // if (team.TeamName is not null) return 
+    }
 }
