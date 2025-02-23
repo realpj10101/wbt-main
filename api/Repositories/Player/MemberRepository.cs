@@ -37,6 +37,7 @@ public class MemberRepository : IMemberRepository
         };
 
         query = query.Where(doc => doc.NormalizedUserName != "ADMIN");
+        query = query.Where(doc => doc.Id != memberParams.UserId);
 
         return query;
     }
