@@ -17,6 +17,14 @@ public class MemberController(IMemberRepository _memberRepository,
     public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll([FromQuery] MemberParams memberParams,
         CancellationToken cancellationToken)
     {
+        string? userIdHashed = User.GetHashedUserId();
+
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(userIdHashed, cancellationToken);
+
+        if (userId is null) return Unauthorized("You are not logged in! Login again.");
+
+        memberParams.UserId = userId;
+        
         PagedList<AppUser>? pagedAppUsers = await _memberRepository.GetAllAsync(memberParams, cancellationToken);
 
         if (pagedAppUsers.Count == 0)
@@ -30,12 +38,6 @@ public class MemberController(IMemberRepository _memberRepository,
             );
         
         Response.AddPaginationHeader(paginationHeader);
-
-        string? userIdHashed = User.GetHashedUserId();
-
-        ObjectId? userId = await _tokenService.GetActualUserIdAsync(userIdHashed, cancellationToken);
-
-        if (userId is null) return Unauthorized("You are not logged in! Login again.");
 
         List<PlayerDto> playerDtos = [];
 
