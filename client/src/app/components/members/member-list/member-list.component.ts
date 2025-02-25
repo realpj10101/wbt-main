@@ -95,4 +95,9 @@ export class MemberListComponent implements OnInit, OnDestroy {
       this.memberParams.orderBy = this.OrderByCtrl.value;
     }
   }
+
+  isAnyFilterApplied(): boolean {
+    return this.OrderByCtrl.value === this.memberParams?.orderBy 
+    && (this.SearchCtrl.pristine || this.SearchCtrl.value.length < 1)
+  }
 }
