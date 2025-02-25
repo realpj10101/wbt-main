@@ -6,6 +6,7 @@ import { FooterComponent } from "./components/footer/footer.component";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { AccountService } from './services/account.service';
 import { isPlatformBrowser } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { isPlatformBrowser } from '@angular/common';
     RouterOutlet,
     RouterLink, HomeComponent,
     NavbarComponent,
-    FooterComponent, NgxSpinnerModule
+    FooterComponent, NgxSpinnerModule,
+    MatIconModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

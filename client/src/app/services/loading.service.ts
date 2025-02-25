@@ -11,7 +11,7 @@ export class LoadingService {
     this.spinnerService.show(undefined, {
       type: 'ball-atom',
       bdColor: 'rgba(0, 0, 0, 0.8)',
-      color: '#fff'
+      color: '#fff',
     });
   }
 

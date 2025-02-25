@@ -9,7 +9,7 @@ export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
   loadingService.loading(); // loading starts
 
   return next(req).pipe(
-    delay(500), // remove delay on production
+    delay(2000), // remove delay on production
     finalize(() => {
       loadingService.idle(); // loading ends
     })
