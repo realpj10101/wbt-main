@@ -38,11 +38,16 @@ public class MemberRepository : IMemberRepository
 
         query = query.Where(doc => doc.NormalizedUserName != "ADMIN");
         query = query.Where(doc => doc.Id != memberParams.UserId);
-        query = query.Where(doc =>
-            (!string.IsNullOrEmpty(doc.NormalizedUserName))
-            && doc.NormalizedUserName.Contains(memberParams.Search.ToUpper())
-            || doc.Name.ToUpper().Contains(memberParams.Search.ToUpper())
-        );
+
+        if (!string.IsNullOrEmpty(memberParams.Search))
+        {
+            query = query.Where(doc =>
+                (!string.IsNullOrEmpty(doc.NormalizedUserName))
+                && doc.NormalizedUserName.Contains(memberParams.Search.ToUpper())
+                || doc.Name.ToUpper().Contains(memberParams.Search.ToUpper())
+            );
+        }
+        
         return query;
     }
     
