@@ -1,7 +1,13 @@
 <section class="members-container">
     <h1>Find your Fav Coach or Player</h1>
     <form [formGroup]="filterFg" class="">
-        <div class="order-by">
+        <div class="filter">
+            <p class="title">Search members</p>
+            <mat-form-field>
+                <input type="text" formControlName="searchCtrl" placeholder="By Username or name" matInput>
+            </mat-form-field>
+            
+
             <p class="title">Sort members</p>
             <mat-form-field>
                 <mat-label>Sort by</mat-label>
@@ -14,6 +20,10 @@
                     }
                 </mat-select>
             </mat-form-field>
+
+            <button (click)="updateMemberParams(); getAll();" color="primary" mat-stroked-button>
+                Apply Filter
+            </button>
         </div>
     </form>
     <div class="members">
@@ -29,4 +39,3 @@
     </mat-paginator>
     }
 </section>
-<button routerLink="/create-team">Create Team</button>

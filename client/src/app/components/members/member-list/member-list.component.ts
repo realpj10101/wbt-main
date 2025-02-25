@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-member-list',
@@ -20,6 +21,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+    MatButtonModule,
     MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
   ],
   templateUrl: './member-list.component.html',
@@ -89,6 +91,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   updateMemberParams(): void {
     if (this.memberParams) {
+      this.memberParams.search = this.SearchCtrl.value;
       this.memberParams.orderBy = this.OrderByCtrl.value;
     }
   }
