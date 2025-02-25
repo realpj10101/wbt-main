@@ -40,6 +40,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   private _fB = inject(FormBuilder);
 
   filterFg = this._fB.group({
+    searchCtrl: ['', []],
     orderByCtrl: []
   });
 
@@ -51,6 +52,10 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscribed?.unsubscribe();
+  }
+
+  get SearchCtrl(): FormControl {
+    return this.filterFg.get('searchCtrl') as FormControl;
   }
 
   get OrderByCtrl(): AbstractControl {
