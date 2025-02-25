@@ -21,11 +21,11 @@ export class TeamDetailsComponent implements OnInit {
   private _snack = inject(MatSnackBar);
   
   ngOnInit(): void {
-      // this.getTeam();
+      this.getTeam();
   }
 
   getTeam(): void {
-    
+  
     const teamName: string | null = this._route.snapshot.paramMap.get('teamName');
 
     if (teamName)
