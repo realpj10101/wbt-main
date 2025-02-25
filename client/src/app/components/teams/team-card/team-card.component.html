@@ -1,5 +1,5 @@
 <mat-card class="card">
-    <div class="image">
+    <div class="image" [routerLink]="['/team-details/' + teamIn?.teamName]">
         <img src="basic-team.jpg" alt="" height="90px" width="90px">
         <button mat-mini-fab>Join</button>
     </div>

@@ -5,15 +5,65 @@
 }
 
 .members-container {
-    position: relative;
-    min-height: 70dvh;
-
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 1rem;
+    gap: 2rem;
 
-    .paginator {
-        position: absolute;
-        bottom: 1rem;
+    .left {
+        position: relative;
+        // background-color: blue;
+        display: flex;
+        // justify-content: space-around;
+        border-radius: 34px;
+        background: #e0e0e0;
+        box-shadow: 27px 27px 40px #a1a1a1,
+            -27px -27px 40px #ffffff;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1rem;
+
+            .order {
+                text-align: center;
+                position: absolute;
+                // background-color: green;
+                top: 3rem;
+            }
+            
+            .filter {
+                text-align: center;
+                // background-color: red;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+
+                button {
+                    color: orange;
+                }
+            }
+        }
+    }
+
+    .right {
+        flex-grow: 4;
+        position: relative;
+        min-height: 70dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 34px;
+        background: #e0e0e0;
+        box-shadow: -27px 27px 40px #a1a1a1,
+            27px -27px 40px #ffffff;
+
+        .paginator {
+            position: absolute;
+            bottom: 1rem;
+            border-radius: 1rem;
+        }
     }
 }

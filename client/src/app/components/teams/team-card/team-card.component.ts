@@ -18,4 +18,5 @@ import { ShowTeam } from '../../../models/show-team.model';
 })
 export class TeamCardComponent {
   @Input('teamInput') teamIn: ShowTeam | undefined;
+  
 }

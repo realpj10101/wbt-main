@@ -37,6 +37,11 @@ export class TeamService {
     return this.paginationHandler.getPaginatedResult<ShowTeam[]>(this._apiUrl, params);
   }
 
+  getByTeamName(userIn: string): Observable<ShowTeam | undefined>
+  {
+    return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn);
+  }
+
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
     let params = new HttpParams();
 
