@@ -30,11 +30,15 @@ export class MemberService {
     let params = new HttpParams();
 
     if (memberParams) {
+      if (memberParams.search)
+        params = params.append('search', memberParams.search);
+
       params = params.append('pageSize', memberParams.pageSize);
       params = params.append('pageNumebr', memberParams.pageNumber);
       params = params.append('orderBy', memberParams.orderBy);
+
     }
-    
+
     return params;
   }
 }
