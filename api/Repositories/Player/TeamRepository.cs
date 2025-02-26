@@ -184,16 +184,6 @@ public class TeamRepository : ITeamRepository
             .ToListAsync(cancellationToken);
         
         return teamMembers;
-        
-        // IMongoQueryable<AppUser> query = _collectionAppUser.AsQueryable();
-            
-        // Step 3: Paginate the results
-        // return await PagedList<AppUser>.CreatePagedListAsync(
-        //     query,
-        //     paginationParams.PageNumber, 
-        //     paginationParams.PageSize, 
-        //     cancellationToken
-        // );
     }
 }
 
