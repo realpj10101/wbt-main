@@ -140,6 +140,30 @@ public static class Mappers
         };
     }
 
+    public static Team ConvertUpdateTeamDtoToTeam(ObjectId userId, UpdateTeamDto userInput)
+    {
+        return new Team(
+            CreatorId: userId,
+            MembersIds: [],
+            MembersUserNames: [],
+            TeamName: userInput.TeamName.ToLower(),
+            TeamLevel: userInput.TeamLevel.ToLower(),
+            Achievements: userInput.Achievements.ToLower(),
+            GamesPlayed: userInput.GamesPlayed,
+            GamesWon: userInput.GamesWon,
+            GamesLost: userInput.GamesLost,
+            CreatedAt: DateTime.UtcNow
+        );
+    }
+
+    public static EnrolledTeam ConvertTeamToEnrolledTeamDto(Team? team)
+    {   
+        return new EnrolledTeam(
+            TeamId: team.Id,
+            TeamName: team.TeamName
+            );
+    }
+
     public static UserCommentDto ConvertCommentToUserCommentDto(Comment comment)
     {
         return new UserCommentDto(

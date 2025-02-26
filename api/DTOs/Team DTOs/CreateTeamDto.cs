@@ -10,6 +10,11 @@ public record CreateTeamDto(
     DateTime CreatedAt
     );
 
+public record EnrolledTeam(
+    ObjectId TeamId,
+    string TeamName
+);
+
 public class ShowTeamDto
 {
     public string TeamName { get; init; } = string.Empty;

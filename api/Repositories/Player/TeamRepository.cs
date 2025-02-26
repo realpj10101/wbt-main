@@ -51,11 +51,6 @@ public class TeamRepository : ITeamRepository
         Team? team = Mappers.ConvertCreateTeamDtoToTeam(userId, userInput);
         
         await _collection.InsertOneAsync(team, null, cancellationToken);
-
-        UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
-            .AddToSet(u => u.AppUserTeams, team);
-
-        await _collectionAppUser.UpdateOneAsync(user => user.Id == userId, updatedUser, null, cancellationToken);
         
         if (team is not null)
         {
@@ -66,82 +61,164 @@ public class TeamRepository : ITeamRepository
 
         return null;
     }
-
+    
     public async Task<TeamStatus> UpdateTeamAsync(
-        ObjectId userId,
-        UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
+    ObjectId userId,
+    UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
+{
+    TeamStatus tS = new();
+
+    ObjectId teamId = await _collection.AsQueryable()
+        .Where(doc => doc.TeamName == targetTeamName)
+        .Select(doc => doc.Id)
+        .FirstOrDefaultAsync(cancellationToken);
+
+    Team teamName = await _collection.Find(t => t.TeamName == targetTeamName).FirstOrDefaultAsync(cancellationToken);
+
+    if (teamName is null)
     {
-        TeamStatus tS = new();
-        
-        ObjectId teamId = await _collection.AsQueryable()
-            .Where(doc => doc.TeamName == targetTeamName)
-            .Select(doc => doc.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-        
-        Team teamName = await _collection.Find(t => t.TeamName == targetTeamName).FirstOrDefaultAsync(cancellationToken);
-
-        if (teamName is null)
-        {
-            tS.IsTargetTeamNotFound = true;
-
-            return tS;
-        }
-        
-        ObjectId memberId = await _collectionAppUser.AsQueryable()
-            .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
-            .Select(doc => doc.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (userId == memberId)
-        {
-            tS.IsJoiningThemself = true;
-
-            return tS;
-        }
-
-        AppUser user = await _collectionAppUser.Find(u => u.Id == memberId).FirstOrDefaultAsync(cancellationToken); //not found
-
-        if (user is null) // check the user is exists
-        {
-            tS.IsTargetMemberNotFound = true;
-
-            return tS;
-        }
-        
-        UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
-            .AddToSet(t => t.MembersIds, memberId)
-            .AddToSet(t => t.MembersUserNames, userInput.UserName?.ToLower().Trim())
-            .Set(t => t.TeamName, userInput.TeamName?.ToLower().Trim())
-            .Set(t => t.TeamLevel, userInput.TeamLevel?.ToLower().Trim())
-            .Set(t => t.Achievements, userInput.Achievements?.ToLower().Trim())
-            .Set(t => t.GamesPlayed, userInput.GamesPlayed)
-            .Set(t => t.GamesWon, userInput.GamesWon)
-            .Set(t => t.GamesLost, userInput.GamesLost);
-        
-        await _collection.UpdateOneAsync(
-            doc => doc.Id == teamId, updatedTeam, null, cancellationToken
-        );
-        
-        Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
-            .FirstOrDefaultAsync(cancellationToken);
-        
-        if (team is not null)
-        {
-            tS.IsAlreadyJoined = true;
-
-            return tS;
-        }
-        
-        UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
-            .AddToSet(appUser => appUser.EnrolledTeams, team);
-        
-        await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
-            appUser.Id == memberId, updatedUser, null, cancellationToken);
-        
-        tS.IsSuccess = true;
-        
+        tS.IsTargetTeamNotFound = true;
         return tS;
     }
+
+    ObjectId memberId = await _collectionAppUser.AsQueryable()
+        .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
+        .Select(doc => doc.Id)
+        .FirstOrDefaultAsync(cancellationToken);
+
+    if (userId == memberId)
+    {
+        tS.IsJoiningThemself = true;
+        return tS;
+    }
+
+    AppUser user = await _collectionAppUser.Find(u => u.Id == memberId).FirstOrDefaultAsync(cancellationToken);
+
+    if (user is null)
+    {
+        tS.IsTargetMemberNotFound = true;
+        return tS;
+    }
+
+    Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
+        .FirstOrDefaultAsync(cancellationToken);
+
+    if (team is null)
+    {
+        tS.IsAlreadyJoined = true;
+        return tS;
+    }
+
+    UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
+        .AddToSet(t => t.MembersIds, memberId)
+        .AddToSet(t => t.MembersUserNames, userInput.UserName?.ToLower().Trim())
+        .Set(t => t.TeamName, userInput.TeamName?.ToLower().Trim())
+        .Set(t => t.TeamLevel, userInput.TeamLevel?.ToLower().Trim())
+        .Set(t => t.Achievements, userInput.Achievements?.ToLower().Trim())
+        .Set(t => t.GamesPlayed, userInput.GamesPlayed)
+        .Set(t => t.GamesWon, userInput.GamesWon)
+        .Set(t => t.GamesLost, userInput.GamesLost);
+
+    await _collection.UpdateOneAsync(
+        doc => doc.Id == teamId, updatedTeam, null, cancellationToken
+    );
+
+    if (team == null)
+    {
+        tS.IsTargetTeamNotFound = true;
+        return tS;
+    }
+
+    EnrolledTeam? teamMap = Mappers.ConvertTeamToEnrolledTeamDto(team);
+
+    UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
+        .AddToSet(appUser => appUser.EnrolledTeams, teamMap);
+
+    await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
+        appUser.Id == memberId, updatedUser, null, cancellationToken);
+
+    tS.IsSuccess = true;
+
+    return tS;
+}
+
+    // public async Task<TeamStatus> UpdateTeamAsync(
+    //     ObjectId userId,
+    //     UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
+    // {
+    //     TeamStatus tS = new();
+    //     
+    //     ObjectId teamId = await _collection.AsQueryable()
+    //         .Where(doc => doc.TeamName == targetTeamName)
+    //         .Select(doc => doc.Id)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //     
+    //     Team teamName = await _collection.Find(t => t.TeamName == targetTeamName).FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (teamName is null)
+    //     {
+    //         tS.IsTargetTeamNotFound = true;
+    //
+    //         return tS;
+    //     }
+    //     
+    //     ObjectId memberId = await _collectionAppUser.AsQueryable()
+    //         .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
+    //         .Select(doc => doc.Id)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (userId == memberId)
+    //     {
+    //         tS.IsJoiningThemself = true;
+    //
+    //         return tS;
+    //     }
+    //
+    //     AppUser user = await _collectionAppUser.Find(u => u.Id == memberId).FirstOrDefaultAsync(cancellationToken); //not found
+    //
+    //     if (user is null) // check the user is exists
+    //     {
+    //         tS.IsTargetMemberNotFound = true;
+    //
+    //         return tS;
+    //     }
+    //     
+    //     Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //     
+    //     if (team is not null)
+    //     {
+    //         tS.IsAlreadyJoined = true;
+    //
+    //         return tS;
+    //     }
+    //     
+    //     UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
+    //         .AddToSet(t => t.MembersIds, memberId)
+    //         .AddToSet(t => t.MembersUserNames, userInput.UserName?.ToLower().Trim())
+    //         .Set(t => t.TeamName, userInput.TeamName?.ToLower().Trim())
+    //         .Set(t => t.TeamLevel, userInput.TeamLevel?.ToLower().Trim())
+    //         .Set(t => t.Achievements, userInput.Achievements?.ToLower().Trim())
+    //         .Set(t => t.GamesPlayed, userInput.GamesPlayed)
+    //         .Set(t => t.GamesWon, userInput.GamesWon)
+    //         .Set(t => t.GamesLost, userInput.GamesLost);
+    //     
+    //     await _collection.UpdateOneAsync(
+    //         doc => doc.Id == teamId, updatedTeam, null, cancellationToken
+    //     );
+    //
+    //     EnrolledTeam? teamMap = Mappers.ConvertTeamToEnrolledTeamDto(team);
+    //     
+    //     UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
+    //         .AddToSet(appUser => appUser.EnrolledTeams, teamMap);
+    //     
+    //     await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
+    //         appUser.Id == memberId, updatedUser, null, cancellationToken);
+    //     
+    //     tS.IsSuccess = true;
+    //     
+    //     return tS;
+    // }
 
     public async Task<PagedList<Team>?> GetAllAsync(PaginationParams paginationParams, CancellationToken cancellationToken)
     {
