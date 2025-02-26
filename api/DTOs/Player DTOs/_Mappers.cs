@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using api.DTOs.Team_DTOs;
 using api.Extensions;
+using SharpCompress.Common;
 
 namespace api.DTOs;
 
@@ -157,7 +158,12 @@ public static class Mappers
     }
 
     public static EnrolledTeam ConvertTeamToEnrolledTeamDto(Team? team)
-    {   
+    {
+        if (team is null)
+        {
+            throw new ArgumentNullException(nameof(team), "Team cannot be null");
+        }
+        
         return new EnrolledTeam(
             TeamId: team.Id,
             TeamName: team.TeamName

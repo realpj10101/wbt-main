@@ -103,7 +103,7 @@ public class TeamRepository : ITeamRepository
     Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
         .FirstOrDefaultAsync(cancellationToken);
 
-    if (team is null)
+    if (team is not null)
     {
         tS.IsAlreadyJoined = true;
         return tS;
@@ -122,14 +122,17 @@ public class TeamRepository : ITeamRepository
     await _collection.UpdateOneAsync(
         doc => doc.Id == teamId, updatedTeam, null, cancellationToken
     );
+    
+    Team team1 = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
+        .FirstOrDefaultAsync(cancellationToken);
 
-    if (team == null)
+    if (team1 == null)
     {
         tS.IsTargetTeamNotFound = true;
         return tS;
     }
 
-    EnrolledTeam? teamMap = Mappers.ConvertTeamToEnrolledTeamDto(team);
+    EnrolledTeam? teamMap = Mappers.ConvertTeamToEnrolledTeamDto(team1);
 
     UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
         .AddToSet(appUser => appUser.EnrolledTeams, teamMap);
