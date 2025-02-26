@@ -1,4 +1,5 @@
 using api.DTOs.Team_DTOs;
+using api.Enums;
 using api.Extensions;
 using api.Helpers;
 using api.Interfaces.Teams;
@@ -50,6 +51,9 @@ public class TeamRepository : ITeamRepository
         Team? team = Mappers.ConvertCreateTeamDtoToTeam(userId, userInput);
         
         await _collection.InsertOneAsync(team, cancellationToken);
+
+        UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
+            .AddToSet(u => u.AppUserTeams, team);
         
         if (team is not null)
         {
@@ -111,10 +115,14 @@ public class TeamRepository : ITeamRepository
             .Set(t => t.GamesPlayed, userInput.GamesPlayed)
             .Set(t => t.GamesWon, userInput.GamesWon)
             .Set(t => t.GamesLost, userInput.GamesLost);
-
+        
+        await _collection.UpdateOneAsync(
+            doc => doc.Id == teamId, updatedTeam, null, cancellationToken
+        );
+        
         Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
             .FirstOrDefaultAsync(cancellationToken);
-
+        
         if (team is not null)
         {
             tS.IsAlreadyJoined = true;
@@ -123,15 +131,11 @@ public class TeamRepository : ITeamRepository
         }
         
         UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
-            .AddToSet(appUser => appUser.EnrolledTeams, teamId);
+            .AddToSet(appUser => appUser.EnrolledTeams, team);
         
         await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
             appUser.Id == memberId, updatedUser, null, cancellationToken);
         
-        await _collection.UpdateOneAsync(
-            doc => doc.Id == teamId, updatedTeam, null, cancellationToken
-        );
-
         tS.IsSuccess = true;
         
         return tS;
@@ -159,4 +163,9 @@ public class TeamRepository : ITeamRepository
 
         return null;
     }
+
+    // public async Task<PagedList<AppUser>> GetAllUsersAsync(TeamParams teamParams, CancellationToken cancellationToken)
+    // {
+    //     
+    // }
 }

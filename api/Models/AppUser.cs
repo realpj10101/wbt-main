@@ -15,6 +15,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public int Weight { get; init; }
     public DateOnly DateOfBirth { get; init; }
     public DateTime LastActive { get; init; }
+    public List<Team> AppUserTeams { get; init; } = [];
     public string Gender { get; init; } = string.Empty;
     public string City { get; init; } = string.Empty;
     public string Region { get; init; } = string.Empty;
@@ -37,7 +38,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string Bio { get; init; } = string.Empty;
     public string Achievements { get; init; } = string.Empty;
     public List<Photo> Photos { get; init; } = [];
-    public List<ObjectId> EnrolledTeams { get; init; } = [];
+    public List<Team> EnrolledTeams { get; init; } = [];
     public int FollowingsCount { get; init; }
     public int FollowersCount { get; init; }
     public int LikingsCount { get; init; }
