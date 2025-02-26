@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Gallery } from 'ng-gallery';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
+import { Member } from '../../../models/member.model';
 
 @Component({
   selector: 'app-team-details',
@@ -22,10 +23,10 @@ export class TeamDetailsComponent implements OnInit {
   
   ngOnInit(): void {
       this.getTeam();
+      this.getTeamMembers();
   }
 
   getTeam(): void {
-  
     const teamName: string | null = this._route.snapshot.paramMap.get('teamName');
 
     if (teamName)
@@ -33,5 +34,16 @@ export class TeamDetailsComponent implements OnInit {
         .pipe(
           take(1))
           .subscribe();
+  }
+
+  getTeamMembers(): void {
+    const teamName: string | null = this._route.snapshot.paramMap.get('teamName');
+
+    if (teamName)
+      this._teamService.getTeamMembersAsync(teamName)
+      .pipe(take(1))
+      .subscribe({
+        next: (res: Member | undefined) => console.log(res)
+      })
   }
 }

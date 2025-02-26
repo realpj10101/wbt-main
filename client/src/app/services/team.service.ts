@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { PaginationParams } from '../models/helpers/paginationParams.model';
 import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { PaginationHandler } from '../extension/paginationHandler';
+import { Member } from '../models/member.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,11 @@ export class TeamService {
   getByTeamName(userIn: string): Observable<ShowTeam | undefined>
   {
     return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn);
+  }
+
+  getTeamMembersAsync(userIn: string): Observable<Member | undefined>
+  {
+    return this.http.get<Member>(this._apiUrl + 'get-members/' + userIn);
   }
 
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
