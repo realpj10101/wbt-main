@@ -50,10 +50,12 @@ public class TeamRepository : ITeamRepository
         
         Team? team = Mappers.ConvertCreateTeamDtoToTeam(userId, userInput);
         
-        await _collection.InsertOneAsync(team, cancellationToken);
+        await _collection.InsertOneAsync(team, null, cancellationToken);
 
         UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
             .AddToSet(u => u.AppUserTeams, team);
+
+        await _collectionAppUser.UpdateOneAsync(user => user.Id == userId, updatedUser, null, cancellationToken);
         
         if (team is not null)
         {
