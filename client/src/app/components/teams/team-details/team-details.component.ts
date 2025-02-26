@@ -6,11 +6,14 @@ import { Gallery } from 'ng-gallery';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { take } from 'rxjs';
 import { Member } from '../../../models/member.model';
+import { ShowTeam } from '../../../models/show-team.model';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-team-details',
   standalone: true,
-  imports: [],
+  imports: [ MatTabsModule, MatExpansionModule],
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
@@ -20,6 +23,7 @@ export class TeamDetailsComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private _gallery = inject(Gallery);
   private _snack = inject(MatSnackBar);
+  team: ShowTeam | undefined;
   
   ngOnInit(): void {
       this.getTeam();
@@ -33,7 +37,13 @@ export class TeamDetailsComponent implements OnInit {
       this._teamService.getByTeamName(teamName)
         .pipe(
           take(1))
-          .subscribe();
+          .subscribe({
+            next: (res: ShowTeam | undefined) => {
+              if (res) {
+                this.team = res;
+              }
+            }
+          });
   }
 
   getTeamMembers(): void {
