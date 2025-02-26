@@ -1,6 +1,7 @@
 using api.DTOs.Team_DTOs;
 using api.Extensions;
 using api.Helpers;
+using api.Interfaces.Player;
 using api.Interfaces.Teams;
 using api.Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,9 @@ using Microsoft.AspNetCore.Http.HttpResults;
 namespace api.Controllers.Teams;
 
 [Authorize]
-public class TeamController(ITeamRepository _teamRepository, ITokenService _tokenService) : BaseApiController
+public class TeamController(
+    ITeamRepository _teamRepository, IFollowRepository _followRepository, 
+    ITokenService _tokenService) : BaseApiController
 {
     [HttpPost("create")]
     public async Task<ActionResult<ShowTeamDto>> Create(CreateTeamDto userInput, CancellationToken cancellationToken)
@@ -97,6 +100,32 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
 
         return teamDto;
     }
+
+    [HttpGet("get-members/{teamName}")]
+    public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll(string teamName,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+        
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+        
+        List<AppUser> appUsers = await _teamRepository.GetTeamMembersAsync(teamName, cancellationToken);
+
+        if (appUsers.Count == 0) return NoContent();
+
+        List<PlayerDto> playerDtos = [];
+
+        bool isFollowing;
+        foreach (AppUser appUser in appUsers)
+        {
+            isFollowing = await _followRepository.CheckIsFollowingAsync(userId.Value, appUser, cancellationToken);
+            
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
+        }
+
+        return playerDtos;
+    }
     
     // old code
     // [HttpPut("update-team/{teamName}")]
@@ -105,7 +134,7 @@ public class TeamController(ITeamRepository _teamRepository, ITokenService _toke
     //     UpdateResult? updateRes = await _teamRepository.UpdateTeamAsync(userInput, teamName, cancellationToken);
     //     
     //     return updateRes is null
-    //         ? BadRequest("Username is already exists.")
+    //         ? BadRequest("Username is already existsAc.")
     //         : !updateRes.IsModifiedCountAvailable
     //         ? BadRequest("Update failed. Try again later.")
     //         : Ok("Team has been updated successfully.");
