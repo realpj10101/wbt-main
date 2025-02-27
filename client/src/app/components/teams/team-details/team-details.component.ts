@@ -13,7 +13,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 @Component({
   selector: 'app-team-details',
   standalone: true,
-  imports: [ MatTabsModule, MatExpansionModule],
+  imports: [MatTabsModule, MatExpansionModule],
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
@@ -24,10 +24,11 @@ export class TeamDetailsComponent implements OnInit {
   private _gallery = inject(Gallery);
   private _snack = inject(MatSnackBar);
   team: ShowTeam | undefined;
-  
+  member: Member | undefined;
+
   ngOnInit(): void {
-      this.getTeam();
-      this.getTeamMembers();
+    this.getTeam();
+    this.getTeamMembers();
   }
 
   getTeam(): void {
@@ -37,13 +38,13 @@ export class TeamDetailsComponent implements OnInit {
       this._teamService.getByTeamName(teamName)
         .pipe(
           take(1))
-          .subscribe({
-            next: (res: ShowTeam | undefined) => {
-              if (res) {
-                this.team = res;
-              }
+        .subscribe({
+          next: (res: ShowTeam | undefined) => {
+            if (res) {
+              this.team = res;
             }
-          });
+          }
+        });
   }
 
   getTeamMembers(): void {
@@ -51,9 +52,13 @@ export class TeamDetailsComponent implements OnInit {
 
     if (teamName)
       this._teamService.getTeamMembersAsync(teamName)
-      .pipe(take(1))
-      .subscribe({
-        next: (res: Member | undefined) => console.log(res)
-      })
+        .pipe(take(1))
+        .subscribe({
+          next: (res: Member | undefined) => {
+            if (res) {
+              this.member = res;
+            }
+          }
+        })
   }
 }

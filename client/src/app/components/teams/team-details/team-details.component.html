@@ -28,14 +28,35 @@
                     </div>
                 </mat-tab>
                 <mat-tab label="Team Statistics">
-
+                    <div class="tab-contents">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Games Played</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <h5>{{team?.gamesPlayed}}</h5>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Games Won</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <h5>{{team?.gamesWon}}</h5>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Games Lost</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <h5>{{team?.gamesLost}}</h5>
+                        </mat-expansion-panel>
+                    </div>
                 </mat-tab>
             </mat-tab-group>
         </div>
     </div>
     <div class="bottom">
         <mat-tab-group>
-            <mat-tab label="Members"></mat-tab>
+            <mat-tab label="Members">
+                @if () {}
+            </mat-tab>
             <mat-tab label="Team Photos"></mat-tab>
         </mat-tab-group>
     </div>
