@@ -505,5 +505,10 @@
                 width: 100%;
             }
         }
+
+        footer {
+          // position: sticky;
+          z-index: 2;
+        }
     }
 }

@@ -9,11 +9,12 @@ import { Member } from '../../../models/member.model';
 import { ShowTeam } from '../../../models/show-team.model';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MemberCardComponent } from "../../members/member-card/member-card.component";
 
 @Component({
   selector: 'app-team-details',
   standalone: true,
-  imports: [MatTabsModule, MatExpansionModule],
+  imports: [MatTabsModule, MatExpansionModule, MemberCardComponent],
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
@@ -24,7 +25,7 @@ export class TeamDetailsComponent implements OnInit {
   private _gallery = inject(Gallery);
   private _snack = inject(MatSnackBar);
   team: ShowTeam | undefined;
-  member: Member | undefined;
+  members: Member[] | undefined;
 
   ngOnInit(): void {
     this.getTeam();
@@ -54,9 +55,10 @@ export class TeamDetailsComponent implements OnInit {
       this._teamService.getTeamMembersAsync(teamName)
         .pipe(take(1))
         .subscribe({
-          next: (res: Member | undefined) => {
+          next: (res: Member[]) => {
             if (res) {
-              this.member = res;
+              console.log(res);
+              this.members = res;
             }
           }
         })

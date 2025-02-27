@@ -43,9 +43,9 @@ export class TeamService {
     return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn);
   }
 
-  getTeamMembersAsync(userIn: string): Observable<Member | undefined>
+  getTeamMembersAsync(userIn: string): Observable<Member[]>
   {
-    return this.http.get<Member>(this._apiUrl + 'get-members/' + userIn);
+    return this.http.get<Member[]>(this._apiUrl + 'get-members/' + userIn);
   }
 
   private getHttpParams(paginationParams: PaginationParams): HttpParams {

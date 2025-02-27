@@ -55,7 +55,14 @@
     <div class="bottom">
         <mat-tab-group>
             <mat-tab label="Members">
-                @if () {}
+                @if (members?.length === 0) {
+                <p>This team has no members.</p>
+                }
+                <div class="members">
+                    @for (member of members; track $index) {
+                        <app-member-card [memberInput]="member"></app-member-card>
+                    }
+                </div>
             </mat-tab>
             <mat-tab label="Team Photos"></mat-tab>
         </mat-tab-group>
