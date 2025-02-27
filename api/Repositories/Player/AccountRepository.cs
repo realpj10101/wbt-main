@@ -35,7 +35,7 @@ public class AccountRepository : IAccountRepository
     {
         LoggedInDto loggedInDto = new();
 
-        AppUser appUser = Mappers.ConvertRegisterPlayerDtoToAppUser(registerDto);
+        AppUser appUser = Mappers.ConvertRegisterDtoToAppUser(registerDto);
 
         IdentityResult? userCreatedResult = await _userManager.CreateAsync(appUser, registerDto.Password);
 

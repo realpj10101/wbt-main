@@ -94,5 +94,4 @@ public class TokenService : ITokenService
 
         return ValidationsExtensions.ValidateObjectId(userId);
     }
-
 }

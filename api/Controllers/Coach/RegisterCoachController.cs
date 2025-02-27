@@ -16,13 +16,13 @@ public class RegisterCoachController(IRegisterCoachRepository _registerCoachRepo
     /// <returns>LoggedInDto</returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<LoggedInCoachDto>> Register(RegisterCoachDto coachInput,
+    public async Task<ActionResult<LoggedInCoachDto>> Register(AccountDto userInput,
         CancellationToken cancellationToken)
     {
-        if (coachInput.Password != coachInput.ConfirmPassword)
+        if (userInput.Password != userInput.ConfirmPassword)
             return BadRequest("Passwords don't match");
         
-        LoggedInCoachDto? loggedInCoachDto = await _registerCoachRepository.RegisterCoachAsync(coachInput, cancellationToken);
+        LoggedInCoachDto? loggedInCoachDto = await _registerCoachRepository.RegisterCoachAsync(userInput, cancellationToken);
 
         return !string.IsNullOrEmpty(loggedInCoachDto.Token)
             ? Ok(loggedInCoachDto)
@@ -30,6 +30,4 @@ public class RegisterCoachController(IRegisterCoachRepository _registerCoachRepo
             ? BadRequest(loggedInCoachDto.Errors)
             : BadRequest("Registration has failed. Try again or contact the support.");
     }
-    
-    
 }

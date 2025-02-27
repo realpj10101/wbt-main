@@ -7,7 +7,7 @@ namespace api.DTOs;
 
 public static class Mappers
 {
-    public static AppUser ConvertRegisterPlayerDtoToAppUser(AccountDto playerInput)
+    public static AppUser ConvertRegisterDtoToAppUser(AccountDto playerInput)
     {
         return new AppUser
         {

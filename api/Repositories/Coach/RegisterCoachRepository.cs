@@ -32,14 +32,16 @@ public class RegisterCoachRepository : IRegisterCoachRepository
     /// <param name="registerCoachDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>LoggedInDto</returns>
-    public async Task<LoggedInCoachDto> RegisterCoachAsync(RegisterCoachDto registerCoachDto,
+    public async Task<LoggedInCoachDto> RegisterCoachAsync(AccountDto userInput,
         CancellationToken cancellationToken)
     {
         LoggedInCoachDto loggedInCoachDto = new();
 
-        AppUser appUser = CoachMappers.ConvertRegisterCoachDtoToAppUser(registerCoachDto);
+        AppUser appUser = Mappers.ConvertRegisterDtoToAppUser(userInput);
+        
+        // AppUser appUser = CoachMappers.ConvertRegisterCoachDtoToAppUser(registerCoachDto);
 
-        IdentityResult? coachCreatedResult = await _userManager.CreateAsync(appUser, registerCoachDto.Password);
+        IdentityResult? coachCreatedResult = await _userManager.CreateAsync(appUser, userInput.Password);
 
         if (coachCreatedResult.Succeeded)
         {
