@@ -20,6 +20,8 @@ import { CreateTeamComponent } from './components/create-team/create-team.compon
 import { TeamListComponent } from './components/teams/team-list/team-list.component';
 import { TeamDetailsComponent } from './components/teams/team-details/team-details.component';
 import { ChooseComponent } from './components/choose/choose.component';
+import { RegisterCoachComponent } from './components/coach-account/register-coach/register-coach.component';
+import { LoginCoachComponent } from './components/coach-account/login-coach/login-coach.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -30,20 +32,20 @@ export const routes: Routes = [
   //   runGuardsAndResolvers: 'always',
   //   canActivate: [authGuard],
   //   children: [
-      { path: 'members', component: MemberListComponent },
-      { path: 'member-card', component: MemberCardComponent },
-      { path: 'member-details/:userName', component: MemberDetailsComponent },
-      { path: 'message', component: MessagesComponent },
-      { path: 'friends', component: FriendsComponent },
-      { path: 'admin', component: AdminComponent },
-      { path: 'no-access', component: NoAccessComponent },
-      { path: 'user/user-edit', component: UserEditComponent},
-      { path: 'comment/:userName', component: CommentComponent},
-      { path: 'likes', component: LikesComponent},
-      { path: 'create-team', component: CreateTeamComponent},
-      { path: 'teams', component: TeamListComponent},
-      { path: 'team-details/:teamName', component: TeamDetailsComponent},
-      { path: 'choose', component: ChooseComponent},
+  { path: 'members', component: MemberListComponent },
+  { path: 'member-card', component: MemberCardComponent },
+  { path: 'member-details/:userName', component: MemberDetailsComponent },
+  { path: 'message', component: MessagesComponent },
+  { path: 'friends', component: FriendsComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'no-access', component: NoAccessComponent },
+  { path: 'user/user-edit', component: UserEditComponent },
+  { path: 'comment/:userName', component: CommentComponent },
+  { path: 'likes', component: LikesComponent },
+  { path: 'create-team', component: CreateTeamComponent },
+  { path: 'teams', component: TeamListComponent },
+  { path: 'team-details/:teamName', component: TeamDetailsComponent },
+  { path: 'choose', component: ChooseComponent },
   //   ]
   // },
   // {
@@ -51,8 +53,10 @@ export const routes: Routes = [
   //   runGuardsAndResolvers: 'always',
   //   canActivate: [authLoggedInGuard],
   //   children: [
-      { path: 'account/register', component: RegisterComponent },
-      { path: 'account/login', component: LoginComponent },
+  { path: 'account/register', component: RegisterComponent },
+  { path: 'account/login', component: LoginComponent },
+  { path: 'coach-account/register', component: RegisterCoachComponent },
+  { path: 'coach-account/login', component: LoginCoachComponent},
   //   ]
   // },
   { path: 'server-error', component: ServerErrorComponent },
