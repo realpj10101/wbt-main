@@ -68,38 +68,38 @@ public class CoachAccountRepository : ICoachAccountRepository
         return loggedInDto;
     }
 
-    public async Task<LoggedInCoachDto> LoginAsync(LoginCoachDto coachInput, CancellationToken cancellationToken)
+    public async Task<LoggedInDto> LoginAsync(LoginDto userInput, CancellationToken cancellationToken)
     {
-        LoggedInCoachDto loggedInCoachDto = new();
+        LoggedInDto loggedInDto = new();
 
         AppUser? appUser;
 
-        appUser = await _userManager.FindByEmailAsync(coachInput.Email);
+        appUser = await _userManager.FindByEmailAsync(userInput.Email);
 
         if (appUser is null)
         {
-            loggedInCoachDto.IsWrongCreds = true;
+            loggedInDto.IsWrongCreds = true;
 
-            return loggedInCoachDto;
+            return loggedInDto;
         }
         
-        bool isPasswordCorrect = await _userManager.CheckPasswordAsync(appUser, coachInput.Password);
+        bool isPasswordCorrect = await _userManager.CheckPasswordAsync(appUser, userInput.Password);
 
         if (!isPasswordCorrect)
         {
-            loggedInCoachDto.IsWrongCreds = true;
+            loggedInDto.IsWrongCreds = true;
 
-            return loggedInCoachDto;
+            return loggedInDto;
         }
 
         string? token = await _tokenService.CreateToken(appUser, cancellationToken);
 
         if (!string.IsNullOrEmpty(token))
         {
-            return CoachMappers.ConvertAppUserToLoggedInCoachDto(appUser, token);
+            return Mappers.ConvertAppUserToLoggedInDto(appUser, token);
         }
 
-        return loggedInCoachDto;
+        return loggedInDto;
     }
 
     public async Task<LoggedInCoachDto?> ReloadLoggedInCoachAsync(string hashedUserId, string token,
