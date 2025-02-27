@@ -30,4 +30,18 @@ public class CoachAccountController(ICoachAccountRepository _coachAccountReposit
             ? BadRequest(loggedInDto.Errors)
             : BadRequest("Registration has failed. Try again or contact the support.");
     }
+
+    [AllowAnonymous]
+    [HttpPost("login")]
+    public async Task<ActionResult<LoggedInDto>> Login(LoginDto userInput, CancellationToken cancellationToken)
+    {
+        LoggedInDto? loggedInDto = await _coachAccountRepository.LoginAsync(userInput, cancellationToken);
+        
+        return 
+            !string.IsNullOrEmpty(loggedInDto.Token)
+                ? Ok(loggedInDto)
+                : loggedInDto.IsWrongCreds
+                ? Unauthorized("Wrong Email or password.")
+                : BadRequest("Login failed. Try again or contact the support.");
+    }
 }
