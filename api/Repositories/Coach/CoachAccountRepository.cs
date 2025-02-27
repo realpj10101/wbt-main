@@ -102,7 +102,7 @@ public class CoachAccountRepository : ICoachAccountRepository
         return loggedInDto;
     }
 
-    public async Task<LoggedInCoachDto?> ReloadLoggedInCoachAsync(string hashedUserId, string token,
+    public async Task<LoggedInDto?> ReloadLoggedInCoachAsync(string hashedUserId, string token,
         CancellationToken cancellationToken)
     {
         ObjectId? coachId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
@@ -113,7 +113,7 @@ public class CoachAccountRepository : ICoachAccountRepository
 
         return appUser is null
             ? null
-            : CoachMappers.ConvertAppUserToLoggedInCoachDto(appUser, token);
+            : Mappers.ConvertAppUserToLoggedInDto(appUser, token);
     }
 
     public async Task<UpdateResult?> UpdateLastActive(string hashedUserId, CancellationToken cancellationToken)

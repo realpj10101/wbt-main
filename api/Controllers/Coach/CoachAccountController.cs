@@ -1,4 +1,5 @@
 using api.DTOs.Coach_DTOs;
+using api.Extensions;
 using api.Interfaces.Coach;
 using Microsoft.AspNetCore.Authorization;
 
@@ -43,5 +44,29 @@ public class CoachAccountController(ICoachAccountRepository _coachAccountReposit
                 : loggedInDto.IsWrongCreds
                 ? Unauthorized("Wrong Email or password.")
                 : BadRequest("Login failed. Try again or contact the support.");
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<LoggedInDto>> ReloadLoggedInUser(CancellationToken cancellationToken)
+    {
+        // obtain token value
+        string? token = null;
+        
+        bool isTokenValid = HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader);
+
+        if (isTokenValid)
+            token = authHeader.ToString().Split(' ').Last();
+        
+        if (string.IsNullOrEmpty(token))
+            return Unauthorized("Token is expired or invalid. Login again.");
+
+        string? hashedUserId = User.GetHashedUserId();
+        if (string.IsNullOrEmpty(hashedUserId))
+            return BadRequest("Np user found with this user Id");
+
+        LoggedInDto? loggedInDto =
+            await _coachAccountRepository.ReloadLoggedInCoachAsync(hashedUserId, token, cancellationToken);
+
+        return loggedInDto is null ? Unauthorized("User is logged out or unauthorized. Login again.") : loggedInDto;
     }
 }
