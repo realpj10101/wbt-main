@@ -32,7 +32,7 @@ public static class RepositoryServiceExtensions
 
         #region Coach
 
-        services.AddScoped<IRegisterCoachRepository, RegisterCoachRepository>();
+        services.AddScoped<ICoachAccountRepository, CoachAccountRepository>();
         
         #endregion
 

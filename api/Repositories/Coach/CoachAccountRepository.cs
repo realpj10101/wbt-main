@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace api.Repositories.Coach;
 
-public class RegisterCoachRepository : IRegisterCoachRepository
+public class CoachAccountRepository : ICoachAccountRepository
 {
     #region Vars and Constructor
 
@@ -13,7 +13,7 @@ public class RegisterCoachRepository : IRegisterCoachRepository
     private readonly UserManager<AppUser> _userManager;
     private readonly ITokenService _tokenService;
 
-    public RegisterCoachRepository(IMongoClient client, IMyMongoDbSettings dbSettings,
+    public CoachAccountRepository(IMongoClient client, IMyMongoDbSettings dbSettings,
         UserManager<AppUser> userManager, ITokenService tokenService)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
@@ -32,10 +32,10 @@ public class RegisterCoachRepository : IRegisterCoachRepository
     /// <param name="registerCoachDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>LoggedInDto</returns>
-    public async Task<LoggedInCoachDto> RegisterCoachAsync(AccountDto userInput,
+    public async Task<LoggedInDto> RegisterCoachAsync(AccountDto userInput,
         CancellationToken cancellationToken)
     {
-        LoggedInCoachDto loggedInCoachDto = new();
+        LoggedInDto loggedInDto = new();
 
         AppUser appUser = Mappers.ConvertRegisterDtoToAppUser(userInput);
         
@@ -48,24 +48,24 @@ public class RegisterCoachRepository : IRegisterCoachRepository
             IdentityResult? roleResult = await _userManager.AddToRoleAsync(appUser, "coach");
 
             if (!roleResult.Succeeded)
-                return loggedInCoachDto;
+                return loggedInDto;
 
             string? token = await _tokenService.CreateToken(appUser, cancellationToken);
 
             if (!string.IsNullOrEmpty(token))
             {
-                return CoachMappers.ConvertAppUserToLoggedInCoachDto(appUser, token);
+                return Mappers.ConvertAppUserToLoggedInDto(appUser, token);
             }
         }
         else
         {
             foreach (IdentityError error in coachCreatedResult.Errors)
             {
-                loggedInCoachDto.Errors.Add(error.Description);
+                loggedInDto.Errors.Add(error.Description);
             }
         }
 
-        return loggedInCoachDto;
+        return loggedInDto;
     }
 
     public async Task<LoggedInCoachDto> LoginAsync(LoginCoachDto coachInput, CancellationToken cancellationToken)

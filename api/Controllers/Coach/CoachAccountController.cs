@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers.Coach;
 
 [Authorize]
-public class RegisterCoachController(IRegisterCoachRepository _registerCoachRepository) : BaseApiController 
+public class CoachAccountController(ICoachAccountRepository _coachAccountRepository) : BaseApiController 
 {
     /// <summary>
     /// Create accounts
@@ -16,18 +16,18 @@ public class RegisterCoachController(IRegisterCoachRepository _registerCoachRepo
     /// <returns>LoggedInDto</returns>
     [AllowAnonymous]
     [HttpPost("register")]
-    public async Task<ActionResult<LoggedInCoachDto>> Register(AccountDto userInput,
+    public async Task<ActionResult<LoggedInDto>> Register(AccountDto userInput,
         CancellationToken cancellationToken)
     {
         if (userInput.Password != userInput.ConfirmPassword)
             return BadRequest("Passwords don't match");
         
-        LoggedInCoachDto? loggedInCoachDto = await _registerCoachRepository.RegisterCoachAsync(userInput, cancellationToken);
+        LoggedInDto? loggedInDto = await _coachAccountRepository.RegisterCoachAsync(userInput, cancellationToken);
 
-        return !string.IsNullOrEmpty(loggedInCoachDto.Token)
-            ? Ok(loggedInCoachDto)
-            : loggedInCoachDto.Errors.Count != 0
-            ? BadRequest(loggedInCoachDto.Errors)
+        return !string.IsNullOrEmpty(loggedInDto.Token)
+            ? Ok(loggedInDto)
+            : loggedInDto.Errors.Count != 0
+            ? BadRequest(loggedInDto.Errors)
             : BadRequest("Registration has failed. Try again or contact the support.");
     }
 }
