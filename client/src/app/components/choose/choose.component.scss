@@ -1,0 +1,61 @@
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    .top {
+        position: relative;
+
+        .details {
+            // background-color: red;
+
+            img {
+                border-radius: 3rem;
+            }
+
+            .description {
+                position: absolute;
+                top: 10%;
+                left: 200px;
+                text-align: center;
+                color: white;
+                backdrop-filter: blur(5px);
+                padding: 5rem;
+                border-radius: 3rem;
+            }
+        }
+    }
+
+    .bottom {
+        // background-color: red;
+        display: flex;
+        gap: 30rem;
+
+        mat-card {
+            width: 500px;
+            display: flex;
+            gap: 1rem;
+
+            img {
+                border-radius: 2rem;
+                transition: 0.3s ease-in-out;
+
+                &:hover {
+                    transition: 0.3s ease-in-out;
+                    background-color: #d59bf6;
+                    scale: 1.2;
+                }
+            }
+
+            mat-card-content {
+                display: flex;
+                gap: 1rem;
+
+                button {
+                    background-color: orange;
+                }
+            }
+        }
+    }
+}

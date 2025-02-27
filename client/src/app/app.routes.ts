@@ -19,6 +19,7 @@ import { LikesComponent } from './components/likes/likes.component';
 import { CreateTeamComponent } from './components/create-team/create-team.component';
 import { TeamListComponent } from './components/teams/team-list/team-list.component';
 import { TeamDetailsComponent } from './components/teams/team-details/team-details.component';
+import { ChooseComponent } from './components/choose/choose.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -42,6 +43,7 @@ export const routes: Routes = [
       { path: 'create-team', component: CreateTeamComponent},
       { path: 'teams', component: TeamListComponent},
       { path: 'team-details/:teamName', component: TeamDetailsComponent},
+      { path: 'choose', component: ChooseComponent},
   //   ]
   // },
   // {
