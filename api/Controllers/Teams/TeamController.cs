@@ -12,6 +12,7 @@ namespace api.Controllers.Teams;
 [Authorize]
 public class TeamController(
     ITeamRepository _teamRepository, IFollowRepository _followRepository, 
+    ILikeRepository _likeRepository,
     ITokenService _tokenService) : BaseApiController
 {
     [HttpPost("create")]
@@ -117,11 +118,14 @@ public class TeamController(
         List<PlayerDto> playerDtos = [];
 
         bool isFollowing;
+        bool isLiking;
         foreach (AppUser appUser in appUsers)
         {
             isFollowing = await _followRepository.CheckIsFollowingAsync(userId.Value, appUser, cancellationToken);
+
+            isLiking = await _likeRepository.CheckIsLikingAsync(userId.Value, appUser, cancellationToken);
             
-            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing, isLiking));
         }
 
         return playerDtos;

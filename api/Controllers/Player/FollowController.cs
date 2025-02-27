@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers.Player;
 
 [Authorize]
-public class FollowController(IFollowRepository _followRepository, ITokenService _tokenService) : BaseApiController
+public class FollowController(
+    IFollowRepository _followRepository, ILikeRepository _likeRepository,
+    ITokenService _tokenService) : BaseApiController
 {
     [HttpPost("add-follow/{targetPlayerUserName}")]
     public async Task<ActionResult<Response>> Create(string targetPlayerUserName, CancellationToken cancellationToken)
@@ -75,11 +77,14 @@ public class FollowController(IFollowRepository _followRepository, ITokenService
         List<PlayerDto> playerDtos = [];
 
         bool isFollowing;
+        bool isLiking;
         foreach (AppUser appUser in pagedAppUsers)
         {
             isFollowing = await _followRepository.CheckIsFollowingAsync(playerId.Value, appUser, cancellationToken);
             
-            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing));
+            isLiking = await _likeRepository.CheckIsLikingAsync(playerId.Value, appUser, cancellationToken);
+            
+            playerDtos.Add(Mappers.ConvertAppUserToPlayerDto(appUser, isFollowing, isLiking));
         }
 
         return playerDtos;
