@@ -9,7 +9,6 @@ import { MemberDetailsComponent } from './components/members/member-details/memb
 // import { authGuard } from './guards/auth.guard';
 import { MessagesComponent } from './components/messages/messages.component';
 import { FriendsComponent } from './components/friends/friends.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { NoAccessComponent } from './components/errors/no-access/no-access.component';
 import { ServerErrorComponent } from './components/errors/server-error/server-error.component';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
@@ -22,6 +21,7 @@ import { TeamDetailsComponent } from './components/teams/team-details/team-detai
 import { ChooseComponent } from './components/choose/choose.component';
 import { RegisterCoachComponent } from './components/coach-account/register-coach/register-coach.component';
 import { LoginCoachComponent } from './components/coach-account/login-coach/login-coach.component';
+import { UsersComponent } from './components/admin/users/users.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -37,7 +37,6 @@ export const routes: Routes = [
   { path: 'member-details/:userName', component: MemberDetailsComponent },
   { path: 'message', component: MessagesComponent },
   { path: 'friends', component: FriendsComponent },
-  { path: 'admin', component: AdminComponent },
   { path: 'no-access', component: NoAccessComponent },
   { path: 'user/user-edit', component: UserEditComponent },
   { path: 'comment/:userName', component: CommentComponent },
@@ -46,6 +45,7 @@ export const routes: Routes = [
   { path: 'teams', component: TeamListComponent },
   { path: 'team-details/:teamName', component: TeamDetailsComponent },
   { path: 'choose', component: ChooseComponent },
+  { path: 'users', component: UsersComponent},
   //   ]
   // },
   // {

@@ -26,7 +26,7 @@ import { MatListModule } from '@angular/material/list';
 export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl;
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
-  linksWithAdmin: string[] = ['members', 'friends', 'message', 'admin'];
+  linksWithAdmin: string[] = ['members', 'friends', 'message', 'users'];
   links: string[] = ['members', 'friends', 'teams'];
 
   private registerPlayerService = inject(AccountService);
