@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
   selector: 'app-member-list',
@@ -21,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-    MatButtonModule,
+    MatButtonModule, MatSliderModule,
     MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
   ],
   templateUrl: './member-list.component.html',
@@ -38,12 +39,16 @@ export class MemberListComponent implements OnInit, OnDestroy {
   pageEvent: PageEvent | undefined;
   orderOptions: string[] = ['lastAcitve', 'created', 'age'];
   orderOptionsView: string[] = ['Last Active', 'Created', 'Age'];
+  minAge: number = 6;
+  maxAge: number = 99;
 
   private _fB = inject(FormBuilder);
 
   filterFg = this._fB.group({
     searchCtrl: ['', []],
-    orderByCtrl: []
+    orderByCtrl: [],
+    minAgeCtrl: [],
+    maxAgeCtrl: []
   });
 
   ngOnInit(): void {
@@ -62,6 +67,14 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   get OrderByCtrl(): AbstractControl {
     return this.filterFg.get('orderByCtrl') as FormControl;
+  }
+
+  get MinAgeCtrl(): AbstractControl {
+    return this.filterFg.get('minAgeCtrl') as FormControl;
+  }
+
+  get MaxAgeCtrl(): AbstractControl {
+    return this.filterFg.get('maxAgeCtrl') as FormControl;
   }
 
   getAll(): void {
@@ -93,6 +106,9 @@ export class MemberListComponent implements OnInit, OnDestroy {
     if (this.memberParams) {
       this.memberParams.search = this.SearchCtrl.value;
       this.memberParams.orderBy = this.OrderByCtrl.value;
+      this.memberParams.minAge = this.MinAgeCtrl.value;
+      this.memberParams.maxAge = this.MaxAgeCtrl.value;
+
     }
   }
 

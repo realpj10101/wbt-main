@@ -22,10 +22,20 @@
                     <input type="text" formControlName="searchCtrl" placeholder="By Username or name" matInput>
                 </mat-form-field>
 
-                <button (click)="updateMemberParams(); getAll();" [disabled]="isAnyFilterApplied()" color="primary"
+                <button (click)="updateMemberParams(); getAll();" color="primary"
                     mat-stroked-button>
                     Apply Filter
                 </button>
+            </div>
+
+            <div class="age">
+                <p>By age range</p>
+                <div class="slider">
+                    <mat-slider discrete max="{{maxAge}}" min="{{minAge}}">
+                        <input formControlName="minAgeCtrl" matSliderStartThumb>
+                        <input formControlName="maxAgeCtrl" matSliderEndThumb>
+                    </mat-slider>
+                </div>
             </div>
         </form>
     </div>

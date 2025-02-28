@@ -36,6 +36,8 @@ export class MemberService {
       params = params.append('pageSize', memberParams.pageSize);
       params = params.append('pageNumebr', memberParams.pageNumber);
       params = params.append('orderBy', memberParams.orderBy);
+      params = params.append('minAge', memberParams.minAge);
+      params = params.append('maxAge', memberParams.maxAge);
     }
 
     return params;
