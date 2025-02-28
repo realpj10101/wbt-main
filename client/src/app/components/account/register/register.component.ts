@@ -39,9 +39,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   emailExistError: string | undefined;
 
   ngOnInit(): void {
-      const currentYear = new Date().getFullYear();
-      this.minDate = new Date(currentYear - 99, 0, 1);
-      this.maxDate = new Date(currentYear - 6, 0, 1);
+    const currentYear = new Date().getFullYear();
+    this.minDate = new Date(currentYear - 99, 0, 1);
+    this.maxDate = new Date(currentYear - 6, 0, 1);
   }
 
   ngOnDestroy(): void {
@@ -82,7 +82,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   register(): void {
-    const dob: string | undefined = this.getDateOnly(this.DateOfBirthCtrl.value); 
+    const dob: string | undefined = this.getDateOnly(this.DateOfBirthCtrl.value);
 
     if (this.PasswordCtrl.value === this.ConfirmPasswordCtrl.value) {
       this.passwordsNotMatch = false;

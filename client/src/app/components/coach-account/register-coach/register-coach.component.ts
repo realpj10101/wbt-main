@@ -31,7 +31,7 @@ export class RegisterCoachComponent implements OnInit, OnDestroy {
   coachAccountService = inject(CoachAccountService);
   fb = inject(FormBuilder);
 
-  minDate = new Date(); //yyyy/mm/dd/ss
+  minDate = new Date(); //yyyy/mm/dd/hh/mm/ss
   maxDate = new Date();
 
   passwordsNotMatch: boolean | undefined;
@@ -87,19 +87,19 @@ export class RegisterCoachComponent implements OnInit, OnDestroy {
     if (this.PasswordCtrl.value === this.ConfirmPasswordCtrl.value) {
       this.passwordsNotMatch = false;
 
-      let registerCoach: RegisterPlayer = {
+      let regiterCoach: RegisterPlayer = {
         gender: this.GenderCtrl.value,
         email: this.EmailCtrl.value,
         userName: this.UserNameCtrl.value,
-        dateOfBirth: this.DateOfBirthCtrl.value,
+        dateOfBirth: dob,
         password: this.PasswordCtrl.value,
-        confirmPassword: this.PasswordCtrl.value,
+        confirmPassword: this.ConfirmPasswordCtrl.value
       }
 
-      this.subscribedRegisterCoach = this.coachAccountService.registerCoach(registerCoach).subscribe({
-        next: coach => console.log(coach),
+      this.subscribedRegisterCoach = this.coachAccountService.registerCoach(regiterCoach).subscribe({
+        next: player => console.log(player),
         error: err => this.emailExistError = err.error
-      })
+      });
 
       console.log(this.subscribedRegisterCoach);
     }
