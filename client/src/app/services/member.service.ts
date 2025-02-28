@@ -38,7 +38,7 @@ export class MemberService {
       params = params.append('orderBy', memberParams.orderBy);
 
     }
-
+    
     return params;
   }
 }
