@@ -21,7 +21,8 @@
                 <!-- Email -->
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
-                    <input autooFocusDir type="email" formControlName="emailCtrl" placeholder="example@example.com" matInput>
+                    <input autooFocusDir type="email" formControlName="emailCtrl" placeholder="example@example.com"
+                        matInput>
                     <mat-hint>Enter your email.</mat-hint>
                     @if (EmailCtrl.hasError("required")) {
                     <mat-error>This field is required.</mat-error>
@@ -44,14 +45,14 @@
                 <!-- Date of Birth -->
                 <mat-form-field>
                     <mat-label>Date of Birth</mat-label>
-                    <input formControlName="dateOfBirthCtrl" [min]="minDate" [max]="maxDate" matInput [matDatepicker]="dp3"
-                     placeholder="Enter your date off birth">
-                     <mat-hint>Between {{minDate.getFullYear()}} to {{maxDate.getFullYear()}}</mat-hint>
-                     <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
-                     <mat-datepicker #dp3 touchUi disabled="false"></mat-datepicker>
-                     @if (DateOfBirthCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                     }
+                    <input formControlName="dateOfBirthCtrl" [min]="minDate" [max]="maxDate" matInput
+                        [matDatepicker]="dp3" placeholder="Enter your date off birth">
+                    <mat-hint>Between {{minDate.getFullYear()}} to {{maxDate.getFullYear()}}</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+                    <mat-datepicker #dp3 touchUi disabled="false"></mat-datepicker>
+                    @if (DateOfBirthCtrl.hasError('required')) {
+                    <mat-error>This field is required.</mat-error>
+                    }
                 </mat-form-field>
 
                 <!-- Password -->
