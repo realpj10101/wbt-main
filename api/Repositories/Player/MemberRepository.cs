@@ -27,6 +27,10 @@ public class MemberRepository : IMemberRepository
 
     private IMongoQueryable<AppUser> CreateQuery(MemberParams memberParams)
     {
+        // calculate DOB based on user's selected Age
+        DateOnly minDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-memberParams.MaxAge - 1));
+        DateOnly maxDob = DateOnly.FromDateTime(DateTime.Today.AddYears(-memberParams.MinAge));
+        
         IMongoQueryable<AppUser> query = _collection.AsQueryable();
 
         query = memberParams.OrderBy switch
@@ -38,6 +42,7 @@ public class MemberRepository : IMemberRepository
 
         query = query.Where(doc => doc.NormalizedUserName != "ADMIN");
         query = query.Where(doc => doc.Id != memberParams.UserId);
+        query = query.Where(doc => doc.DateOfBirth >= minDob && doc.DateOfBirth <= maxDob);
 
         if (!string.IsNullOrEmpty(memberParams.Search))
         {
@@ -45,7 +50,7 @@ public class MemberRepository : IMemberRepository
                 (!string.IsNullOrEmpty(doc.NormalizedUserName))
                 && doc.NormalizedUserName.Contains(memberParams.Search.ToUpper())
                 || doc.Name.ToUpper().Contains(memberParams.Search.ToUpper())
-            );
+            );  
         }
         
         return query;
