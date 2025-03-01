@@ -48,11 +48,12 @@ export class MemberListComponent implements OnInit, OnDestroy {
     searchCtrl: ['', []],
     orderByCtrl: [],
     minAgeCtrl: [],
-    maxAgeCtrl: []
+    maxAgeCtrl: [],
+    genderCtrl: []
   });
 
   ngOnInit(): void {
-    this.memberParams = new MemberParams();
+    this.memberParams = new MemberParams(this.GenderCtrl.value);
 
     this.getAll();
   }
@@ -75,6 +76,10 @@ export class MemberListComponent implements OnInit, OnDestroy {
 
   get MaxAgeCtrl(): AbstractControl {
     return this.filterFg.get('maxAgeCtrl') as FormControl;
+  }
+
+  get GenderCtrl(): AbstractControl {
+    return this.filterFg.get('genderCtrl') as FormControl;
   }
 
   getAll(): void {
@@ -108,7 +113,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
       this.memberParams.orderBy = this.OrderByCtrl.value;
       this.memberParams.minAge = this.MinAgeCtrl.value;
       this.memberParams.maxAge = this.MaxAgeCtrl.value;
-
+      this.memberParams.gender = this.GenderCtrl.value;
     }
   }
 
