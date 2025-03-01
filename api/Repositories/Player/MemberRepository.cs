@@ -43,6 +43,9 @@ public class MemberRepository : IMemberRepository
         query = query.Where(doc => doc.NormalizedUserName != "ADMIN");
         query = query.Where(doc => doc.Id != memberParams.UserId);
         query = query.Where(doc => doc.DateOfBirth >= minDob && doc.DateOfBirth <= maxDob);
+        
+        if (!string.IsNullOrEmpty(memberParams.Gender))
+            query = query.Where(doc => doc.Gender == memberParams.Gender);
 
         if (!string.IsNullOrEmpty(memberParams.Search))
         {
