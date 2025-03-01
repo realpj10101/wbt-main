@@ -7,4 +7,5 @@ public class MemberParams : PaginationParams
     public string? Search { get; set; } = String.Empty;
     public int MinAge { get; set; } = 6;
     public int MaxAge { get; set; } = 100;
+    public string? Gender { get; set; }
 }
