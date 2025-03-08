@@ -47,8 +47,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
   filterFg = this._fB.group({
     searchCtrl: ['', []],
     orderByCtrl: [],
-    minAgeCtrl: [],
-    maxAgeCtrl: [],
+    minAgeCtrl: [this.minAge],
+    maxAgeCtrl: [this.maxAge],
     genderCtrl: []
   });
 
