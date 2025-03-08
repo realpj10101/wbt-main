@@ -15,6 +15,12 @@ builder.Services.AddApplicationService(builder.Configuration);
 builder.Services.AddIdentityService(builder.Configuration);
 builder.Services.AddRepositoryServices();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("admin", policy =>
+        policy.RequireRole("admin"));
+});
+
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();

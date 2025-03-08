@@ -1,8 +1,10 @@
 using api.Extensions;
 using api.Repositories.Player;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers.Player;
 
+// [Authorize(Roles = "admin")]
 public class AdminController(IAdminRepository _adminRepository, ITokenService _tokenService) : BaseApiController
 {
     [HttpGet("users-with-roles")]
@@ -25,5 +27,5 @@ public class AdminController(IAdminRepository _adminRepository, ITokenService _t
         return deleteResult is null
             ? BadRequest("Delete user failed try again.")
             : Ok(new { message = "User deleted successfully." });
-    }
+    }   
 }
