@@ -21,11 +21,6 @@
                 <mat-form-field appearance="outline">
                     <input type="text" formControlName="searchCtrl" placeholder="By Username or name" matInput>
                 </mat-form-field>
-
-                <button (click)="updateMemberParams(); getAll();" color="primary"
-                    mat-stroked-button>
-                    Apply Filter
-                </button>
             </div>
 
             <div class="age">
@@ -38,15 +33,25 @@
                 </div>
             </div>
 
-        <mat-form-field>
-            <mat-label>By gender</mat-label>
-            <mat-select formControlName="genderCtrl">
-                <mat-select>-- none --</mat-select>
-                <mat-option [value]="'female'">Female</mat-option>
-                <mat-option [value]="'male'">Male</mat-option>
-                <mat-option [value]="'other'">Other</mat-option>
-            </mat-select>
-        </mat-form-field>   
+            <mat-form-field>
+                <mat-label>By gender</mat-label>
+                <mat-select formControlName="genderCtrl">
+                    <mat-select>-- none --</mat-select>
+                    <mat-option [value]="'female'">Female</mat-option>
+                    <mat-option [value]="'male'">Male</mat-option>
+                    <mat-option [value]="'other'">Other</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="actions">
+                <button (click)="updateMemberParams(); getAll();" color="primary" mat-stroked-button class="apply">
+                    Apply Filter
+                </button>
+
+                <button (click)="reset()" mat-stroked-button class="reset">
+                    Reset
+                </button>
+            </div>
         </form>
     </div>
     <div class="right">

@@ -121,4 +121,11 @@ export class MemberListComponent implements OnInit, OnDestroy {
     return this.OrderByCtrl.value === this.memberParams?.orderBy 
     && (this.SearchCtrl.pristine || this.SearchCtrl.value.length < 1)
   }
+
+  reset(): void {
+    this.OrderByCtrl.setValue('lastActive');
+    this.SearchCtrl.reset();
+    this.MinAgeCtrl.setValue(this.minAge);
+    this.MaxAgeCtrl.setValue(this.maxAge);
+  }
 }
