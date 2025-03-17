@@ -1,0 +1,18 @@
+namespace api.DTOs;
+
+public record RegisterDto(
+    [MaxLength(PropLength.EmailMaxLength)]
+    [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,5})+)$", ErrorMessage = "Bad Email Format.")]
+    string Email,
+    [Length(PropLength.UserNameMinLength, PropLength.UserNameMaxLength)]
+    string UserName,
+    [Range(typeof(DateOnly), "1900-01-01", "2050-01-01")]
+    DateOnly DateOfBirth,
+    [Length(3, 50)] string Gender,
+    [DataType(DataType.Password)]
+    [Length(PropLength.PasswordsMinLength, PropLength.PasswordsMaxLength)]
+    string Password,
+    [DataType(DataType.Password)]
+    [Length(PropLength.PasswordsMinLength, PropLength.PasswordsMaxLength)]
+    string ConfirmPassword
+);
