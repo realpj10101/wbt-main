@@ -32,7 +32,7 @@ public class CoachAccountRepository : ICoachAccountRepository
     /// <param name="registerCoachDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>LoggedInDto</returns>
-    public async Task<LoggedInDto> RegisterCoachAsync(AccountDto userInput,
+    public async Task<LoggedInDto> RegisterCoachAsync(RegisterDto userInput,
         CancellationToken cancellationToken)
     {
         LoggedInDto loggedInDto = new();

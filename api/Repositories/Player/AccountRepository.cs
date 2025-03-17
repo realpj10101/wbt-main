@@ -31,7 +31,7 @@ public class AccountRepository : IAccountRepository
     /// <param name="registerDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>LoggedInDto</returns>
-    public async Task<LoggedInDto> RegisterPlayerAsync(AccountDto registerDto, CancellationToken cancellationToken)
+    public async Task<LoggedInDto> RegisterPlayerAsync(RegisterDto registerDto, CancellationToken cancellationToken)
     {
         LoggedInDto loggedInDto = new();
 
