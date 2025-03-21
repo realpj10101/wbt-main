@@ -11,4 +11,6 @@ public interface ITeamRepository
     public Task<PagedList<Team>?> GetAllAsync(PaginationParams paginationParams, CancellationToken cancellationToken);
     public Task<ShowTeamDto?> GetByTeamNameAsync(string teamName, CancellationToken cancellationToken);
     public Task<List<AppUser>> GetTeamMembersAsync(string teamName,  CancellationToken cancellationToken);
+    public Task<TeamStatus> AddMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName,
+        CancellationToken cancellationToken);
 }

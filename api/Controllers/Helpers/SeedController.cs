@@ -42,7 +42,6 @@ public class SeedController : BaseApiController
 
         if (dataBaseExists == true)
             // return BadRequest("Database already exists");
-
             await _client.DropDatabaseAsync("wbt");
 
         #endregion If dataBaseExist
