@@ -14,9 +14,10 @@ public class AdminRepository : IAdminRepository
     {
         var database = client.GetDatabase(dbSetting.DatabaseName);
         _collection = database.GetCollection<AppUser>("users");
-            
-        _userManager = userManager;    
+
+        _userManager = userManager;
     }
+    
     #endregion
 
     #region CRUD
@@ -30,16 +31,16 @@ public class AdminRepository : IAdminRepository
         foreach (AppUser appUser in appUsers)
         {
             IEnumerable<string> roles = await _userManager.GetRolesAsync(appUser);
-            
+
             playersWithRoleDto.Add(
                 new PlayerWithRoleDto(
                     UserName: appUser.UserName!,
                     Roles: roles
-                    )
-                );
+                )
+            );
         }
 
-        return playersWithRoleDto;  
+        return playersWithRoleDto;
     }
 
     public async Task<DeleteResult?> DeleteUserAsync(string targetUserName, CancellationToken cancellationToken)
@@ -65,5 +66,6 @@ public class AdminRepository : IAdminRepository
 
         return appUser;
     }
+
     #endregion
 }

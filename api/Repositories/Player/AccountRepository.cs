@@ -38,7 +38,7 @@ public class AccountRepository : IAccountRepository
         AppUser appUser = Mappers.ConvertRegisterDtoToAppUser(registerDto);
 
         IdentityResult? userCreatedResult = await _userManager.CreateAsync(appUser, registerDto.Password);
-
+                                                    
         if (userCreatedResult.Succeeded)
         {
             IdentityResult? roleResult = await _userManager.AddToRoleAsync(appUser, "player");
