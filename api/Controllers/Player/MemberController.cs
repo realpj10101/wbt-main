@@ -66,14 +66,14 @@ public class MemberController(IMemberRepository _memberRepository,
     }
 
     [Authorize(Roles = "admin")]
-    [HttpGet("get-by-username/{playerUserName}")]
-    public async Task<ActionResult<PlayerDto>> GetByUsername(string playerUserName, CancellationToken cancellationToken)
+    [HttpGet("get-by-username/{targetMemberUserName}")]
+    public async Task<ActionResult<PlayerDto>> GetByUsername(string targetMemberUserName, CancellationToken cancellationToken)
     {
         string? userIdHashed = User.GetHashedUserId();
 
         if (userIdHashed is null) return Unauthorized("You are not logged in! Login again.");
         
-        PlayerDto? playerDto = await _memberRepository.GetByUserNameAsync(playerUserName, userIdHashed, cancellationToken);
+        PlayerDto? playerDto = await _memberRepository.GetByUserNameAsync(targetMemberUserName, userIdHashed, cancellationToken);
         
         if (playerDto is null) return NotFound("No player with this username");
 
