@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from "@angular/material/tabs";
 import { ChangeDetectionStrategy, signal } from '@angular/core';
 import { matExpansionAnimations, MatExpansionModule } from '@angular/material/expansion';
+import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-member-details',
@@ -45,6 +46,7 @@ export class MemberDetailsComponent implements OnInit {
   private gallery = inject(Gallery);
   private _snack = inject(MatSnackBar);
   readonly panelOpenState = signal(false);
+  private _teamService = inject(TeamService);
 
   ngOnInit(): void {
     this.getMember();
@@ -68,21 +70,6 @@ export class MemberDetailsComponent implements OnInit {
             }
           }
         });
-    // const userName: string | null = this._route.snapshot.paramMap.get('userName');
-
-    // if (userName)
-    //   this._memberService.getByUserName(userName)
-    //     .pipe(
-    //       take(1)
-    //     ).subscribe({
-    //       next: (res: Member | undefined) => {
-    //         if (res) {
-    //           this.member = res;
-    //           console.log(this.member);
-    //           this.setGalleryImages();
-    //         }
-    //       }
-    //     })
   }
 
   setGalleryImages(): void {
@@ -141,5 +128,10 @@ export class MemberDetailsComponent implements OnInit {
             })
           }
         })
+  }
+
+  addMember(): void {
+    if (this.member)
+      this._teamService.addMember('lakers', 'a2').subscribe();
   }
 }

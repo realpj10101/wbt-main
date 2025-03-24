@@ -12,6 +12,7 @@ import { take } from 'rxjs';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LikeService } from '../../../services/like.service';
 import { CommentService } from '../../../services/comment.service';
+import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-member-card',

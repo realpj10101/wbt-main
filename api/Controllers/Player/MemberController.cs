@@ -64,8 +64,7 @@ public class MemberController(IMemberRepository _memberRepository,
 
         return playerDto;
     }
-
-    [Authorize(Roles = "admin")]
+    
     [HttpGet("get-by-username/{targetMemberUserName}")]
     public async Task<ActionResult<PlayerDto>> GetByUsername(string targetMemberUserName, CancellationToken cancellationToken)
     {

@@ -10,6 +10,7 @@ import { PaginationParams } from '../models/helpers/paginationParams.model';
 import { PaginatedResult } from '../models/helpers/pagination-result.model';
 import { PaginationHandler } from '../extension/paginationHandler';
 import { Member } from '../models/member.model';
+import { ApiResponse } from '../models/helpers/apiResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,10 @@ export class TeamService {
   getTeamMembersAsync(userIn: string): Observable<Member[]>
   {
     return this.http.get<Member[]>(this._apiUrl + 'get-members/' + userIn);
+  }
+
+  addMember(teamName: string, targetMemberUserName: string): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName + '/' +  targetMemberUserName, null);
   }
 
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
