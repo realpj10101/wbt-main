@@ -142,7 +142,7 @@ public class TeamController(
         CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-
+        
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
         
@@ -150,6 +150,8 @@ public class TeamController(
 
         return tS.IsSuccess
             ? Ok(new Response(Message: $"You add {targetMemberUserName} to team {teamName} successfully."))
+            : tS.IsNotTheCreator
+            ? BadRequest("You are not the owner of the team.")
             : tS.IsTargetMemberNotFound
                 ? NotFound($"{targetMemberUserName} is not found.")
                 : tS.IsTargetTeamNotFound

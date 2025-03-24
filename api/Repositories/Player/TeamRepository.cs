@@ -201,6 +201,12 @@ public class TeamRepository : ITeamRepository
             return tS;
         }
 
+        if (team.CreatorId != userId)
+        {
+            tS.IsNotTheCreator = true;
+            return tS;
+        }
+
         AppUser user = await _collectionAppUser.Find(doc => doc.NormalizedUserName == targetMemberUserName.ToUpper())
             .FirstOrDefaultAsync(cancellationToken);
 
