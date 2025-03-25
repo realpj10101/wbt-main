@@ -246,4 +246,17 @@ public class TeamRepository : ITeamRepository
 
         return tS;
     }
+
+    public async Task<string?> GetTeamNameByIdAsync(ObjectId userId, CancellationToken cancellationToken)
+    {
+        string teamName = await _collection.AsQueryable()
+            .Where(doc => doc.CreatorId == userId)
+            .Select(doc => doc.TeamName)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (teamName is null)
+            return null;
+
+        return teamName;
+    }
 }

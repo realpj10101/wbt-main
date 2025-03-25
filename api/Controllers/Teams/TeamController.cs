@@ -162,6 +162,22 @@ public class TeamController(
                             ? BadRequest("You are the owner of this team.")
                             : BadRequest("Updated team failed. Please contact administrator.");
     }
+
+    [Authorize(Roles = "coach")]
+    [HttpGet("get-team-name")]
+    public async Task<ActionResult<string>> GetTeamName(CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+        
+        string? teamName = await _teamRepository.GetTeamNameByIdAsync(userId.Value, cancellationToken);
+        
+        return teamName is not null
+            ? Ok(teamName)
+            : NotFound("No team found for this coach.");
+    }
 }
 
 // old code
