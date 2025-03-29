@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'users'];
   links: string[] = ['members', 'friends', 'teams'];
-  linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach pannel'];
+  linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach-panel'];
 
   private registerPlayerService = inject(AccountService);
 

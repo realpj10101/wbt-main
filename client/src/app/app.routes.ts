@@ -22,6 +22,7 @@ import { ChooseComponent } from './components/choose/choose.component';
 import { RegisterCoachComponent } from './components/coach-account/register-coach/register-coach.component';
 import { LoginCoachComponent } from './components/coach-account/login-coach/login-coach.component';
 import { UsersComponent } from './components/admin/users/users.component';
+import { CoachPanelComponent } from './components/coach-panel/coach-panel.component';
 // import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 
 export const routes: Routes = [
@@ -46,6 +47,7 @@ export const routes: Routes = [
   { path: 'team-details/:teamName', component: TeamDetailsComponent },
   { path: 'choose', component: ChooseComponent },
   { path: 'users', component: UsersComponent},
+  { path: 'coach-panel', component: CoachPanelComponent},
   //   ]
   // },
   // {
