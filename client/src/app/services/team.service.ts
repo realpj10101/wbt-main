@@ -53,6 +53,10 @@ export class TeamService {
     return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName + '/' +  targetMemberUserName, null);
   }
 
+  getTeamName(): Observable<string> {
+    return this.http.get<string>(this._apiUrl + 'get-team-name');
+  }
+
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
     let params = new HttpParams();
 

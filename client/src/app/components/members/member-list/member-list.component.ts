@@ -53,7 +53,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit(): void {
-    this.memberParams = new MemberParams(this.GenderCtrl.value);
+    this.memberParams = new MemberParams();
 
     this.getAll();
   }

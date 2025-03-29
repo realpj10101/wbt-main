@@ -28,6 +28,7 @@ export class NavbarComponent implements OnInit {
   loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'users'];
   links: string[] = ['members', 'friends', 'teams'];
+  linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach pannel'];
 
   private registerPlayerService = inject(AccountService);
 
@@ -38,5 +39,4 @@ export class NavbarComponent implements OnInit {
   logout(): void {
     this.registerPlayerService.logOut();
   }
-
 }
