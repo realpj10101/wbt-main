@@ -165,7 +165,7 @@ public class TeamController(
 
     [Authorize(Roles = "coach")]
     [HttpGet("get-team-name")]
-    public async Task<ActionResult<string>> GetTeamName(CancellationToken cancellationToken)
+    public async Task<ActionResult<Response>> GetTeamName(CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
 
@@ -175,7 +175,7 @@ public class TeamController(
         string? teamName = await _teamRepository.GetTeamNameByIdAsync(userId.Value, cancellationToken);
         
         return teamName is not null
-            ? Ok(teamName)
+            ? Ok(new Response(teamName))
             : NotFound("No team found for this coach.");
     }
 }
