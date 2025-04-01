@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output, output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output, output, Signal } from '@angular/core';
 import { Member } from '../../../models/member.model';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { interval, Observable, take } from 'rxjs';
@@ -18,6 +18,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { ChangeDetectionStrategy, signal } from '@angular/core';
 import { matExpansionAnimations, MatExpansionModule } from '@angular/material/expansion';
 import { TeamService } from '../../../services/team.service';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-member-details',
@@ -36,6 +37,7 @@ export class MemberDetailsComponent implements OnInit {
   member: Member | undefined;
   members$: Observable<Member[] | null> | undefined;
   teamName: ApiResponse | undefined;
+  loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
 
   images: GalleryItem[] = [];
 
@@ -48,6 +50,7 @@ export class MemberDetailsComponent implements OnInit {
   private _snack = inject(MatSnackBar);
   readonly panelOpenState = signal(false);
   private _teamService = inject(TeamService);
+  private _accountService = inject(AccountService);
 
   ngOnInit(): void {
     this.getMember();
@@ -56,6 +59,8 @@ export class MemberDetailsComponent implements OnInit {
       next: (team: ApiResponse) => { this.teamName = team, console.log(this.teamName) },
       error: (err) => console.log("Error fetching team name:", err)
     })
+
+    this.loggedInUserSig = this._accountService.loggedInPlayerSig;
   }
 
   getMember(): void {

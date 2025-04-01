@@ -49,11 +49,15 @@
                 }
                 @else {
                 <button mat-raised-button color="warn" (click)="unfollow()">UnFollow</button>
-                }
+                }  
 
-                <button mat-raised-button (click)="addMember()">
-                    add member
-                </button>
+                @if (loggedInUserSig && loggedInUserSig(); as user) {
+                    @if (loggedInUserSig()?.roles?.includes('coach')) {
+                        <button mat-raised-button (click)="addMember()">
+                            add member
+                        </button>
+                    }
+                }
             </div>
         </div>
     </div>
