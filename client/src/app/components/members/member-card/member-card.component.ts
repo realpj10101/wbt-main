@@ -12,14 +12,13 @@ import { take } from 'rxjs';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LikeService } from '../../../services/like.service';
 import { CommentService } from '../../../services/comment.service';
-import { TeamService } from '../../../services/team.service';
 
 @Component({
   selector: 'app-member-card',
   standalone: true,
   imports: [
-    CommonModule, RouterModule, NgOptimizedImage,
-    MatCardModule, MatIconModule, MatButtonModule
+      CommonModule, RouterModule, NgOptimizedImage,
+      MatCardModule, MatIconModule, MatButtonModule
   ],
   templateUrl: './member-card.component.html',
   styleUrl: './member-card.component.scss'

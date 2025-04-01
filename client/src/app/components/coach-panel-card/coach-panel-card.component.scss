@@ -1,0 +1,106 @@
+/* From Uiverse.io by gharsh11032000 */
+.card {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    perspective: 1000px;
+    box-shadow: 0 0 0 5px #ffffff80;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+    }
+
+    .card__content {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+        background-color: #f2f2f2;
+        transform: rotateX(-90deg);
+        transform-origin: bottom;
+        transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .top {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .thumb-image {
+            // border: solid 2px black;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .title {
+            cursor: pointer;
+        }
+    }
+
+    .user-icons {
+        // background-color: red;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 5px;
+
+        // .message {
+        //     display: block;
+        //     position: absolute;
+        //     background: #333;
+        //     color: #fff;
+        //     width: 50px;
+        //     padding: 5px;
+        //     border-radius: 4px;
+        //     font-size: 12px;
+        //     margin-top: 10px;
+        //     margin-left: -30px;
+        // }
+
+        // .add {
+        //     position: relative;
+        //     display: inline-block;
+        // }
+
+        // .add:hover+ .message {
+        //     display: block;
+        // }
+    }
+
+    .title {
+        // background-color: red;
+        display: flex;
+
+    }
+}
+
+.card:hover .card__content {
+    transform: rotateX(0deg);
+}
+
+.card__title {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    font-weight: 700;
+}
+
+.card__description {
+    margin: 10px 0 0;
+    font-size: 14px;
+    color: #777;
+    line-height: 1.4;
+}

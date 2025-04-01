@@ -55,6 +55,28 @@
         // background-color: red;
         display: flex;
         justify-content: space-evenly;
+        gap: 5px;
+
+        .message {
+            display: none;
+            position: absolute;
+            background: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 50px;
+            margin-left: 100px;
+        }
+
+        .add {
+            position: relative;
+            display: inline-block;
+        }
+
+        .add:hover+.message {
+            display: block;
+        }
     }
 
     .title {

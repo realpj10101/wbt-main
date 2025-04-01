@@ -1,2 +1,15 @@
-<p>coach-panel works!</p>
-<h1>{{teamName?.message}}</h1>
+<div class="right">
+    <h1>Add member to your team</h1>
+    <div class="members">
+        @for (member of members; track $index) {
+            <app-coach-panel-card [memberInput]="member" />
+        }
+    </div>
+    @if (pagination && memberParams) {
+    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
+        [pageSize]="memberParams.pageSize" [disabled]="false" [showFirstLastButtons]="true"
+        [pageSizeOptions]="true ? pageSizeOptions : []" [hidePageSize]="false" [pageIndex]="memberParams.pageNumber - 1"
+        aria-label="Select page" class="paginator">
+    </mat-paginator>
+    }
+</div>

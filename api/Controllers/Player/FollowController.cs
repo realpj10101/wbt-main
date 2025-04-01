@@ -26,7 +26,7 @@ public class FollowController(
             : fS.IsTargetMemberNotFound
             ? NotFound($"{targetPlayerUserName} is not found.")
             : fS.IsFollowingThemself
-            ? BadRequest("Follwing yourself is great but not stored.")
+            ? BadRequest("Following yourself is great but not stored.")
             : fS.IsAlreadyFollowed
             ? BadRequest($"{targetPlayerUserName} is already followed.")
             : BadRequest("Following failed. Please try again or contact the administrator.");

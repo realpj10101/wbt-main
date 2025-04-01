@@ -35,8 +35,7 @@ import { TeamService } from '../../../services/team.service';
 export class MemberDetailsComponent implements OnInit {
   member: Member | undefined;
   members$: Observable<Member[] | null> | undefined;
-  userName: string | undefined;
-  teamName: string | undefined;
+  teamName: ApiResponse | undefined;
 
   images: GalleryItem[] = [];
 
@@ -53,10 +52,10 @@ export class MemberDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getMember();
 
-    // this._teamService.getTeamName().subscribe({
-    //   next: (team) => this.teamName = team,
-    //   error: (err) => console.log("Error fetching team name:", err)
-    // })
+    this._teamService.getTeamName().subscribe({
+      next: (team: ApiResponse) => { this.teamName = team, console.log(this.teamName) },
+      error: (err) => console.log("Error fetching team name:", err)
+    })
   }
 
   getMember(): void {
@@ -102,7 +101,7 @@ export class MemberDetailsComponent implements OnInit {
             if (this.member)
               this.member.isFollowing = true;
 
-              this._snack.open(res.message, 'close', {
+            this._snack.open(res.message, 'close', {
               duration: 7000,
               horizontalPosition: 'center',
               verticalPosition: 'top'
@@ -131,9 +130,10 @@ export class MemberDetailsComponent implements OnInit {
   }
 
   addMember(): void {
-    // console.log(this.teamName);
-    if (this.teamName && this.userName) {
-      this._teamService.addMember(this.teamName, this.userName).subscribe({
+    const userName: string | null = this._route.snapshot.paramMap.get('userName');
+
+    if (this.teamName && userName) {
+      this._teamService.addMember(this.teamName, userName).subscribe({
         next: (res: ApiResponse) => {
           this._snack.open(res.message, 'close', {
             duration: 7000,

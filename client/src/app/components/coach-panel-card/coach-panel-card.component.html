@@ -1,7 +1,17 @@
 <div class="card">
     <mat-card class="card">
         @if (memberIn?.photos?.length === 0) {
+        @switch (memberIn?.gender) {
+        @case ('male') {
+        <img src="avatar-25.webp" alt="" height="200px" width="200px" alt="{{memberIn?.userName}} photo" mat-card-image>
+        }
+        @case ('female') {
+        <img src="avatar-1.webp" alt="" height="200px" width="200px" alt="{{memberIn?.userName}} photo" mat-card-image>
+        }
+        @default {
         <img src="member.png" alt="" height="200px" width="200px" alt="{{memberIn?.userName}} photo" mat-card-image>
+        }
+        }
         }
         @else {
         @for (photo of memberIn?.photos; track $index) {
@@ -14,8 +24,20 @@
     <div class="card__content">
         <div class="top">
             @if (memberIn?.photos?.length === 0) {
+            @switch (memberIn?.gender) {
+            @case ('male') {
+            <img class="thumb-image" src="avatar-25.webp" alt="" height="50px" width="50px"
+                [routerLink]="['/member-details/' + memberIn?.userName]">
+            }
+            @case ('female') {
+            <img class="thumb-image" src="avatar-1.webp" alt="" height="50px" width="50px"
+                [routerLink]="['/member-details/' + memberIn?.userName]">
+            }
+            @default {
             <img class="thumb-image" src="member.png" alt="" height="50px" width="50px"
                 [routerLink]="['/member-details/' + memberIn?.userName]">
+            }
+            }
             }
             @else {
             @for (photo of memberIn?.photos; track $index) {
@@ -39,32 +61,5 @@
                 }
                 }
             </div>
-        </div>
-        <br>
-        <div class="user-icons">
-            @if (!memberIn?.isFollowing) {
-            <button mat-mini-fab (click)="follow()">
-                <mat-icon>person_add</mat-icon>
-            </button>
-            }
-            @else {
-            <button mat-mini-fab (click)="unfollow()">
-                <mat-icon>person_remove</mat-icon>
-            </button>
-            }
-
-            @if (!memberIn?.isLiking) {
-            <button mat-mini-fab (click)="like()">
-                <mat-icon>favorite</mat-icon>
-            </button>
-            }
-            @else {
-            <button mat-mini-fab (click)="dislike()">
-                <mat-icon color="warn">favorite</mat-icon>
-            </button>
-            }
-            <button mat-mini-fab [routerLink]="['/comment/' + memberIn?.userName]">
-                <mat-icon>message</mat-icon>
-            </button>
         </div>
     </div>

@@ -40,7 +40,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   orderOptions: string[] = ['lastAcitve', 'created', 'age'];
   orderOptionsView: string[] = ['Last Active', 'Created', 'Age'];
   minAge: number = 6;
-  maxAge: number = 99;
+  maxAge: number = 99;  
 
   private _fB = inject(FormBuilder);
 

@@ -49,8 +49,8 @@ export class TeamService {
     return this.http.get<Member[]>(this._apiUrl + 'get-members/' + userIn);
   }
 
-  addMember(teamName: string, targetMemberUserName: string): Observable<ApiResponse> {
-    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName + '/' +  targetMemberUserName, null);
+  addMember(teamName: ApiResponse, targetMemberUserName: string): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName.message + '/' +  targetMemberUserName, null);
   }
 
   getTeamName(): Observable<ApiResponse> {
