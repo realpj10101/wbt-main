@@ -1,3 +1,7 @@
+@if (isMobileViewSignal()) {
+<app-home-mobile />
+}
+@else {
 <main>
   <section class="container">
     <div class="description">
@@ -12,12 +16,12 @@
 
       <!-- <div class="color"></div> -->
       @if (loggedInPlayerSig && loggedInPlayerSig(); as user) {
-        <button routerLink="/members" mat-raised-button>Contact Users</button>
+      <button routerLink="/members" mat-raised-button>Contact Users</button>
       }
       @else {
-        <div class="buttons">
-          <button routerLink="/choose" mat-raised-button>Start</button>
-        </div>
+      <div class="buttons">
+        <button routerLink="/choose" mat-raised-button>Start</button>
+      </div>
       }
     </div>
 
@@ -60,7 +64,7 @@
     <mat-card class="example-card" appearance="outlined">
       <mat-card-header>
         <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Create your own team.</mat-card-title>
+        <mat-card-title>Create your own team</mat-card-title>
         <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
       </mat-card-header>
       <img mat-card-image src="team2.jpg" alt="" height="300px" width="500px">
@@ -74,3 +78,4 @@
     </mat-card>
   </section>
 </main>
+}

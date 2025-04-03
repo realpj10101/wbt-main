@@ -1,3 +1,7 @@
+@if (isMobileViewSignal()) {
+<app-navbar-mobile />
+}
+@else {
 <mat-toolbar>
   <section class="left">
 
@@ -113,3 +117,4 @@
     </mat-menu>
   </section>
 </mat-toolbar>
+}

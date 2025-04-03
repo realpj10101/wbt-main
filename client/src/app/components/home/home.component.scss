@@ -3,20 +3,13 @@ main {
     flex-direction: column;
     gap: 2rem;
     
-    .container {
-        // background-color: rgb(7, 50, 70);
-        // background-color: red;
-        
+    .container {        
         display: flex;
         justify-content: center;
-        justify-content: space-between;
         flex-wrap: wrap;
+        gap: 2rem;
 
         .description {
-            position: relative;
-            // background-color: rgb(7, 50, 70);
-            // background-color: red;
-            width: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -39,23 +32,12 @@ main {
                     color: white;
                 }
             }
-
-            .color {
-                background-color: rgb(7, 50, 70);
-                height: 200px;
-                width: 200px;
-                position: absolute;
-                top: 5px;
-                left: 5px;
-                border-bottom-right-radius: 1000px;
-            }
         }
 
         .image {
-
-            // width: 50%;
-            // background-color: red;
             img {
+                margin-top: 2rem;
+                border-top-right-radius: 30%;
                 border-bottom-left-radius: 30%;
             }
         }
