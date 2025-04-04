@@ -178,6 +178,23 @@ public class TeamController(
             ? Ok(new Response(teamName))
             : NotFound("No team found for this coach.");
     }
+
+    [HttpPost("assign-captain/{targetUserName}")]
+    public async Task<IActionResult> AssignCaptain(string targetUserName,
+        CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+        
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+        
+        var result = await _teamRepository.AssignCaptainAsync(targetUserName, cancellationToken);
+        
+        if (result == null) return NotFound("Target user not found.");
+        if (!result.Value) return BadRequest("User is already assigned to captain.");
+        
+        return Ok("Captain assigned.");
+    }
 }
 
 // old code

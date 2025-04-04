@@ -60,7 +60,7 @@ public class AccountRepository : IAccountRepository
                 loggedInDto.Errors.Add(error.Description);
             }
         }
-
+    
         return loggedInDto;
     }
 

@@ -4,6 +4,7 @@ using api.Extensions;
 using api.Helpers;
 using api.Interfaces.Teams;
 using api.Models.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Repositories.Player;
 
@@ -17,11 +18,12 @@ public class TeamRepository : ITeamRepository
     private readonly ITokenService _tokenService;
     private readonly ILogger<TeamRepository> _logger;
     private readonly IPlayerUserRepository _playerUserRepository;
+    private readonly UserManager<AppUser> _userManager;
 
     public TeamRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings,
-        ITokenService tokenService, ILogger<TeamRepository> logger, IPlayerUserRepository playerUserRepository
-    )
+        ITokenService tokenService, ILogger<TeamRepository> logger, IPlayerUserRepository playerUserRepository,
+        UserManager<AppUser> userManager)
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
@@ -33,6 +35,7 @@ public class TeamRepository : ITeamRepository
         _playerUserRepository = playerUserRepository;
 
         _logger = logger;
+        _userManager = userManager;
     }
 
     #endregion
@@ -259,4 +262,42 @@ public class TeamRepository : ITeamRepository
 
         return teamName;
     }
+    
+    public async Task<bool?> AssignCaptainAsync(string targetUserName, CancellationToken cancellationToken)
+    {
+        // Find the target user by username
+        var targetUser = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.NormalizedUserName == targetUserName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (targetUser is null)
+            return null; // User not found
+
+        // Check if the user already has the 'captain' role
+        var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
+        if (hasRole)
+            return false; // Already a captain
+
+        // Assign the captain role
+        var result = await _userManager.AddToRoleAsync(targetUser, "captain");
+        return result.Succeeded;
+    }
+
+    // public async Task<bool?> AssignCaptainAsync(ObjectId userId, string targetUserName, CancellationToken cancellationToken)
+    // {
+    //     ObjectId? targetUserId = await _collectionAppUser.AsQueryable()
+    //         .Where(doc => doc.NormalizedUserName == targetUserName.ToUpper())
+    //         .Select(doc => doc.Id)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (targetUserId is null)
+    //         return null;
+    //
+    //     var hasRole = await _userManager.IsInRoleAsync(targetUserId, "captain");
+    //     if (hasRole)
+    //         return false;
+    //     
+    //     var result = await _userManager.AddToRoleAsync(targetUserId, "captain");
+    //     return result.Succeeded;
+    // }
 }
