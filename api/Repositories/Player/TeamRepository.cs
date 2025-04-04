@@ -173,7 +173,7 @@ public class TeamRepository : ITeamRepository
         return null;
     }
 
-    public async Task<List<AppUser>> GetTeamMembersAsync(
+    public async Task<List<AppUser>?> GetTeamMembersAsync(
         string teamName,
         CancellationToken cancellationToken)
     {
@@ -181,7 +181,9 @@ public class TeamRepository : ITeamRepository
         var team = await _collection
             .Find(t => t.TeamName == teamName)
             .FirstOrDefaultAsync(cancellationToken);
-
+        
+        if (team is null) return null;
+        
         // Step 2: Query the Users collection using the $in operator
         var filter = Builders<AppUser>.Filter.In(u => u.Id, team.MembersIds);
         var teamMembers = await _collectionAppUser

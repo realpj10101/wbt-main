@@ -116,7 +116,10 @@ public class TeamController(
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-        List<AppUser> appUsers = await _teamRepository.GetTeamMembersAsync(teamName, cancellationToken);
+        List<AppUser>? appUsers = await _teamRepository.GetTeamMembersAsync(teamName, cancellationToken);
+        
+        if (appUsers is null) 
+            return BadRequest("Target team name was not found.");
 
         if (appUsers.Count == 0) return NoContent();
 
