@@ -229,7 +229,7 @@ public class TeamRepository : ITeamRepository
             tS.IsJoiningThemself = true;
             return tS;
         }
-        
+
         Team team1 = await _collection.Find(t => t.MembersUserNames.Contains(targetMemberUserName))
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -242,9 +242,9 @@ public class TeamRepository : ITeamRepository
         UpdateDefinition<Team> updateResult = Builders<Team>.Update
             .AddToSet(doc => doc.MembersIds, memberId)
             .AddToSet(doc => doc.MembersUserNames, targetMemberUserName);
-        
+
         await _collection.UpdateOneAsync(doc => doc.Id == team.Id, updateResult, null, cancellationToken);
-        
+
         tS.IsSuccess = true;
 
         return tS;
@@ -262,7 +262,7 @@ public class TeamRepository : ITeamRepository
 
         return teamName;
     }
-    
+
     public async Task<bool?> AssignCaptainAsync(string targetUserName, CancellationToken cancellationToken)
     {
         // Find the target user by username
@@ -291,31 +291,12 @@ public class TeamRepository : ITeamRepository
 
         if (targetUser is null)
             return null;
-        
+
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
         if (!hasRole)
             return false;
-        
+    
         var result = await _userManager.RemoveFromRoleAsync(targetUser, "captain");
         return result.Succeeded;
     }
-
-
-    // public async Task<bool?> AssignCaptainAsync(ObjectId userId, string targetUserName, CancellationToken cancellationToken)
-    // {
-    //     ObjectId? targetUserId = await _collectionAppUser.AsQueryable()
-    //         .Where(doc => doc.NormalizedUserName == targetUserName.ToUpper())
-    //         .Select(doc => doc.Id)
-    //         .FirstOrDefaultAsync(cancellationToken);
-    //
-    //     if (targetUserId is null)
-    //         return null;
-    //
-    //     var hasRole = await _userManager.IsInRoleAsync(targetUserId, "captain");
-    //     if (hasRole)
-    //         return false;
-    //     
-    //     var result = await _userManager.AddToRoleAsync(targetUserId, "captain");
-    //     return result.Succeeded;
-    // }
 }

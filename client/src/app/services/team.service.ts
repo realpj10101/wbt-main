@@ -61,6 +61,10 @@ export class TeamService {
     return this.http.post<ApiResponse>(this._apiUrl + 'assign-captain/' + targetUserName, null);
   }
 
+  removeCaptain(targetUserName: string) {
+    return this.http.delete<ApiResponse>(this._apiUrl + 'remove-captain/' + targetUserName);
+  }
+
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
     let params = new HttpParams();
 

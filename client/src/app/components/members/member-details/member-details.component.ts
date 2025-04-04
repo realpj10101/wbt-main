@@ -154,6 +154,30 @@ export class MemberDetailsComponent implements OnInit {
     const userName: string | null = this._route.snapshot.paramMap.get('userName');
 
     if (userName)
-      this._teamService.assignCaptain(userName).subscribe();
+      this._teamService.assignCaptain(userName).subscribe({
+        next: (res: ApiResponse) => {
+          this._snack.open(res.message, 'close', {
+            duration: 7000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          })
+        }
+      });
+  }
+
+
+  removeCaptain(): void {
+    const userName: string | null = this._route.snapshot.paramMap.get('userName');
+
+    if (userName)
+      this._teamService.removeCaptain(userName).subscribe({
+        next: (res: ApiResponse) => {
+          this._snack.open(res.message, 'close', {
+            duration: 7000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          })
+        }
+      });
   }
 }
