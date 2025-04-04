@@ -49,16 +49,26 @@
                 }
                 @else {
                 <button mat-raised-button color="warn" (click)="unfollow()">UnFollow</button>
-                }  
+                }
 
                 @if (loggedInUserSig && loggedInUserSig(); as user) {
-                    @if (loggedInUserSig()?.roles?.includes('coach')) {
-                        <button mat-raised-button (click)="addMember()">
-                            add member
-                        </button>
-                    }
+                @if (loggedInUserSig()?.roles?.includes('coach')) {
+                <button mat-raised-button (click)="addMember()">
+                    add member
+                </button>
+
+                @if (!member.isCaptain) {
+                <button mat-raised-button (click)="assignCaptain()">
+                    Assign Captain
+                </button>
                 }
-                
+                @else {
+                <button mat-raised-button (click)="removeCaptain()">
+                    Remove Captain
+                </button>
+                }
+                }
+                }
             </div>
         </div>
     </div>

@@ -156,6 +156,9 @@ export class MemberDetailsComponent implements OnInit {
     if (userName)
       this._teamService.assignCaptain(userName).subscribe({
         next: (res: ApiResponse) => {
+          if (this.member)
+            this.member.isCaptain = true;
+
           this._snack.open(res.message, 'close', {
             duration: 7000,
             horizontalPosition: 'center',
@@ -172,6 +175,9 @@ export class MemberDetailsComponent implements OnInit {
     if (userName)
       this._teamService.removeCaptain(userName).subscribe({
         next: (res: ApiResponse) => {
+          if (this.member)
+            this.member.isCaptain = false;
+
           this._snack.open(res.message, 'close', {
             duration: 7000,
             horizontalPosition: 'center',
