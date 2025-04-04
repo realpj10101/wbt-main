@@ -31,7 +31,7 @@ public static class Mappers
         };
     }
 
-    public static PlayerDto ConvertAppUserToPlayerDto(AppUser appUser, bool isFollowing = false, bool isLiking = false)
+    public static PlayerDto ConvertAppUserToPlayerDto(AppUser appUser, bool isFollowing = false, bool isLiking = false, bool isCaptian = false)
     {
         return new PlayerDto(
             // Id: rootModel.Id!.ToString(),    
@@ -58,7 +58,7 @@ public static class Mappers
             Country: appUser.Country,
             Photos: appUser.Photos,
             IsFollowing: isFollowing,
-            IsCaptain: appUser.IsCaptain,
+            IsCaptain: isCaptian,
             IsLiking: isLiking
         );
     }

@@ -43,7 +43,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public int FollowersCount { get; init; }
     public int LikingsCount { get; init; }
     public int LikersCount { get; init; }
-    public bool IsCaptain { get; init; }
+    public bool IsCaptain { get; init; }    
     public int CommentingCount { get; init; }
     public int CommentersCount { get; init; }
 }
