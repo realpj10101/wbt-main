@@ -195,6 +195,22 @@ public class TeamController(
         
         return Ok(new Response("Captain assigned."));
     }
+
+    [HttpDelete("remove-captain/{targetUserName}")]
+    public async Task<ActionResult<Response>> RemoveCaptain(string targetUserName, CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+        
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+        
+        var result = await _teamRepository.RemoveCaptainAsync(targetUserName, cancellationToken);
+        
+        if (result is null) return NotFound(new Response("Target user not found."));
+        if (!result.Value) return BadRequest(new Response("User is not assigned to captain."));
+        
+        return Ok(new Response("Captain removed."));
+    }
 }
 
 // old code

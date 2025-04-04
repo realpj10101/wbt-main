@@ -15,4 +15,5 @@ public interface ITeamRepository
         CancellationToken cancellationToken);
     public Task<string?> GetTeamNameByIdAsync(ObjectId userId, CancellationToken cancellationToken);
     public Task<bool?> AssignCaptainAsync(string targetUserName, CancellationToken cancellationToken);
+    public Task<bool?> RemoveCaptainAsync(string targetUserName, CancellationToken cancellationToken);
 }

@@ -283,6 +283,24 @@ public class TeamRepository : ITeamRepository
         return result.Succeeded;
     }
 
+    public async Task<bool?> RemoveCaptainAsync(string targetUserName, CancellationToken cancellationToken)
+    {
+        var targetUser = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.NormalizedUserName == targetUserName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (targetUser is null)
+            return null;
+        
+        var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
+        if (!hasRole)
+            return false;
+        
+        var result = await _userManager.RemoveFromRoleAsync(targetUser, "captain");
+        return result.Succeeded;
+    }
+
+
     // public async Task<bool?> AssignCaptainAsync(ObjectId userId, string targetUserName, CancellationToken cancellationToken)
     // {
     //     ObjectId? targetUserId = await _collectionAppUser.AsQueryable()
