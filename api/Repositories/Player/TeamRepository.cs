@@ -280,6 +280,12 @@ public class TeamRepository : ITeamRepository
 
         // Assign the captain role
         var result = await _userManager.AddToRoleAsync(targetUser, "captain");
+        
+        UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
+            .Set(doc => doc.IsCaptain, true);
+        
+        await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
+        
         return result.Succeeded;
     }
 
@@ -297,6 +303,12 @@ public class TeamRepository : ITeamRepository
             return false;
     
         var result = await _userManager.RemoveFromRoleAsync(targetUser, "captain");
+        
+        UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
+            .Set(doc => doc.IsCaptain, false);
+        
+        await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
+
         return result.Succeeded;
     }
 }
