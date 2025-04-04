@@ -24,4 +24,5 @@ import { MemberService } from '../../services/member.service';
 export class CoachPanelCardComponent {
   @Input('memberInput') memberIn: Member | undefined;
   apiUrl = environment.apiUrl;
+  private _teamService = inject(TeamService);
 }

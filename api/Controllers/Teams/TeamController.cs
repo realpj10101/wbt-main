@@ -180,7 +180,7 @@ public class TeamController(
     }
 
     [HttpPost("assign-captain/{targetUserName}")]
-    public async Task<IActionResult> AssignCaptain(string targetUserName,
+    public async Task<ActionResult<Response>> AssignCaptain(string targetUserName,
         CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
@@ -190,10 +190,10 @@ public class TeamController(
         
         var result = await _teamRepository.AssignCaptainAsync(targetUserName, cancellationToken);
         
-        if (result == null) return NotFound("Target user not found.");
-        if (!result.Value) return BadRequest("User is already assigned to captain.");
+        if (result == null) return NotFound( new Response("Target user not found."));
+        if (!result.Value) return BadRequest( new Response("User is already assigned to captain."));
         
-        return Ok("Captain assigned.");
+        return Ok(new Response("Captain assigned."));
     }
 }
 

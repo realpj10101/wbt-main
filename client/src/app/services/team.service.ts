@@ -57,6 +57,10 @@ export class TeamService {
     return this.http.get<ApiResponse>(this._apiUrl + 'get-team-name');
   }
 
+  assignCaptain(targetUserName: string): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(this._apiUrl + 'assign-captain/' + targetUserName, null);
+  }
+
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
     let params = new HttpParams();
 

@@ -149,4 +149,11 @@ export class MemberDetailsComponent implements OnInit {
       });
     }
   }
+
+  assignCaptain(): void {
+    const userName: string | null = this._route.snapshot.paramMap.get('userName');
+
+    if (userName)
+      this._teamService.assignCaptain(userName).subscribe();
+  }
 }
