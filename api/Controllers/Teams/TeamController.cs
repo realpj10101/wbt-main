@@ -183,6 +183,7 @@ public class TeamController(
             : NotFound("No team found for this coach.");
     }
 
+    [Authorize(Roles = "coach")]
     [HttpPost("assign-captain/{targetUserName}")]
     public async Task<ActionResult<Response>> AssignCaptain(string targetUserName,
         CancellationToken cancellationToken)
@@ -213,6 +214,7 @@ public class TeamController(
                                         : BadRequest("Assigning captain failed. Try again or contact administrator.");
     }
 
+    [Authorize(Roles = "coach")]
     [HttpDelete("remove-captain/{targetUserName}")]
     public async Task<ActionResult<Response>> RemoveCaptain(string targetUserName, CancellationToken cancellationToken)
     {
