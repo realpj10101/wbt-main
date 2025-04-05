@@ -117,8 +117,8 @@ public class TeamController(
             return Unauthorized("You are not logged in. Please login again.");
 
         List<AppUser>? appUsers = await _teamRepository.GetTeamMembersAsync(teamName, cancellationToken);
-        
-        if (appUsers is null) 
+
+        if (appUsers is null)
             return BadRequest("Target team name was not found.");
 
         if (appUsers.Count == 0) return NoContent();
@@ -145,25 +145,26 @@ public class TeamController(
         CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-        
+
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
-        
-        TeamStatus? tS = await _teamRepository.AddMemberAsync(userId.Value, targetMemberUserName, teamName, cancellationToken);
+
+        TeamStatus? tS =
+            await _teamRepository.AddMemberAsync(userId.Value, targetMemberUserName, teamName, cancellationToken);
 
         return tS.IsSuccess
             ? Ok(new Response(Message: $"You add {targetMemberUserName} to team {teamName} successfully."))
             : tS.IsNotTheCreator
-            ? BadRequest("You are not the owner of the team.")
-            : tS.IsTargetMemberNotFound
-                ? NotFound($"{targetMemberUserName} is not found.")
-                : tS.IsTargetTeamNotFound
-                    ? NotFound($"Team {teamName} is not found.")
-                    : tS.IsAlreadyJoined
-                        ? BadRequest($"{targetMemberUserName} is already joined.")
-                        : tS.IsJoiningThemself
-                            ? BadRequest("You are the owner of this team.")
-                            : BadRequest("Updated team failed. Please contact administrator.");
+                ? BadRequest("You are not the owner of the team.")
+                : tS.IsTargetMemberNotFound
+                    ? NotFound($"{targetMemberUserName} is not found.")
+                    : tS.IsTargetTeamNotFound
+                        ? NotFound($"Team {teamName} is not found.")
+                        : tS.IsAlreadyJoined
+                            ? BadRequest($"{targetMemberUserName} is already joined.")
+                            : tS.IsJoiningThemself
+                                ? BadRequest("You are the owner of this team.")
+                                : BadRequest("Updated team failed. Please contact administrator.");
     }
 
     [Authorize(Roles = "coach")]
@@ -174,9 +175,9 @@ public class TeamController(
 
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
-        
+
         string? teamName = await _teamRepository.GetTeamNameByIdAsync(userId.Value, cancellationToken);
-        
+
         return teamName is not null
             ? Ok(new Response(teamName))
             : NotFound("No team found for this coach.");
@@ -187,45 +188,58 @@ public class TeamController(
         CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-        
+
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
-        
+
         CaptainStatus cS = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
-       
+
         return cS.IsSuccess
             ? Ok(new Response(Message: $"{targetUserName} assigned captain."))
             : cS.CoachNotFound
-            ? NotFound($"Coach is not found.")
-            : cS.CoachHasNoTeam
-            ? NotFound($"You have no teams")
-            : cS.UserNotFound
-            ? BadRequest($"{targetUserName} is not found.")
-            : cS.NotInTeam
-            ? BadRequest($"{targetUserName} is not in any team.")
-            : cS.TeamNotExist
-            ? BadRequest("Team not found.")
-            : cS.NotTeamMember
-            ? BadRequest($"{targetUserName} is not a team member of this team.")
-            : cS.AlreadyCaptain
-            ? BadRequest($"{targetUserName} is already a captain.")
-            : BadRequest("Assigning captain failed. Try again or contact administrator.");
+                ? NotFound($"Coach is not found.")
+                : cS.CoachHasNoTeam
+                    ? NotFound($"You have no teams")
+                    : cS.UserNotFound
+                        ? BadRequest($"{targetUserName} is not found.")
+                        : cS.NotInTeam
+                            ? BadRequest($"{targetUserName} is not in any team.")
+                            : cS.TeamNotExist
+                                ? BadRequest("Team not found.")
+                                : cS.NotTeamMember
+                                    ? BadRequest($"{targetUserName} is not a team member of this team.")
+                                    : cS.AlreadyCaptain
+                                        ? BadRequest($"{targetUserName} is already a captain.")
+                                        : BadRequest("Assigning captain failed. Try again or contact administrator.");
     }
 
     [HttpDelete("remove-captain/{targetUserName}")]
     public async Task<ActionResult<Response>> RemoveCaptain(string targetUserName, CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-        
+
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
-        
-        var result = await _teamRepository.RemoveCaptainAsync(targetUserName, cancellationToken);
-        
-        if (result is null) return NotFound(new Response("Target user not found."));
-        if (!result.Value) return BadRequest(new Response("User is not assigned to captain."));
-        
-        return Ok(new Response("Captain removed."));
+
+        CaptainStatus cS = await _teamRepository.RemoveCaptainAsync(userId.Value, targetUserName, cancellationToken);
+
+        return cS.IsSuccess
+            ? Ok(new Response(Message: $"{targetUserName} removed from captain."))
+            : cS.CoachNotFound
+                ? NotFound($"Coach is not found.")
+                : cS.CoachHasNoTeam
+                    ? NotFound($"You have no teams")
+                    : cS.UserNotFound
+                        ? BadRequest($"{targetUserName} is not found.")
+                        : cS.NotInTeam
+                            ? BadRequest($"{targetUserName} is not in any team.")
+                            : cS.TeamNotExist
+                                ? BadRequest("Team not found.")
+                                : cS.NotTeamMember
+                                    ? BadRequest($"{targetUserName} is not a team member of this team.")
+                                    : cS.IsNotCaptain
+                                        ? BadRequest($"{targetUserName} is not a captain.")
+                                        : BadRequest("Assigning captain failed. Try again or contact administrator.");
     }
 }
 

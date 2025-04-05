@@ -259,7 +259,8 @@ public class TeamRepository : ITeamRepository
         return teamName;
     }
 
-    public async Task<CaptainStatus> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken)
+    public async Task<CaptainStatus> AssignCaptainAsync(ObjectId coachId, string targetUserName,
+        CancellationToken cancellationToken)
     {
         CaptainStatus cS = new();
 
@@ -267,13 +268,13 @@ public class TeamRepository : ITeamRepository
             .Where(doc => doc.Id == coachId)
             .Select(doc => doc.UserName)
             .FirstOrDefaultAsync(cancellationToken);
-    
+
         if (coachUserName is null)
         {
             cS.CoachNotFound = true;
             return cS;
         }
-        
+
         // Find the coach doc
         var coachUser = await _collectionAppUser.AsQueryable()
             .Where(doc => doc.NormalizedUserName == coachUserName.ToUpper())
@@ -319,7 +320,7 @@ public class TeamRepository : ITeamRepository
 
         // Check if the user is already a captain
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
-        if (hasRole) 
+        if (hasRole)
         {
             cS.AlreadyCaptain = true;
             return cS;
@@ -334,30 +335,86 @@ public class TeamRepository : ITeamRepository
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
 
         cS.IsSuccess = true;
-    
+
         return cS;
     }
 
-    public async Task<bool?> RemoveCaptainAsync(string targetUserName, CancellationToken cancellationToken)
+    public async Task<CaptainStatus> RemoveCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken)
     {
+        CaptainStatus cS = new();
+
+        string? coachUserName = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.Id == coachId)
+            .Select(doc => doc.UserName)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (coachUserName is null)
+        {
+            cS.CoachNotFound = true;
+            return cS;
+        }
+
+        // Find the coach doc
+        var coachUser = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.NormalizedUserName == coachUserName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        // Get the team created by the coach
+        Team? coachTeam = await _collection.AsQueryable()
+            .Where(t => t.CreatorId == coachUser.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (coachTeam is null)
+        {
+            cS.CoachHasNoTeam = true;
+            return cS;
+        }
+
+        // Find the target user (the player to be assigned as captain)
         var targetUser = await _collectionAppUser.AsQueryable()
             .Where(doc => doc.NormalizedUserName == targetUserName.ToUpper())
             .FirstOrDefaultAsync(cancellationToken);
 
         if (targetUser is null)
-            return null;
+        {
+            cS.UserNotFound = true;
+            return cS;
+        }
 
+        // Get the target user's enrolled team
+        ObjectId? userEnrolledTeamId = targetUser.EnrolledTeam;
+
+        if (userEnrolledTeamId is null)
+        {
+            cS.NotInTeam = true;
+            return cS;
+        }
+
+        // Ensure the target user belongs to the coach's team
+        if (userEnrolledTeamId != coachTeam.Id)
+        {
+            cS.NotTeamMember = true;
+            return cS;
+        }
+
+        // Check if the user is not captain
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
         if (!hasRole)
-            return false;
+        {
+            cS.IsNotCaptain = true;
+            return cS;
+        }
 
-        var result = await _userManager.RemoveFromRoleAsync(targetUser, "captain");
+        // Assign the captain role
+        await _userManager.RemoveFromRoleAsync(targetUser, "captain");
 
         UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
             .Set(doc => doc.IsCaptain, false);
 
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
 
-        return result.Succeeded;
+        cS.IsSuccess = true;
+
+        return cS;
     }
 }
