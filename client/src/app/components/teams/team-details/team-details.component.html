@@ -60,7 +60,7 @@
                 }
                 <div class="members">
                     @for (member of members; track $index) {
-                        <app-member-card [memberInput]="member"></app-member-card>
+                        <app-team-members-card [memberInput]="member" />
                     }
                 </div>
             </mat-tab>

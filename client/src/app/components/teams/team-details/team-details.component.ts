@@ -10,11 +10,12 @@ import { ShowTeam } from '../../../models/show-team.model';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MemberCardComponent } from "../../members/member-card/member-card.component";
+import { TeamMembersCardComponent } from "../../team-members-card/team-members-card.component";
 
 @Component({
   selector: 'app-team-details',
   standalone: true,
-  imports: [MatTabsModule, MatExpansionModule, MemberCardComponent],
+  imports: [MatTabsModule, MatExpansionModule, MemberCardComponent, TeamMembersCardComponent],
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
