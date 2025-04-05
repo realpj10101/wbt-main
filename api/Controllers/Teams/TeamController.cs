@@ -208,7 +208,7 @@ public class TeamController(
                             : cS.TeamNotExist
                                 ? BadRequest("Team not found.")
                                 : cS.NotTeamMember
-                                    ? BadRequest($"{targetUserName} is not a team member of this team.")
+                                    ? BadRequest($"{targetUserName} is not a team member of your team.")
                                     : cS.AlreadyCaptain
                                         ? BadRequest($"{targetUserName} is already a captain.")
                                         : BadRequest("Assigning captain failed. Try again or contact administrator.");
@@ -238,7 +238,7 @@ public class TeamController(
                             : cS.TeamNotExist
                                 ? BadRequest("Team not found.")
                                 : cS.NotTeamMember
-                                    ? BadRequest($"{targetUserName} is not a team member of this team.")
+                                    ? BadRequest($"{targetUserName} is not a team member of your team.")
                                     : cS.IsNotCaptain
                                         ? BadRequest($"{targetUserName} is not a captain.")
                                         : BadRequest("Assigning captain failed. Try again or contact administrator.");
