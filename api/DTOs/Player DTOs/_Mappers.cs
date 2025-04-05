@@ -165,8 +165,7 @@ public static class Mappers
         }
         
         return new EnrolledTeam(
-            TeamId: team.Id,
-            TeamName: team.TeamName
+            TeamId: team.Id
             );
     }
 

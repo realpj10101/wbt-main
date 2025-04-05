@@ -38,7 +38,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string Bio { get; init; } = string.Empty;
     public string Achievements { get; init; } = string.Empty;
     public List<Photo> Photos { get; init; } = [];
-    public List<EnrolledTeam> EnrolledTeams { get; init; } = [];
+    public ObjectId? EnrolledTeam { get; set; }
     public int FollowingsCount { get; init; }
     public int FollowersCount { get; init; }
     public int LikingsCount { get; init; }

@@ -65,89 +65,78 @@ public class TeamRepository : ITeamRepository
         return null;
     }
 
-    public async Task<TeamStatus> UpdateTeamAsync(
-        ObjectId userId,
-        UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
-    {
-        TeamStatus tS = new();
-
-        ObjectId teamId = await _collection.AsQueryable()
-            .Where(doc => doc.TeamName == targetTeamName)
-            .Select(doc => doc.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        Team teamName = await _collection.Find(t => t.TeamName == targetTeamName)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (teamName is null)
-        {
-            tS.IsTargetTeamNotFound = true;
-            return tS;
-        }
-
-        ObjectId memberId = await _collectionAppUser.AsQueryable()
-            .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
-            .Select(doc => doc.Id)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (userId == memberId)
-        {
-            tS.IsJoiningThemself = true;
-            return tS;
-        }
-
-        AppUser user = await _collectionAppUser.Find(u => u.Id == memberId).FirstOrDefaultAsync(cancellationToken);
-
-        if (user is null)
-        {
-            tS.IsTargetMemberNotFound = true;
-            return tS;
-        }
-
-        Team team = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (team is not null)
-        {
-            tS.IsAlreadyJoined = true;
-            return tS;
-        }
-
-        UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
-            .AddToSet(t => t.MembersIds, memberId)
-            .AddToSet(t => t.MembersUserNames, userInput.UserName?.ToLower().Trim())
-            .Set(t => t.TeamName, userInput.TeamName?.ToLower().Trim())
-            .Set(t => t.TeamLevel, userInput.TeamLevel?.ToLower().Trim())
-            .Set(t => t.Achievements, userInput.Achievements?.ToLower().Trim())
-            .Set(t => t.GamesPlayed, userInput.GamesPlayed)
-            .Set(t => t.GamesWon, userInput.GamesWon)
-            .Set(t => t.GamesLost, userInput.GamesLost);
-
-        await _collection.UpdateOneAsync(
-            doc => doc.Id == teamId, updatedTeam, null, cancellationToken
-        );
-
-        Team team1 = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (team1 == null)
-        {
-            tS.IsTargetTeamNotFound = true;
-            return tS;
-        }
-
-        EnrolledTeam? teamMap = Mappers.ConvertTeamToEnrolledTeamDto(team1);
-
-        UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
-            .AddToSet(appUser => appUser.EnrolledTeams, teamMap);
-
-        await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
-            appUser.Id == memberId, updatedUser, null, cancellationToken);
-
-        tS.IsSuccess = true;
-
-        return tS;
-    }
+    // public async Task<TeamStatus> UpdateTeamAsync(
+    //     ObjectId userId,
+    //     UpdateTeamDto userInput, string targetTeamName, CancellationToken cancellationToken)
+    // {
+    //     TeamStatus tS = new();
+    //
+    //     ObjectId teamId = await _collection.AsQueryable()
+    //         .Where(doc => doc.TeamName == targetTeamName)
+    //         .Select(doc => doc.Id)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     Team teamName = await _collection.Find(t => t.TeamName == targetTeamName)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (teamName is null)
+    //     {
+    //         tS.IsTargetTeamNotFound = true;
+    //         return tS;
+    //     }
+    //
+    //     ObjectId memberId = await _collectionAppUser.AsQueryable()
+    //         .Where(doc => doc.NormalizedUserName == userInput.UserName.ToUpper())
+    //         .Select(doc => doc.Id)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (userId == memberId)
+    //     {
+    //         tS.IsJoiningThemself = true;
+    //         return tS;
+    //     }
+    //
+    //     AppUser user = await _collectionAppUser.Find(u => u.Id == memberId).FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (user is null)
+    //     {
+    //         tS.IsTargetMemberNotFound = true;
+    //         return tS;
+    //     }
+    //
+    //     UpdateDefinition<Team> updatedTeam = Builders<Team>.Update
+    //         .Set(t => t.TeamName, userInput.TeamName?.ToLower().Trim())
+    //         .Set(t => t.TeamLevel, userInput.TeamLevel?.ToLower().Trim())
+    //         .Set(t => t.Achievements, userInput.Achievements?.ToLower().Trim())
+    //         .Set(t => t.GamesPlayed, userInput.GamesPlayed)
+    //         .Set(t => t.GamesWon, userInput.GamesWon)
+    //         .Set(t => t.GamesLost, userInput.GamesLost);
+    //
+    //     await _collection.UpdateOneAsync(
+    //         doc => doc.Id == teamId, updatedTeam, null, cancellationToken
+    //     );
+    //
+    //     Team team1 = await _collection.Find(t => t.MembersUserNames.Contains(userInput.UserName))
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (team1 == null)
+    //     {
+    //         tS.IsTargetTeamNotFound = true;
+    //         return tS;
+    //     }
+    //
+    //     EnrolledTeam? teamMap = Mappers.ConvertTeamToEnrolledTeamDto(team1);
+    //
+    //     UpdateDefinition<AppUser> updatedUser = Builders<AppUser>.Update
+    //         .AddToSet(appUser => appUser.EnrolledTeams, teamMap);
+    //
+    //     await _collectionAppUser.UpdateOneAsync<AppUser>(appUser =>
+    //         appUser.Id == memberId, updatedUser, null, cancellationToken);
+    //
+    //     tS.IsSuccess = true;
+    //
+    //     return tS;
+    // }
 
     public async Task<PagedList<Team>?> GetAllAsync(PaginationParams paginationParams,
         CancellationToken cancellationToken)
@@ -181,9 +170,9 @@ public class TeamRepository : ITeamRepository
         var team = await _collection
             .Find(t => t.TeamName == teamName)
             .FirstOrDefaultAsync(cancellationToken);
-        
+
         if (team is null) return null;
-        
+
         // Step 2: Query the Users collection using the $in operator
         var filter = Builders<AppUser>.Filter.In(u => u.Id, team.MembersIds);
         var teamMembers = await _collectionAppUser
@@ -232,10 +221,10 @@ public class TeamRepository : ITeamRepository
             return tS;
         }
 
-        Team team1 = await _collection.Find(t => t.MembersUserNames.Contains(targetMemberUserName))
+        Team teamContainingMember = await _collection.Find(t => t.MembersUserNames.Contains(targetMemberUserName))
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (team1 is not null)
+        if (teamContainingMember is not null)
         {
             tS.IsAlreadyJoined = true;
             return tS;
@@ -246,6 +235,11 @@ public class TeamRepository : ITeamRepository
             .AddToSet(doc => doc.MembersUserNames, targetMemberUserName);
 
         await _collection.UpdateOneAsync(doc => doc.Id == team.Id, updateResult, null, cancellationToken);
+
+        UpdateDefinition<AppUser> userUpdateRes = Builders<AppUser>.Update
+            .Set(doc => doc.EnrolledTeam, team.Id);
+
+        await _collectionAppUser.UpdateOneAsync(doc => doc.Id == memberId, userUpdateRes, null, cancellationToken);
 
         tS.IsSuccess = true;
 
@@ -265,30 +259,83 @@ public class TeamRepository : ITeamRepository
         return teamName;
     }
 
-    public async Task<bool?> AssignCaptainAsync(string targetUserName, CancellationToken cancellationToken)
+    public async Task<CaptainStatus> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken)
     {
-        // Find the target user by username
+        CaptainStatus cS = new();
+
+        string? coachUserName = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.Id == coachId)
+            .Select(doc => doc.UserName)
+            .FirstOrDefaultAsync(cancellationToken);
+    
+        if (coachUserName is null)
+        {
+            cS.CoachNotFound = true;
+            return cS;
+        }
+        
+        // Find the coach doc
+        var coachUser = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.NormalizedUserName == coachUserName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        // Get the team created by the coach
+        Team? coachTeam = await _collection.AsQueryable()
+            .Where(t => t.CreatorId == coachUser.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (coachTeam is null)
+        {
+            cS.CoachHasNoTeam = true;
+            return cS;
+        }
+
+        // Find the target user (the player to be assigned as captain)
         var targetUser = await _collectionAppUser.AsQueryable()
             .Where(doc => doc.NormalizedUserName == targetUserName.ToUpper())
             .FirstOrDefaultAsync(cancellationToken);
 
         if (targetUser is null)
-            return null; // User not found
+        {
+            cS.UserNotFound = true;
+            return cS;
+        }
 
-        // Check if the user already has the 'captain' role
+        // Get the target user's enrolled team
+        ObjectId? userEnrolledTeamId = targetUser.EnrolledTeam;
+
+        if (userEnrolledTeamId is null)
+        {
+            cS.NotInTeam = true;
+            return cS;
+        }
+
+        // Ensure the target user belongs to the coach's team
+        if (userEnrolledTeamId != coachTeam.Id)
+        {
+            cS.NotTeamMember = true;
+            return cS;
+        }
+
+        // Check if the user is already a captain
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
-        if (hasRole)
-            return false; // Already a captain
+        if (hasRole) 
+        {
+            cS.AlreadyCaptain = true;
+            return cS;
+        }
 
         // Assign the captain role
-        var result = await _userManager.AddToRoleAsync(targetUser, "captain");
-        
+        await _userManager.AddToRoleAsync(targetUser, "captain");
+
         UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
             .Set(doc => doc.IsCaptain, true);
-        
+
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
-        
-        return result.Succeeded;
+
+        cS.IsSuccess = true;
+    
+        return cS;
     }
 
     public async Task<bool?> RemoveCaptainAsync(string targetUserName, CancellationToken cancellationToken)
@@ -303,12 +350,12 @@ public class TeamRepository : ITeamRepository
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
         if (!hasRole)
             return false;
-    
+
         var result = await _userManager.RemoveFromRoleAsync(targetUser, "captain");
-        
+
         UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
             .Set(doc => doc.IsCaptain, false);
-        
+
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
 
         return result.Succeeded;

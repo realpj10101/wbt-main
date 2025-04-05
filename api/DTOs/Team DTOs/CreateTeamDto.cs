@@ -11,8 +11,7 @@ public record CreateTeamDto(
     );
 
 public record EnrolledTeam(
-    ObjectId TeamId,
-    string TeamName
+    ObjectId TeamId
 );
 
 public class ShowTeamDto

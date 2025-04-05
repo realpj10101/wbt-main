@@ -71,30 +71,30 @@ public class TeamController(
         return playerDtos;
     }
 
-    [Authorize(Roles = "coach")]
-    [HttpPut("update-team/{teamName}")]
-    public async Task<ActionResult<Response>> Update(UpdateTeamDto userInput, string teamName,
-        CancellationToken cancellationToken)
-    {
-        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-
-        if (userId is null)
-            return Unauthorized("You are not logged in. Please login again.");
-
-        TeamStatus? tS = await _teamRepository.UpdateTeamAsync(userId.Value, userInput, teamName, cancellationToken);
-
-        return tS.IsSuccess
-            ? Ok(new Response(Message: $"You updated the team {teamName} successfully."))
-            : tS.IsTargetMemberNotFound
-                ? NotFound($"{userInput.UserName} is not found.")
-                : tS.IsTargetTeamNotFound
-                    ? NotFound($"Team {teamName} is not found.")
-                    : tS.IsAlreadyJoined
-                        ? BadRequest($"{userInput.UserName} is already joined.")
-                        : tS.IsJoiningThemself
-                            ? BadRequest("You are the owner of this team.")
-                            : BadRequest("Updated team failed. Please contact administrator.");
-    }
+    // [Authorize(Roles = "coach")]
+    // [HttpPut("update-team/{teamName}")]
+    // public async Task<ActionResult<Response>> Update(UpdateTeamDto userInput, string teamName,
+    //     CancellationToken cancellationToken)
+    // {
+    //     ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+    //
+    //     if (userId is null)
+    //         return Unauthorized("You are not logged in. Please login again.");
+    //
+    //     TeamStatus? tS = await _teamRepository.UpdateTeamAsync(userId.Value, userInput, teamName, cancellationToken);
+    //
+    //     return tS.IsSuccess
+    //         ? Ok(new Response(Message: $"You updated the team {teamName} successfully."))
+    //         : tS.IsTargetMemberNotFound
+    //             ? NotFound($"{userInput.UserName} is not found.")
+    //             : tS.IsTargetTeamNotFound
+    //                 ? NotFound($"Team {teamName} is not found.")
+    //                 : tS.IsAlreadyJoined
+    //                     ? BadRequest($"{userInput.UserName} is already joined.")
+    //                     : tS.IsJoiningThemself
+    //                         ? BadRequest("You are the owner of this team.")
+    //                         : BadRequest("Updated team failed. Please contact administrator.");
+    // }
 
     [HttpGet("get-by-name/{teamName}")]
     public async Task<ActionResult<ShowTeamDto>> GetByName(string teamName, CancellationToken cancellationToken)
@@ -191,12 +191,25 @@ public class TeamController(
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
         
-        var result = await _teamRepository.AssignCaptainAsync(targetUserName, cancellationToken);
-        
-        if (result == null) return NotFound( new Response("Target user not found."));
-        if (!result.Value) return BadRequest( new Response("User is already assigned to captain."));
-        
-        return Ok(new Response("Captain assigned."));
+        CaptainStatus cS = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
+       
+        return cS.IsSuccess
+            ? Ok(new Response(Message: $"{targetUserName} assigned captain."))
+            : cS.CoachNotFound
+            ? NotFound($"Coach is not found.")
+            : cS.CoachHasNoTeam
+            ? NotFound($"You have no teams")
+            : cS.UserNotFound
+            ? BadRequest($"{targetUserName} is not found.")
+            : cS.NotInTeam
+            ? BadRequest($"{targetUserName} is not in any team.")
+            : cS.TeamNotExist
+            ? BadRequest("Team not found.")
+            : cS.NotTeamMember
+            ? BadRequest($"{targetUserName} is not a team member of this team.")
+            : cS.AlreadyCaptain
+            ? BadRequest($"{targetUserName} is already a captain.")
+            : BadRequest("Assigning captain failed. Try again or contact administrator.");
     }
 
     [HttpDelete("remove-captain/{targetUserName}")]
