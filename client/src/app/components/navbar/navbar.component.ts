@@ -4,7 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { environment } from '../../../environments/environment.development';
-import { LoggedInPlayer } from '../../models/logged-in-player.model';
+import { LoggedInUser } from '../../models/logged-in-player.model';
 import { AccountService } from '../../services/account.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
@@ -24,13 +24,13 @@ import { NavbarMobileComponent } from "./navbar-mobile/navbar-mobile.component";
     MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
     MatDividerModule, MatListModule, MatTabsModule,
     NavbarMobileComponent
-],
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl;
-  loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
+  loggedInUserSig: Signal<LoggedInUser | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'users'];
   links: string[] = ['members', 'friends', 'teams'];
   linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach-panel'];
@@ -44,7 +44,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loggedInUserSig = this.registerPlayerService.loggedInPlayerSig;
+    this.loggedInUserSig = this.registerPlayerService.loggedInUserSig;
   }
 
   private setBreakpointObserver(): void {

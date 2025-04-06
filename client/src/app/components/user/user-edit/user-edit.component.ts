@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { isPlatformBrowser } from '@angular/common';
-import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { take } from 'rxjs';
 import { UserUpdate } from '../../../models/user-update.model';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
@@ -33,7 +33,7 @@ import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
     MatTabsModule, MatFormFieldModule, MatInputModule,
     MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule,
     PhotoEditorComponent
-],
+  ],
   templateUrl: './user-edit.component.html',
   styleUrl: './user-edit.component.scss'
 })
@@ -151,7 +151,7 @@ export class UserEditComponent {
       const loggedInplayerStr: string | null = localStorage.getItem('loggedInPlayer');
 
       if (loggedInplayerStr) {
-        const loggedInPlayer: LoggedInPlayer = JSON.parse(loggedInplayerStr);
+        const loggedInPlayer: LoggedInUser = JSON.parse(loggedInplayerStr);
 
         this._memberService.getByUserName(loggedInPlayer.userName)?.pipe(take(1)).subscribe(member => {
           if (member) {

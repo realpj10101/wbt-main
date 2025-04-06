@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment.development';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
-import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { MatIconModule } from '@angular/material/icon';
 import { IntlModule } from "angular-ecmascript-intl";
 import { LightboxModule } from "ng-gallery/lightbox";
@@ -37,7 +37,7 @@ export class MemberDetailsComponent implements OnInit {
   member: Member | undefined;
   members$: Observable<Member[] | null> | undefined;
   teamName: ApiResponse | undefined;
-  loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
+  loggedInUserSig: Signal<LoggedInUser | null> | undefined;
 
   images: GalleryItem[] = [];
 
@@ -60,7 +60,7 @@ export class MemberDetailsComponent implements OnInit {
       error: (err) => console.log("Error fetching team name:", err)
     })
 
-    this.loggedInUserSig = this._accountService.loggedInPlayerSig;
+    this.loggedInUserSig = this._accountService.loggedInUserSig;
   }
 
   getMember(): void {

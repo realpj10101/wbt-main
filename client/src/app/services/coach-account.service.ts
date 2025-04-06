@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoggedInPlayer } from '../models/logged-in-player.model';
+import { LoggedInUser } from '../models/logged-in-player.model';
 import { environment } from '../../environments/environment.development';
 import { RegisterPlayer } from '../models/register-player.model';
 import { map, Observable, take } from 'rxjs';
@@ -16,12 +16,12 @@ export class CoachAccountService {
   http = inject(HttpClient);
   router = inject(Router);
   platformId = inject(PLATFORM_ID);
-  loggedInCoachSig = signal<LoggedInPlayer | null>(null);
+  loggedInUserSig = signal<LoggedInUser | null>(null);
 
   private readonly _apiUrl = environment.apiUrl + 'api/coachaccount/';
 
-  registerCoach(userInput: RegisterPlayer): Observable<LoggedInPlayer | null> {
-    return this.http.post<LoggedInPlayer>(this._apiUrl + 'register', userInput).pipe(
+  registerCoach(userInput: RegisterPlayer): Observable<LoggedInUser | null> {
+    return this.http.post<LoggedInUser>(this._apiUrl + 'register', userInput).pipe(
       map(res => {
         if (res) {
           this.setCurrentCoach(res);
@@ -36,8 +36,8 @@ export class CoachAccountService {
     );
   }
 
-  loginCoach(userInput: LoginPlayer): Observable<LoggedInPlayer | null> {
-    return this.http.post<LoggedInPlayer>(this._apiUrl + 'login', userInput).pipe(
+  loginCoach(userInput: LoginPlayer): Observable<LoggedInUser | null> {
+    return this.http.post<LoggedInUser>(this._apiUrl + 'login', userInput).pipe(
       map(res => {
         if (res) {
           this.setCurrentCoach(res);
@@ -73,29 +73,29 @@ export class CoachAccountService {
       })
   }
 
-  setCurrentCoach(loggedInUser: LoggedInPlayer): void {
+  setCurrentCoach(loggedInUser: LoggedInUser): void {
     this.setLoggedInCoachRoles(loggedInUser);
 
-    this.loggedInCoachSig.set(loggedInUser);
+    this.loggedInUserSig.set(loggedInUser);
 
     if (isPlatformBrowser(this.platformId)) // we make sure this code ran on browser not on server
-      localStorage.setItem('loggedInCoach', JSON.stringify(loggedInUser));
+      localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
   }
 
-  setLoggedInCoachRoles(loggedInUser: LoggedInPlayer): void {
+  setLoggedInCoachRoles(loggedInUser: LoggedInUser): void {
     loggedInUser.roles = []; // We have to initialize it before pushing. Otherwise, its 'undefind' and push will not work
 
     const roles: string | string[] = JSON.parse(atob(loggedInUser.token.split('.')[1])).role; // get the tokens 2nd part then select role
   }
 
   logOut(): void {
-    this.loggedInCoachSig.set(null);
+    this.loggedInUserSig.set(null);
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.clear(); // delete all browser's localStorage's items at once
     }
 
-    this.router.navigateByUrl('coach-account/login');
+    this.router.navigateByUrl('coachaccount/login');
   }
 
   private navigateToReturnUrl(): void {

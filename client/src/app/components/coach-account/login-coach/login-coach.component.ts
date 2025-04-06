@@ -3,7 +3,7 @@ import { AccountService } from '../../../services/account.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginPlayer } from '../../../models/login-player.model';
-import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +22,7 @@ import { CoachAccountService } from '../../../services/coach-account.service';
   templateUrl: './login-coach.component.html',
   styleUrl: './login-coach.component.scss'
 })
-export class LoginCoachComponent {  
+export class LoginCoachComponent {
   coachAccountService = inject(CoachAccountService);
   fb = inject(FormBuilder);
   private router = inject(Router);
@@ -49,7 +49,7 @@ export class LoginCoachComponent {
     }
 
     this.coachAccountService.loginCoach(loginCoach).subscribe({
-      next: (loggedInCoach: LoggedInPlayer | null) => {
+      next: (loggedInCoach: LoggedInUser | null) => {
         console.log(loggedInCoach);
       },
       error: err => {

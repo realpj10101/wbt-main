@@ -3,7 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { environment } from '../../../environments/environment.development';
-import { LoggedInPlayer } from '../../models/logged-in-player.model';
+import { LoggedInUser } from '../../models/logged-in-player.model';
 import { ResponsiveService } from '../../services/responsive.service';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,18 +16,18 @@ import { HomeMobileComponent } from "./home-mobile/home-mobile.component";
     RouterLink, RouterOutlet,
     MatButtonModule, MatCardModule,
     HomeMobileComponent
-],
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   apiUrl: string = environment.apiUrl;
-  loggedInPlayerSig: Signal<LoggedInPlayer | null> | undefined;
+  loggedInPlayerSig: Signal<LoggedInUser | null> | undefined;
   isMobileViewSignal: WritableSignal<boolean> = inject(ResponsiveService).isMobileViewSig;
   private breakpointObserver = inject(BreakpointObserver);
 
   constructor() {
-  this.setBreakpointObserver();
+    this.setBreakpointObserver();
   }
 
   private setBreakpointObserver(): void {

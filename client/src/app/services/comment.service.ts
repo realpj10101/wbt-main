@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoggedInPlayer } from '../models/logged-in-player.model';
+import { LoggedInUser } from '../models/logged-in-player.model';
 import { environment } from '../../environments/environment.development';
 import { CommentInput } from '../models/comment.model';
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ export class CommentService {
   private paginationHandler = new PaginationHandler();
   router = inject(Router);
   platformId = inject(PLATFORM_ID);
-  loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
+  loggedInPlayerSig = signal<LoggedInUser | null>(null);
 
   private readonly _apiUrl = environment.apiUrl + 'api/comment/';
 

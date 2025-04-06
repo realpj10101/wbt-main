@@ -4,7 +4,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink, RouterModule, RouterOutlet } from '@angular/router';
 import { environment } from '../../../../environments/environment.development';
-import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { AccountService } from '../../../services/account.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
@@ -25,14 +25,14 @@ import { MatListModule } from '@angular/material/list';
 })
 export class NavbarMobileComponent implements OnInit {
   apiUrl: string = environment.apiUrl;
-  loggedInUserSig: Signal<LoggedInPlayer | null> | undefined;
+  loggedInUserSig: Signal<LoggedInUser | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'users'];
   links: string[] = ['members', 'friends', 'teams'];
   linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach-panel'];
   private _accountService = inject(AccountService);
 
   ngOnInit(): void {
-    this.loggedInUserSig = this._accountService.loggedInPlayerSig;
+    this.loggedInUserSig = this._accountService.loggedInUserSig;
   }
 
   logout(): void {

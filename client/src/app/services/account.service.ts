@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment.development';
-import { LoggedInPlayer } from '../models/logged-in-player.model';
+import { LoggedInUser } from '../models/logged-in-player.model';
 import { ApiResponse } from '../models/helpers/apiResponse.model';
 
 @Injectable({
@@ -17,12 +17,12 @@ export class AccountService {
   http = inject(HttpClient);
   router = inject(Router);
   platformId = inject(PLATFORM_ID);
-  loggedInPlayerSig = signal<LoggedInPlayer | null>(null);
+  loggedInUserSig = signal<LoggedInUser | null>(null);
 
   private readonly baseApiUrl = environment.apiUrl + 'api/account/';
 
-  registerPlayer(playerInput: RegisterPlayer): Observable<LoggedInPlayer | null> {
-    return this.http.post<LoggedInPlayer>(this.baseApiUrl + 'register', playerInput).pipe(
+  registerPlayer(playerInput: RegisterPlayer): Observable<LoggedInUser | null> {
+    return this.http.post<LoggedInUser>(this.baseApiUrl + 'register', playerInput).pipe(
       map(playerResponse => {
         if (playerResponse) {
           this.setCurrentPlayer(playerResponse);
@@ -37,8 +37,8 @@ export class AccountService {
     );
   }
 
-  loginPlayer(playerInput: LoginPlayer): Observable<LoggedInPlayer | null> {
-    return this.http.post<LoggedInPlayer>(this.baseApiUrl + 'login', playerInput).pipe(
+  loginPlayer(playerInput: LoginPlayer): Observable<LoggedInUser | null> {
+    return this.http.post<LoggedInUser>(this.baseApiUrl + 'login', playerInput).pipe(
       map(playerResponse => {
         if (playerResponse) {
           this.setCurrentPlayer(playerResponse);
@@ -74,25 +74,25 @@ export class AccountService {
       });
   }
 
-  setCurrentPlayer(loggedInPlayer: LoggedInPlayer): void {
-    this.setLoggedInPlayerRoles(loggedInPlayer);
+  setCurrentPlayer(loggedInUser: LoggedInUser): void {
+    this.setLoggedInPlayerRoles(loggedInUser);
 
-    this.loggedInPlayerSig.set(loggedInPlayer);
+    this.loggedInUserSig.set(loggedInUser);
 
     if (isPlatformBrowser(this.platformId)) // we make sure this code is ran on the browser and NOT server
-      localStorage.setItem('loggedInPlayer', JSON.stringify(loggedInPlayer));
+      localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
   }
 
-  setLoggedInPlayerRoles(loggedInPlayer: LoggedInPlayer): void {
-    loggedInPlayer.roles = []; // We have to initialize it before pushing. Otherwise, it's 'undefined' and push will not work.
+  setLoggedInPlayerRoles(loggedInUser: LoggedInUser): void {
+    loggedInUser.roles = []; // We have to initialize it before pushing. Otherwise, it's 'undefined' and push will not work.
 
-    const roles: string | string[] = JSON.parse(atob(loggedInPlayer.token.split('.')[1])).role; // get the token's 2nd part then select role
+    const roles: string | string[] = JSON.parse(atob(loggedInUser.token.split('.')[1])).role; // get the token's 2nd part then select role
 
-    Array.isArray(roles) ? loggedInPlayer.roles = roles : loggedInPlayer.roles.push(roles);
+    Array.isArray(roles) ? loggedInUser.roles = roles : loggedInUser.roles.push(roles);
   }
 
   logOut(): void {
-    this.loggedInPlayerSig.set(null);
+    this.loggedInUserSig.set(null);
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.clear(); // delete all browser's localStorage's items at once  

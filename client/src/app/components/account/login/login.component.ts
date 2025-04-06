@@ -3,7 +3,7 @@ import { AccountService } from '../../../services/account.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoginPlayer } from '../../../models/login-player.model';
-import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,7 +12,7 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 
 @Component({
   selector: 'app-login',
-  standalone: true,   
+  standalone: true,
   imports: [
     ReactiveFormsModule, FormsModule,
     MatFormFieldModule, MatInputModule, MatButtonModule,
@@ -48,7 +48,7 @@ export class LoginComponent {
     }
 
     this.registerPlayerService.loginPlayer(loginPlayer).subscribe({
-      next: (loggedInPlayer: LoggedInPlayer | null) => {
+      next: (loggedInPlayer: LoggedInUser | null) => {
         console.log(loggedInPlayer);
       },
       // show wrong username or password error.

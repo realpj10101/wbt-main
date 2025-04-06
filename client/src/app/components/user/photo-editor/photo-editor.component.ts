@@ -2,7 +2,7 @@ import { Component, inject, Input, OnInit } from '@angular/core';
 import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { NgOptimizedImage, CommonModule } from '@angular/common';
 import { Member } from '../../../models/member.model';
-import { LoggedInPlayer } from '../../../models/logged-in-player.model';
+import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { AccountService } from '../../../services/account.service';
 import { UserService } from '../../../services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -28,7 +28,7 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input('memberInput') member: Member | undefined;
-  loggedInPlayer: LoggedInPlayer | null | undefined;
+  loggedInPlayer: LoggedInUser | null | undefined;
   errorGlob: string | undefined;
   apiUrl = environment.apiUrl;
   // photoUrl: string | undefined;
@@ -39,7 +39,7 @@ export class PhotoEditorComponent implements OnInit {
   private _snackBar = inject(MatSnackBar);
 
   constructor() {
-    this.loggedInPlayer = this._accountService.loggedInPlayerSig();
+    this.loggedInPlayer = this._accountService.loggedInUserSig();
   }
 
   ngOnInit(): void {
@@ -88,7 +88,7 @@ export class PhotoEditorComponent implements OnInit {
 
       this.loggedInPlayer.profilePhotoUrl = url_165;
 
-      this._accountService.loggedInPlayerSig.set(this.loggedInPlayer);
+      this._accountService.loggedInUserSig.set(this.loggedInPlayer);
     }
   }
 

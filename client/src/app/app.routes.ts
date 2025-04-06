@@ -57,8 +57,8 @@ export const routes: Routes = [
   //   children: [
   { path: 'account/register', component: RegisterComponent },
   { path: 'account/login', component: LoginComponent },
-  { path: 'coach-account/register', component: RegisterCoachComponent },
-  { path: 'coach-account/login', component: LoginCoachComponent},
+  { path: 'coachaccount/register', component: RegisterCoachComponent },
+  { path: 'coachaccount/login', component: LoginCoachComponent},
   //   ]
   // },
   { path: 'server-error', component: ServerErrorComponent },
