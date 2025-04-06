@@ -10,5 +10,6 @@ public class CaptainStatus
     public bool CoachNotFound { get; set; }
     public bool CoachHasNoTeam { get; set; }
     public bool IsNotCaptain { get; set; }
+    public bool OnlyOneCaptain { get; set; }
     public bool IsSuccess { get; set; }
 }

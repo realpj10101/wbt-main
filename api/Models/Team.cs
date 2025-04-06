@@ -9,6 +9,7 @@ public record Team(
     List<string> MembersUserNames,
     string TeamName,
     string TeamLevel, // Professional Details
+    ObjectId TeamCaptainId,
     string Achievements,
     int GamesPlayed,
     int GamesWon,

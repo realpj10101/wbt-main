@@ -290,6 +290,12 @@ public class TeamRepository : ITeamRepository
             cS.CoachHasNoTeam = true;
             return cS;
         }
+        
+        if (!coachTeam.TeamCaptainId.Equals(ObjectId.Empty))
+        {
+            cS.OnlyOneCaptain = true;
+            return cS;
+        }
 
         // Find the target user (the player to be assigned as captain)
         var targetUser = await _collectionAppUser.AsQueryable()
@@ -331,6 +337,17 @@ public class TeamRepository : ITeamRepository
 
         UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
             .Set(doc => doc.IsCaptain, true);
+        
+        UpdateDefinition<Team> updateTeamCap = Builders<Team>.Update
+            .Set(team => team.TeamCaptainId, targetUser.Id);
+        
+        
+        await _collection.UpdateOneAsync(
+            team => team.Id == coachTeam.Id,  // Find the correct team
+            updateTeamCap, 
+            null, 
+            cancellationToken
+        );
 
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
 
@@ -412,6 +429,16 @@ public class TeamRepository : ITeamRepository
             .Set(doc => doc.IsCaptain, false);
 
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
+
+        UpdateDefinition<Team> updateTeamCap = Builders<Team>.Update
+            .Set(doc => doc.TeamCaptainId, ObjectId.Empty);
+        
+        await _collection.UpdateOneAsync(
+            team => team.Id == coachTeam.Id,  // Find the correct team
+            updateTeamCap, 
+            null, 
+            cancellationToken
+        );
 
         cS.IsSuccess = true;
 

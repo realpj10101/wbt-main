@@ -201,17 +201,20 @@ public class TeamController(
                 ? NotFound($"Coach is not found.")
                 : cS.CoachHasNoTeam
                     ? NotFound($"You have no teams")
-                    : cS.UserNotFound
-                        ? BadRequest($"{targetUserName} is not found.")
-                        : cS.NotInTeam
-                            ? BadRequest($"{targetUserName} is not in any team.")
-                            : cS.TeamNotExist
-                                ? BadRequest("Team not found.")
-                                : cS.NotTeamMember
-                                    ? BadRequest($"{targetUserName} is not a team member of your team.")
-                                    : cS.AlreadyCaptain
-                                        ? BadRequest($"{targetUserName} is already a captain.")
-                                        : BadRequest("Assigning captain failed. Try again or contact administrator.");
+                    : cS.OnlyOneCaptain
+                        ? BadRequest("Only one captain is allowed.")
+                        : cS.UserNotFound
+                            ? BadRequest($"{targetUserName} is not found.")
+                            : cS.NotInTeam
+                                ? BadRequest($"{targetUserName} is not in any team.")
+                                : cS.TeamNotExist
+                                    ? BadRequest("Team not found.")
+                                    : cS.NotTeamMember
+                                        ? BadRequest($"{targetUserName} is not a team member of your team.")
+                                        : cS.AlreadyCaptain
+                                            ? BadRequest($"{targetUserName} is already a captain.")
+                                            : BadRequest(
+                                                "Assigning captain failed. Try again or contact administrator.");
     }
 
     [Authorize(Roles = "coach")]
