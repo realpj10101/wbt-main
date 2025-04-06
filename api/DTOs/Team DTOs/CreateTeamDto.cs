@@ -19,7 +19,6 @@ public class ShowTeamDto
     public string TeamName { get; init; } = string.Empty;
     public List<string> MembersUserNames { get; init; } = [];
     public string TeamLevel { get; init; } = string.Empty;
-    public ObjectId TeamCaptainId { get; set; } = ObjectId.Empty;
     public string Achievements { get; init; } = string.Empty;
     public int GamesPlayed { get; init; }
     public int GamesWon { get; init; }

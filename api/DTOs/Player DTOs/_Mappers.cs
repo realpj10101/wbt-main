@@ -134,7 +134,6 @@ public static class Mappers
             TeamName = team.TeamName,
             MembersUserNames = team.MembersUserNames,
             TeamLevel = team.TeamLevel,
-            TeamCaptainId = team.TeamCaptainId,
             Achievements = team.Achievements,
             GamesPlayed = team.GamesPlayed,
             GamesWon = team.GamesWon,
