@@ -10,6 +10,7 @@ public record OperationResult<T>(
 
 public record OperationResult(
     bool IsSuccess,
+    [Optional]string Message,
     [Optional] CustomError Error
 );
 

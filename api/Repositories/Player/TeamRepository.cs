@@ -436,7 +436,8 @@ public class TeamRepository : ITeamRepository
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
     
         return new OperationResult(
-            IsSuccess: true
+            IsSuccess: true,
+            Message: $"{targetUserName} assigned to captain."
         );
     }
 

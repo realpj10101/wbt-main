@@ -197,7 +197,7 @@ public class TeamController(
         OperationResult opResult = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
 
         return opResult.IsSuccess
-            ? Ok(opResult.IsSuccess)
+            ? Ok(opResult.Message)
             : opResult.Error.Code switch
             {
                 ErrorCode.CoachNotFound => BadRequest("Coach not found."),
