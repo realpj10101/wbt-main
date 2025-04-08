@@ -1,3 +1,4 @@
+using api.DTOs.Helpers;
 using api.DTOs.Team_DTOs;
 using api.Extensions;
 using api.Helpers;
@@ -193,28 +194,21 @@ public class TeamController(
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-        CaptainStatus cS = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
+        OperationResult opResult = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
 
-        return cS.IsSuccess
-            ? Ok(new Response(Message: $"{targetUserName} assigned captain."))
-            : cS.CoachNotFound
-                ? NotFound($"Coach is not found.")
-                : cS.CoachHasNoTeam
-                    ? NotFound($"You have no teams")
-                    : cS.OnlyOneCaptain
-                        ? BadRequest("Only one captain is allowed.")
-                        : cS.UserNotFound
-                            ? BadRequest($"{targetUserName} is not found.")
-                            : cS.NotInTeam
-                                ? BadRequest($"{targetUserName} is not in any team.")
-                                : cS.TeamNotExist
-                                    ? BadRequest("Team not found.")
-                                    : cS.NotTeamMember
-                                        ? BadRequest($"{targetUserName} is not a team member of your team.")
-                                        : cS.AlreadyCaptain
-                                            ? BadRequest($"{targetUserName} is already a captain.")
-                                            : BadRequest(
-                                                "Assigning captain failed. Try again or contact administrator.");
+        return opResult.IsSuccess
+            ? Ok(opResult.IsSuccess)
+            : opResult.Error.Code switch
+            {
+                ErrorCode.CoachNotFound => BadRequest("Coach not found."),
+                ErrorCode.CoachHasNoTeam => BadRequest("Coach has no team."),
+                ErrorCode.OnlyOneCaptain => BadRequest("Only one captain is allowed."),
+                ErrorCode.UserNotFound => BadRequest($"{targetUserName} not found."),
+                ErrorCode.NotInTeam => BadRequest($"{targetUserName} is not in any team."),
+                ErrorCode.NotTeamMember => BadRequest($"{targetUserName} is not a team member."),
+                ErrorCode.AlreadyCaptain => BadRequest("This user is already a captain."),
+                _ => BadRequest("An error occured. Try again or contact administrator")
+            };
     }
 
     [Authorize(Roles = "coach")]

@@ -4,5 +4,13 @@ public enum ErrorCode
 {
     IsWrongCreds,
     IsAccountCreationFailed,
-    NetIdentifyFailed
+    NetIdentifyFailed,
+    CoachNotFound,
+    CoachHasNoTeam,
+    OnlyOneCaptain,
+    UserNotFound,
+    NotInTeam,
+    NotTeamMember,
+    AlreadyCaptain,
+    
 }

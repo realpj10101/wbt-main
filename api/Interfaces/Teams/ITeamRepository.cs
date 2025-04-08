@@ -1,3 +1,4 @@
+using api.DTOs.Helpers;
 using api.DTOs.Team_DTOs;
 using api.Helpers;
 using api.Models.Helpers;
@@ -16,6 +17,6 @@ public interface ITeamRepository
     // public Task<TeamStatus> RemoveMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName,
     //     CancellationToken cancellationToken);
     public Task<string?> GetTeamNameByIdAsync(ObjectId userId, CancellationToken cancellationToken);
-    public Task<CaptainStatus> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
+    public Task<OperationResult> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
     public Task<CaptainStatus> RemoveCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
 }

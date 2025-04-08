@@ -1,3 +1,4 @@
+using api.DTOs.Helpers;
 using api.Extensions;
 using api.Interfaces.Player;
 using Microsoft.AspNetCore.Authorization;
@@ -21,14 +22,18 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
     {
         if (userInput.Password != userInput.ConfirmPassword)
             return BadRequest("Passwords don't match");
-        
-        LoggedInDto? loggedInDto = await _accountRepository.RegisterPlayerAsync(userInput, cancellationToken);
-        
-        return !string.IsNullOrEmpty(loggedInDto.Token)
-            ? Ok(loggedInDto)
-            : loggedInDto.Errors.Count != 0
-            ? BadRequest(loggedInDto.Errors)
-            : BadRequest("Registration has failed. Try again or contact the support.");
+
+        OperationResult<LoggedInDto> opResult =
+            await _accountRepository.RegisterPlayerAsync(userInput, cancellationToken);
+
+        return opResult.IsSuccess
+            ? Ok(opResult.Result)
+            : opResult.Error?.Code switch
+            {
+                ErrorCode.NetIdentifyFailed => BadRequest(opResult.Error.Message),
+                ErrorCode.IsAccountCreationFailed => BadRequest(opResult.Error.Message),
+                _ => BadRequest("Creating account failed. Contact administrator")
+            };
     }
 
     /// <summary>

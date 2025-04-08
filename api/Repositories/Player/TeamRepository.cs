@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.JavaScript;
+using api.DTOs.Helpers;
 using api.DTOs.Team_DTOs;
 using api.Enums;
 using api.Extensions;
@@ -310,11 +311,9 @@ public class TeamRepository : ITeamRepository
         return teamName;
     }
 
-    public async Task<CaptainStatus> AssignCaptainAsync(ObjectId coachId, string targetUserName,
+    public async Task<OperationResult> AssignCaptainAsync(ObjectId coachId, string targetUserName,
         CancellationToken cancellationToken)
     {
-        CaptainStatus cS = new();
-
         string? coachUserName = await _collectionAppUser.AsQueryable()
             .Where(doc => doc.Id == coachId)
             .Select(doc => doc.UserName)
@@ -322,8 +321,13 @@ public class TeamRepository : ITeamRepository
 
         if (coachUserName is null)
         {
-            cS.CoachNotFound = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.CoachNotFound,
+                    Message: "Coach not found."
+                )
+            );
         }
 
         // Find the coach doc
@@ -338,14 +342,24 @@ public class TeamRepository : ITeamRepository
 
         if (coachTeam is null)
         {
-            cS.CoachHasNoTeam = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.CoachHasNoTeam,
+                    Message: "Coach has no team."
+                )
+            );
         }
-        
+
         if (!coachTeam.TeamCaptainId.Equals(ObjectId.Empty))
         {
-            cS.OnlyOneCaptain = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.OnlyOneCaptain,
+                    Message: "Only one captain is allowed."
+                )
+            );
         }
 
         // Find the target user (the player to be assigned as captain)
@@ -355,8 +369,13 @@ public class TeamRepository : ITeamRepository
 
         if (targetUser is null)
         {
-            cS.UserNotFound = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.UserNotFound,
+                    Message: "User not found."
+                )
+            );
         }
 
         // Get the target user's enrolled team
@@ -364,23 +383,38 @@ public class TeamRepository : ITeamRepository
 
         if (userEnrolledTeamId is null)
         {
-            cS.NotInTeam = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.NotInTeam,
+                    Message: "User is not in any team."
+                )
+            );
         }
 
         // Ensure the target user belongs to the coach's team
         if (userEnrolledTeamId != coachTeam.Id)
         {
-            cS.NotTeamMember = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.NotTeamMember,
+                    Message: "User is not team member."
+                )
+            );
         }
 
         // Check if the user is already a captain
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
         if (hasRole)
         {
-            cS.AlreadyCaptain = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.AlreadyCaptain,
+                    Message: "User is already a captain."
+                )   
+            );
         }
 
         // Assign the captain role
@@ -388,26 +422,26 @@ public class TeamRepository : ITeamRepository
 
         UpdateDefinition<AppUser> updateResult = Builders<AppUser>.Update
             .Set(doc => doc.IsCaptain, true);
-        
+
         UpdateDefinition<Team> updateTeamCap = Builders<Team>.Update
             .Set(team => team.TeamCaptainId, targetUser.Id);
-        
-        
+
         await _collection.UpdateOneAsync(
-            team => team.Id == coachTeam.Id,  // Find the correct team
-            updateTeamCap, 
-            null, 
+            team => team.Id == coachTeam.Id, // Find the correct team
+            updateTeamCap,
+            null,
             cancellationToken
         );
 
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
-
-        cS.IsSuccess = true;
-
-        return cS;
+    
+        return new OperationResult(
+            IsSuccess: true
+        );
     }
 
-    public async Task<CaptainStatus> RemoveCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken)
+    public async Task<CaptainStatus> RemoveCaptainAsync(ObjectId coachId, string targetUserName,
+        CancellationToken cancellationToken)
     {
         CaptainStatus cS = new();
 
@@ -483,11 +517,11 @@ public class TeamRepository : ITeamRepository
 
         UpdateDefinition<Team> updateTeamCap = Builders<Team>.Update
             .Set(doc => doc.TeamCaptainId, ObjectId.Empty);
-        
+
         await _collection.UpdateOneAsync(
-            team => team.Id == coachTeam.Id,  // Find the correct team
-            updateTeamCap, 
-            null, 
+            team => team.Id == coachTeam.Id, // Find the correct team
+            updateTeamCap,
+            null,
             cancellationToken
         );
 
