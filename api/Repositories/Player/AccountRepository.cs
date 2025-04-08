@@ -1,3 +1,4 @@
+using api.DTOs.Helpers;
 using api.Extensions;
 using api.Interfaces.Player;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +32,7 @@ public class AccountRepository : IAccountRepository
     /// <param name="registerDto"></param>
     /// <param name="cancellationToken"></param>
     /// <returns>LoggedInDto</returns>
-    public async Task<LoggedInDto> RegisterPlayerAsync(RegisterDto registerDto, CancellationToken cancellationToken)
+    public async Task<OperationResult<LoggedInDto>> RegisterPlayerAsync(RegisterDto registerDto, CancellationToken cancellationToken)
     {
         LoggedInDto loggedInDto = new();
 
@@ -44,24 +45,45 @@ public class AccountRepository : IAccountRepository
             IdentityResult? roleResult = await _userManager.AddToRoleAsync(appUser, "player");
 
             if (!roleResult.Succeeded)
-                return loggedInDto;
+                return new OperationResult<LoggedInDto>(
+                    IsSuccess: false,
+                    Error: new CustomError(
+                        Code: ErrorCode.NetIdentifyFailed,
+                        Message: "Failed to create role"
+                    )
+                );
 
             string? token = await _tokenService.CreateToken(appUser, cancellationToken);
     
             if (!string.IsNullOrEmpty(token))
             {
-                return Mappers.ConvertAppUserToLoggedInDto(appUser, token);
+                return new OperationResult<LoggedInDto>(
+                    IsSuccess: true,
+                    Result: Mappers.ConvertAppUserToLoggedInDto(appUser, token),
+                    Error: null
+                );
             }   
         }
         else
         {
-            foreach (IdentityError error in userCreatedResult.Errors)
-            {
-                loggedInDto.Errors.Add(error.Description);
-            }
+           string? errorMessage = userCreatedResult.Errors.FirstOrDefault()?.Description;
+
+           return new OperationResult<LoggedInDto>(
+               IsSuccess: false,
+               Error: new CustomError(
+                   Code: ErrorCode.NetIdentifyFailed,
+                   Message: errorMessage
+               )
+           );
         }
-    
-        return loggedInDto;
+
+        return new OperationResult<LoggedInDto>(
+            IsSuccess: false,
+            Error: new CustomError(
+                Code: ErrorCode.IsAccountCreationFailed,
+                Message: "Account creation failed. Try again later."
+            )
+        );
     }
 
     public async Task<LoggedInDto> LoginAsync(LoginDto userInput, CancellationToken cancellationToken)

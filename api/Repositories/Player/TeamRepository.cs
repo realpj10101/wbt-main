@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using api.DTOs.Team_DTOs;
 using api.Enums;
 using api.Extensions;
@@ -246,6 +247,56 @@ public class TeamRepository : ITeamRepository
         return tS;
     }
 
+    // public async Task<TeamStatus> RemoveMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName,
+    //     CancellationToken cancellationToken)
+    // {
+    //     TeamStatus tS = new();
+    //
+    //     Team team = await _collection.Find(t => t.TeamName == targetTeamName).FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (team is null)
+    //     {
+    //         tS.IsTargetTeamNotFound = true;
+    //         return tS;
+    //     }
+    //
+    //     if (team.CreatorId != userId)
+    //     {
+    //         tS.IsNotTheCreator = true;
+    //         return tS;
+    //     }
+    //
+    //     AppUser user = await _collectionAppUser.Find(doc => doc.NormalizedUserName == targetMemberUserName)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (user is null)
+    //     {
+    //         tS.IsTargetTeamNotFound = true;
+    //         return tS;
+    //     }
+    //
+    //     ObjectId memberId = await _collectionAppUser.AsQueryable()
+    //         .Where(doc => doc.NormalizedUserName == targetMemberUserName.ToUpper())
+    //         .Select(doc => doc.Id)
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (userId == memberId)
+    //     {
+    //         tS.IsRemovingThemself = true;
+    //         return tS;
+    //     }
+    //
+    //     Team teamContainingMember = await _collection.Find(t => t.MembersUserNames.Contains(targetMemberUserName))
+    //         .FirstOrDefaultAsync(cancellationToken);
+    //
+    //     if (teamContainingMember is null)
+    //     {
+    //         tS.IsNotTeamMember = true;
+    //         return tS;
+    //     }
+    //     
+    //     
+    // }
     public async Task<string?> GetTeamNameByIdAsync(ObjectId userId, CancellationToken cancellationToken)
     {
         string teamName = await _collection.AsQueryable()
