@@ -1,3 +1,6 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
 namespace api.Extensions;
 
 public static class CustomDateTimeExtensions
@@ -12,5 +15,18 @@ public static class CustomDateTimeExtensions
             age--;
 
         return age;
+    }
+    public static DateTime? GetTokenExpirationDate(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        if (!handler.CanReadToken(token))
+            return null;
+
+        JwtSecurityToken? jwtToken = handler.ReadJwtToken(token);
+        Claim? expClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "exp");
+
+        long expSeconds = long.Parse(expClaim.Value);
+        return DateTimeOffset.FromUnixTimeSeconds(expSeconds).UtcDateTime;
     }
 }
