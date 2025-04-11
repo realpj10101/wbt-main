@@ -48,20 +48,45 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
     {
         LoggedInDto? loggedInDto = await _accountRepository.LoginAsync(userInput, cancellationToken);
 
-        return  
+        return
             !string.IsNullOrEmpty(loggedInDto.Token)
                 ? Ok(loggedInDto)
                 : loggedInDto.IsWrongCreds
-                ? Unauthorized("Wrong email ir password.")
-                : BadRequest("Registration has failed. Try again or contact the support.");
+                    ? Unauthorized("Wrong email ir password.")
+                    : BadRequest("Registration has failed. Try again or contact the support.");
     }
-    
+
+    private void AddTokensToResponseCookies(TokenDto tokenDto)
+    {
+        Response.Cookies.Append(
+            "access_token", tokenDto.AccessToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None, // Lax for production
+                Expires = CustomDateTimeExtensions.GetTokenExpirationDate(tokenDto.AccessToken),
+                Path = "/"
+            }
+        );
+
+        Response.Cookies.Append(
+            "refresh_token", tokenDto.RefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = CustomDateTimeExtensions.GetTokenExpirationDate(tokenDto.RefreshToken),
+                Path = "/api/account/refresh-token"
+            }
+        );
+    }
+
     [HttpGet]
     public async Task<ActionResult<LoggedInDto>> ReloadLoggedInUser(CancellationToken cancellationToken)
     {
         // obtain token value
         string? token = null;
-        
+
         bool isTokenValid = HttpContext.Request.Headers.TryGetValue("Authorization", out var authHeader);
 
         if (isTokenValid)
@@ -69,7 +94,7 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
 
         if (string.IsNullOrEmpty(token))
             return Unauthorized("Token is expired or invalid. Login again.");
-        
+
         // obtain userId
         string? hashedUserId = User.GetHashedUserId();
         if (string.IsNullOrEmpty(hashedUserId))
