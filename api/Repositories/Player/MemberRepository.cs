@@ -18,7 +18,7 @@ public class MemberRepository : IMemberRepository
         ITokenService tokenService, IFollowRepository followRepository, UserManager<AppUser> userManager)
     {
         IMongoDatabase? database = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         
         _tokenService = tokenService;
         _followRepository = followRepository;

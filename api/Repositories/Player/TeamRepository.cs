@@ -29,8 +29,8 @@ public class TeamRepository : ITeamRepository
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = dbName.GetCollection<Team>(AppVariablesExtensions.collectionTeams);
-        _collectionAppUser = dbName.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = dbName.GetCollection<Team>(AppVariablesExtensions.CollectionTeams);
+        _collectionAppUser = dbName.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
 
         _tokenService = tokenService;
 

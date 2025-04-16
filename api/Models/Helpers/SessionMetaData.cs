@@ -1,6 +1,6 @@
 namespace api.Models.Helpers;
 
-public record SessionMetaData(
+public record SessionMetadata(
     [Length(1, 64)]string DeviceType,
     [Length(1, 128)]string DeviceName,
     [Length(1, 64)]string UserAgent,

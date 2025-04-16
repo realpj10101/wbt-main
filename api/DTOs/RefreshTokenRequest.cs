@@ -8,5 +8,5 @@ public class RefreshTokenRequest
     
     [Length(10, 128)]public string JtiValue { get; init; } = string.Empty;
     
-    public SessionMetaData? SessionMetaData { get; set; }
+    public SessionMetadata? SessionMetadata { get; set; }
 }

@@ -15,5 +15,5 @@ public class RefreshToken
     public DateTimeOffset? UsedAt { get; set; } // Token is used before and not allowed again
     public bool IsRevoked { get; set; } // admin revoked session manually OR user logout
 
-    [Required] public SessionMetaData? SessionMetaData { get; init; }
+    [Required] public SessionMetadata? SessionMetadata { get; init; }
 }

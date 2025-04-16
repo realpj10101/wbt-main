@@ -23,8 +23,8 @@ public class LikeRepository : ILikeRepository
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = dbName.GetCollection<Like>(AppVariablesExtensions.collectionLikes);
-        _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = dbName.GetCollection<Like>(AppVariablesExtensions.CollectionLikes);
+        _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         
         _tokenService = tokenService;
         
