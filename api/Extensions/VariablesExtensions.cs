@@ -4,12 +4,13 @@ public class AppVariablesExtensions
 {
     public const string TokenKey = "TokenKey";
 
-    public const string collectionUsers = "users";
-    public const string collectionFollows = "follows";
-    public const string collectionComments = "comments";
-    public const string collectionLikes = "likes";
-    public const string collectionTeams = "teams";
-    public const string collectionExceptionLogs = "exception-logs";
+    public const string CollectionUsers = "users";
+    public const string CollectionFollows = "follows";
+    public const string CollectionComments = "comments";
+    public const string CollectionLikes = "likes";
+    public const string CollectionTeams = "teams";
+    public const string CollectionExceptionLogs = "exception-logs";
+    public const string CollectionRefreshTokens = "refresh-tokens";
 
     public readonly static string[] AppVersion = ["1", "1.0.2"];
 
