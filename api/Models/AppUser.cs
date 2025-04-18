@@ -28,6 +28,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string TrainingStyle { get; init; } = string.Empty;
     public string PreferredPlayers { get; init; } = string.Empty;
     public string Position { get; init; } = string.Empty;
+    public string? JtiValue { get; init; }
     // public PositionsEnum Position { get; init; }
     public string ExperienceLevel { get; init; } = string.Empty;
     public string Skills { get; init; } = string.Empty;

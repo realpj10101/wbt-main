@@ -12,5 +12,6 @@ public enum ErrorCode
     NotInTeam,
     NotTeamMember,
     AlreadyCaptain,
-    
+    IsRefreshTokenExpired,
+    IsSessionExpired
 }

@@ -23,8 +23,8 @@ public class FollowRepository : IFollowRepository
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = dbName.GetCollection<Follow>(AppVariablesExtensions.collectionFollows);
-        _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = dbName.GetCollection<Follow>(AppVariablesExtensions.CollectionFollows);
+        _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         
         _tokenService = tokenService;
         

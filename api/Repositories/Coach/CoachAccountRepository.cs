@@ -17,7 +17,7 @@ public class CoachAccountRepository : ICoachAccountRepository
         UserManager<AppUser> userManager, ITokenService tokenService)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         _userManager = userManager;
         _tokenService = tokenService;
     }

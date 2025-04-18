@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers.Player;
 
 [Authorize]
-public class AccountController(IAccountRepository _accountRepository) : BaseApiController
+public class AccountController(
+    IAccountRepository _accountRepository,
+    IExAcRepo _acRepo,
+    ITokenCookieService tokenCookieService
+    ) : BaseApiController
 {
     /// <summary>
     /// Create accounts
@@ -56,10 +60,50 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
                     : BadRequest("Registration has failed. Try again or contact the support.");
     }
 
+    // [HttpPost("refresh-tokens")]
+    // public async Task<ActionResult> RefreshTokens(CancellationToken cancellationToken)
+    // {
+    //     string? identifierHash = User.GetHashedUserId();
+    //     if (string.IsNullOrEmpty(identifierHash))
+    //         return Unauthorized("Your not logged in. Please login again.");
+    //     
+    //     // OperationResult<TokenDto> 
+    //     //     opResult = await _accountRepository.RefreshTokensAsync(identifierHash, cancellationToken);
+    //     
+    //     OperationResult<TokenDto> 
+    //         opResult = await _acRepo.RefreshTokensAsync(identifierHash, cancellationToken);
+    //
+    //     if (!opResult.IsSuccess)
+    //     {   
+    //         return opResult.Error.Code switch
+    //         {
+    //         ErrorCode.IsRefreshTokenExpired => Unauthorized(opResult.Error.Message),
+    //         _ => BadRequest("Failed to refresh token. Try again or contact the support.")
+    //         };
+    //     }
+    //     
+    //     AddTokensToResponseCookies(opResult.Result);
+    //     return Ok("Tokens refreshed successfully.");
+    // }
+
     private void AddTokensToResponseCookies(TokenDto tokenDto)
     {
+        Response.Cookies.Delete(
+            "auth-access-token", new CookieOptions
+            {
+                Path = "/"
+            }
+        );
+
+        Response.Cookies.Delete(
+            "auth-refresh-token", new CookieOptions
+            {
+                Path = "/api/account/refresh-tokens"
+            }
+        );
+
         Response.Cookies.Append(
-            "access_token", tokenDto.AccessToken, new CookieOptions
+            "auth-access_token", tokenDto.AccessToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -69,13 +113,15 @@ public class AccountController(IAccountRepository _accountRepository) : BaseApiC
             }
         );
 
+        string encryptedCookie = tokenCookieService.EncryptRefreshTokensResponse(tokenDto.RefreshToken);
+
         Response.Cookies.Append(
-            "refresh_token", tokenDto.RefreshToken, new CookieOptions
+            "refresh_token", encryptedCookie, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = CustomDateTimeExtensions.GetTokenExpirationDate(tokenDto.RefreshToken),
+                Expires = tokenDto.RefreshToken.ExpiresAt.UtcDateTime,
                 Path = "/api/account/refresh-token"
             }
         );

@@ -20,7 +20,7 @@ public class PlayerUserRepository : IPlayerUserRepository
         IPhotoService photoService)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         _logger = logger;
         _tokenService = tokenService;
         _photoService = photoService;
@@ -88,6 +88,12 @@ public class PlayerUserRepository : IPlayerUserRepository
         //
         // return testPlayer;
     }
+
+    public Task<AppUser?> GetByIdentifierHashAsync(string identifierHash, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
     #endregion
 
     #region Photo Managemnet

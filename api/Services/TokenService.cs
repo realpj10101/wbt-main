@@ -13,7 +13,7 @@ public class TokenService : ITokenService
     public TokenService(IConfiguration config, IMongoClient client, IMyMongoDbSettings dbSettings, UserManager<AppUser> userManager)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
-        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.collectionUsers);
+        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         // _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionCoaches);
         // _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionTeams);
 
