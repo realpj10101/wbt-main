@@ -1,9 +1,12 @@
 using System.Runtime.InteropServices;
+using api.Enums;
 
 namespace api.Models;
 
 public record Team(
-    [Optional][property: BsonId, BsonRepresentation(BsonType.ObjectId)] ObjectId Id,
+    [Optional]
+    [property: BsonId, BsonRepresentation(BsonType.ObjectId)]
+    ObjectId Id,
     ObjectId CreatorId,
     List<ObjectId> MembersIds, // Basic Details
     List<string> MembersUserNames,
@@ -14,9 +17,10 @@ public record Team(
     int GamesPlayed,
     int GamesWon,
     int GamesLost,
+    Status Status,
     DateTime CreatedAt // History
     // List<Photo> TeamLogo
     // string UpcomingMatches, // Team Schedule
     // string PracticeSession,
     // string Description, // Additional Details
-    );
+);

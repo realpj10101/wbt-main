@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using api.DTOs.Team_DTOs;
+using api.Enums;
 using api.Extensions;
 using SharpCompress.Common;
 
@@ -133,7 +134,8 @@ public static class Mappers
             GamesPlayed: userInput.GamesPlayed,
             GamesWon: userInput.GamesWon,
             GamesLost: userInput.GamesLost,
-            CreatedAt: DateTime.UtcNow
+            CreatedAt: DateTime.UtcNow,
+            Status: Status.Pending
         );
     }
 
@@ -148,6 +150,7 @@ public static class Mappers
             GamesPlayed = team.GamesPlayed,
             GamesWon = team.GamesWon,
             GamesLost = team.GamesLost,
+            Status = team.Status,
             CreatedAt = DateTime.UtcNow
         };
     }
@@ -165,7 +168,8 @@ public static class Mappers
             GamesPlayed: userInput.GamesPlayed,
             GamesWon: userInput.GamesWon,
             GamesLost: userInput.GamesLost,
-            CreatedAt: DateTime.UtcNow
+            CreatedAt: DateTime.UtcNow,
+            Status: Status.Pending
         );
     }
 

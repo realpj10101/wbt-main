@@ -413,7 +413,7 @@ public class TeamRepository : ITeamRepository
                 Error: new CustomError(
                     Code: ErrorCode.AlreadyCaptain,
                     Message: "User is already a captain."
-                )   
+                )
             );
         }
 
@@ -434,7 +434,7 @@ public class TeamRepository : ITeamRepository
         );
 
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == targetUser.Id, updateResult, null, cancellationToken);
-    
+
         return new OperationResult(
             IsSuccess: true,
             Message: $"{targetUserName} assigned to captain."
@@ -529,5 +529,40 @@ public class TeamRepository : ITeamRepository
         cS.IsSuccess = true;
 
         return cS;
+    }
+
+    public async Task<OperationResult<ShowTeamDto>> UpdateVerifiedStatus(ObjectId teamId,
+        CancellationToken cancellationToken)
+    {
+        Team team = await _collection.Find(t => t.Id == teamId).FirstOrDefaultAsync(cancellationToken);
+
+        if (team is null)
+        {
+            return new OperationResult<ShowTeamDto>(
+                false,
+                Error: new CustomError(
+                    ErrorCode.TeamNotFound,
+                    Message: "Team not found."
+                )
+            );
+        }
+
+        UpdateDefinition<Team> statusResult = Builders<Team>.Update
+            .Set(s => s.Status, Status.Verified);
+
+        await _collection.UpdateOneAsync(t => t.Id == teamId, statusResult, null, cancellationToken);
+
+        Team verifiedTeam = await _collection.Find(t => t.Id == team.Id).FirstOrDefaultAsync(cancellationToken);
+
+        return new OperationResult<ShowTeamDto>(
+            true,
+            Result: Mappers.ConvertTeamToShowTeamDto(verifiedTeam)
+        );
+    }
+
+    public Task<OperationResult<ShowTeamDto>> UpdateRejectStatus(ObjectId teamId, UpdateRejectStatus reason,
+        CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 }

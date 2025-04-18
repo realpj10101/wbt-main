@@ -1,3 +1,5 @@
+using api.Enums;
+
 namespace api.DTOs.Team_DTOs;
 
 public record CreateTeamDto(
@@ -23,5 +25,6 @@ public class ShowTeamDto
     public int GamesPlayed { get; init; }
     public int GamesWon { get; init; }
     public int GamesLost { get; init; }
+    public Status Status { get; init; }
     public DateTime CreatedAt { get; init; }
 }
