@@ -63,7 +63,21 @@ public class ExAcRepo : IExAcRepo
                     )
                 );
 
-            var token = await _exampleTokenService.GenerateTokenAsync(appUser, cancellationToken);
+            SessionMetadata sessionMetadata = new( // TODO: get data from front and move it to parameters
+                DeviceType: "Default",
+                DeviceName: "Default",
+                UserAgent: "Default",
+                IpAddress: "0.0.0.0",
+                Location: "LA"
+            );
+
+            RefreshTokenRequest refreshTokenRequest = new()
+            {
+                JtiValue = Guid.CreateVersion7().ToString(),
+                SessionMetadata = sessionMetadata
+            };
+
+            var token = await _exampleTokenService.GenerateTokensAsync(refreshTokenRequest, appUser, cancellationToken);
 
             return new OperationResult<LoginResult>(
                 IsSuccess: true,
@@ -128,7 +142,21 @@ public class ExAcRepo : IExAcRepo
             );
         }
 
-        TokenDto? token = await _exampleTokenService.GenerateTokenAsync(appUser, cancellationToken);
+        SessionMetadata sessionMetadata = new( // TODO: get data from front and move it to parameters
+            DeviceType: "Default",
+            DeviceName: "Default",
+            UserAgent: "Default",
+            IpAddress: "0.0.0.0",
+            Location: "LA"
+        );
+
+        RefreshTokenRequest refreshTokenRequest = new()
+        {
+            JtiValue = Guid.CreateVersion7().ToString(),
+            SessionMetadata = sessionMetadata
+        };
+
+        TokenDto? token = await _exampleTokenService.GenerateTokensAsync(refreshTokenRequest, appUser, cancellationToken);
 
         return new OperationResult<LoginResult>(
             IsSuccess: true,
