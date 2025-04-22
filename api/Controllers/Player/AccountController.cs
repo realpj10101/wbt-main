@@ -7,9 +7,8 @@ namespace api.Controllers.Player;
 
 [Authorize]
 public class AccountController(
-    IAccountRepository _accountRepository,
-    IExAcRepo _acRepo,
-    ITokenCookieService tokenCookieService
+    IAccountRepository _accountRepository
+    // ITokenCookieService tokenCookieService
     ) : BaseApiController
 {
     /// <summary>
@@ -86,46 +85,46 @@ public class AccountController(
     //     return Ok("Tokens refreshed successfully.");
     // }
 
-    private void AddTokensToResponseCookies(TokenDto tokenDto)
-    {
-        Response.Cookies.Delete(
-            "auth-access-token", new CookieOptions
-            {
-                Path = "/"
-            }
-        );
-
-        Response.Cookies.Delete(
-            "auth-refresh-token", new CookieOptions
-            {
-                Path = "/api/account/refresh-tokens"
-            }
-        );
-
-        Response.Cookies.Append(
-            "auth-access_token", tokenDto.AccessToken, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None, // Lax for production
-                Expires = CustomDateTimeExtensions.GetTokenExpirationDate(tokenDto.AccessToken),
-                Path = "/"
-            }
-        );
-
-        string encryptedCookie = tokenCookieService.EncryptRefreshTokensResponse(tokenDto.RefreshToken);
-
-        Response.Cookies.Append(
-            "refresh_token", encryptedCookie, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = tokenDto.RefreshToken.ExpiresAt.UtcDateTime,
-                Path = "/api/account/refresh-token"
-            }
-        );
-    }
+    // private void AddTokensToResponseCookies(TokenDto tokenDto)
+    // {
+    //     Response.Cookies.Delete(
+    //         "auth-access-token", new CookieOptions
+    //         {
+    //             Path = "/"
+    //         }
+    //     );
+    //
+    //     Response.Cookies.Delete(
+    //         "auth-refresh-token", new CookieOptions
+    //         {
+    //             Path = "/api/account/refresh-tokens"
+    //         }
+    //     );
+    //
+    //     Response.Cookies.Append(
+    //         "auth-access_token", tokenDto.AccessToken, new CookieOptions
+    //         {
+    //             HttpOnly = true,
+    //             Secure = true,
+    //             SameSite = SameSiteMode.None, // Lax for production
+    //             Expires = CustomDateTimeExtensions.GetTokenExpirationDate(tokenDto.AccessToken),
+    //             Path = "/"
+    //         }
+    //     );
+    //
+    //     string encryptedCookie = tokenCookieService.EncryptRefreshTokensResponse(tokenDto.RefreshToken);
+    //
+    //     Response.Cookies.Append(
+    //         "refresh_token", encryptedCookie, new CookieOptions
+    //         {
+    //             HttpOnly = true,
+    //             Secure = true,
+    //             SameSite = SameSiteMode.None,
+    //             Expires = tokenDto.RefreshToken.ExpiresAt.UtcDateTime,
+    //             Path = "/api/account/refresh-token"
+    //         }
+    //     );
+    // }
 
     [HttpGet]
     public async Task<ActionResult<LoggedInDto>> ReloadLoggedInUser(CancellationToken cancellationToken)

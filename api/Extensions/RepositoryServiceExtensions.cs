@@ -23,6 +23,8 @@ public static class RepositoryServiceExtensions
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IAdminRepository, AdminRepository>();
         services.AddScoped<ITeamRepository, TeamRepository>();
+        // services.AddScoped<IExAcRepo, ExAcRepo>();
+        // services.AddScoped<IExampleTokenService, ExampleTokenService>();
         // services.AddScoped<IPlayerDetailsRepository, PlayerDetailsRepository>();
         
         services.AddScoped<IPhotoService, PhotoService>();
