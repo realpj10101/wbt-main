@@ -19,6 +19,4 @@ public interface ITeamRepository
     public Task<string?> GetTeamNameByIdAsync(ObjectId userId, CancellationToken cancellationToken);
     public Task<OperationResult> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
     public Task<CaptainStatus> RemoveCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
-    public Task<OperationResult<ShowTeamDto>> UpdateVerifiedStatus(ObjectId teamId, CancellationToken cancellationToken);
-    public Task<OperationResult<ShowTeamDto>> UpdateRejectStatus(ObjectId teamId, UpdateRejectStatus reason, CancellationToken cancellationToken);
 }

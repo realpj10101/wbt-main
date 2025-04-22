@@ -26,5 +26,6 @@ public class ShowTeamDto
     public int GamesWon { get; init; }
     public int GamesLost { get; init; }
     public Status Status { get; init; }
+    public string RejectionReason { get; init; } = string.Empty;
     public DateTime CreatedAt { get; init; }
 }

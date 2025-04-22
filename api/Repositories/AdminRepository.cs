@@ -1,3 +1,7 @@
+using api.DTOs.Helpers;
+using api.DTOs.Team_DTOs;
+using api.Enums;
+using api.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace api.Repositories.Player;
@@ -8,12 +12,14 @@ public class AdminRepository : IAdminRepository
 
     private readonly IMongoCollection<AppUser>? _collection;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IMongoCollection<Team> _collectionTeams;
 
     public AdminRepository(IMongoClient client, IMyMongoDbSettings dbSetting, UserManager<AppUser> userManager,
         ITokenService tokenService)
     {
         var database = client.GetDatabase(dbSetting.DatabaseName);
-        _collection = database.GetCollection<AppUser>("users");
+        _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
+        _collectionTeams = database.GetCollection<Team>(AppVariablesExtensions.CollectionTeams);
 
         _userManager = userManager;
     }
@@ -65,6 +71,72 @@ public class AdminRepository : IAdminRepository
         if (appUser is null) return null;
 
         return appUser;
+    }
+    
+    public async Task<OperationResult<ShowTeamDto>> UpdateVerifiedStatus(string teamName,
+        CancellationToken cancellationToken)
+    {
+        ObjectId teamId = await _collectionTeams.AsQueryable()
+            .Where(doc => doc.TeamName.ToUpper() == teamName.ToUpper())
+            .Select(doc => doc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+            
+        if (teamId.Equals(null))
+        {
+            return new OperationResult<ShowTeamDto>(
+                false,
+                Error: new CustomError(
+                    ErrorCode.TeamNotFound,
+                    Message: "Team not found."
+                )
+            );
+        }
+
+        UpdateDefinition<Team> statusResult = Builders<Team>.Update
+            .Set(s => s.Status, Status.Verified)
+            .Set(s => s.RejectionReason, "");
+
+        await _collectionTeams.UpdateOneAsync(t => t.Id == teamId, statusResult, null, cancellationToken);
+        
+        Team verifiedTeam = await _collectionTeams.Find(t => t.Id == teamId).FirstOrDefaultAsync(cancellationToken);
+
+        return new OperationResult<ShowTeamDto>(
+            true,
+            Result: Mappers.ConvertTeamToShowTeamDto(verifiedTeam)
+        );
+    }
+
+    public async Task<OperationResult<ShowTeamDto>> UpdateRejectStatus(string teamName, UpdateRejectStatus reason,
+        CancellationToken cancellationToken)
+    {
+        ObjectId teamId = await _collectionTeams.AsQueryable()
+            .Where(doc => doc.TeamName.ToUpper() == teamName.ToUpper())
+            .Select(doc => doc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+            
+        if (teamId.Equals(null))
+        {
+            return new OperationResult<ShowTeamDto>(
+                false,
+                Error: new CustomError(
+                    ErrorCode.TeamNotFound,
+                    Message: "Team not found."
+                )
+            );
+        }
+        
+        UpdateDefinition<Team> statusResult = Builders<Team>.Update
+            .Set(s => s.Status, Status.Rejected)
+            .Set(s => s.RejectionReason, reason.RejectReason);
+
+        await _collectionTeams.UpdateOneAsync(t => t.Id == teamId, statusResult, null, cancellationToken);
+        
+        Team verifiedTeam = await _collectionTeams.Find(t => t.Id == teamId).FirstOrDefaultAsync(cancellationToken);
+
+        return new OperationResult<ShowTeamDto>(
+            true,
+            Result: Mappers.ConvertTeamToShowTeamDto(verifiedTeam)
+        );
     }
 
     #endregion
