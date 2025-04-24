@@ -55,12 +55,14 @@ export class MemberDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getMember();
 
-    this._teamService.getTeamName().subscribe({
-      next: (team: ApiResponse) => { this.teamName = team, console.log(this.teamName) },
-      error: (err) => console.log("Error fetching team name:", err)
-    })
-
     this.loggedInUserSig = this._accountService.loggedInUserSig;
+
+    if (this.loggedInUserSig && this.loggedInUserSig()?.roles.includes('coach')) {
+      this._teamService.getTeamName().subscribe({
+        next: (team: ApiResponse) => { this.teamName = team, console.log(this.teamName) },
+        error: (err) => console.log("Error fetching team name:", err)
+      })
+    }
   }
 
   getMember(): void {
