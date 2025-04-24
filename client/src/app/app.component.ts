@@ -36,6 +36,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initUserOnPageRefresh();
+    this.registerPlayerService.loadLoggedInUserFromStorage();
   }
 
   initUserOnPageRefresh(): void {

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, Signal, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, Signal, WritableSignal, effect, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -36,8 +36,13 @@ export class NavbarComponent implements OnInit {
   linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach-panel'];
   isMobileViewSignal: WritableSignal<boolean> = inject(ResponsiveService).isMobileViewSig;
   private breakpointObserver = inject(BreakpointObserver);
+  isUserLoaded = signal(false);
 
   private registerPlayerService = inject(AccountService);
+
+  isUserLoadedSignal(): boolean {
+    return this.isUserLoaded();
+  }
 
   constructor() {
     this.setBreakpointObserver();
@@ -45,6 +50,12 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUserSig = this.registerPlayerService.loggedInUserSig;
+
+    effect(() => {
+      if (this.loggedInUserSig && this.loggedInUserSig()) {
+        this.isUserLoaded.set(true);
+      }
+    });
   }
 
   private setBreakpointObserver(): void {
