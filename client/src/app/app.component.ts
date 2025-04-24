@@ -36,12 +36,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initUserOnPageRefresh();
-    this.registerPlayerService.loadLoggedInUserFromStorage();
   }
 
   initUserOnPageRefresh(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const loggedInPlayerStr = localStorage.getItem('loggedInPlayer');
+      const loggedInPlayerStr = localStorage.getItem('loggedInUser');
 
       if (loggedInPlayerStr) {
         // First, check if user's token is not expired.

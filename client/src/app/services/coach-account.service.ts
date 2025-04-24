@@ -68,7 +68,7 @@ export class CoachAccountService {
         },
         error: err => {
           console.log(err.error);
-
+          this.logOut();
         }
       })
   }
@@ -86,6 +86,8 @@ export class CoachAccountService {
     loggedInUser.roles = []; // We have to initialize it before pushing. Otherwise, its 'undefind' and push will not work
 
     const roles: string | string[] = JSON.parse(atob(loggedInUser.token.split('.')[1])).role; // get the tokens 2nd part then select role
+
+    Array.isArray(roles) ? loggedInUser.roles = roles : loggedInUser.roles.push(roles);
   }
 
   logOut(): void {
