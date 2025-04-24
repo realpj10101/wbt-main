@@ -7,6 +7,7 @@ using api.Interfaces.Teams;
 using api.Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
+using NuGet.Protocol.Plugins;
 
 namespace api.Controllers.Teams;
 
@@ -181,7 +182,7 @@ public class TeamController(
 
         return teamName is not null
             ? Ok(new Response(teamName))
-            : NotFound("No team found for this coach.");
+            : NoContent();
     }
 
     [Authorize(Roles = "coach")]
@@ -197,7 +198,7 @@ public class TeamController(
         OperationResult opResult = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
 
         return opResult.IsSuccess
-            ? Ok(opResult.Message)
+            ? Ok(new Response( Message: opResult.Message))
             : opResult.Error.Code switch
             {
                 ErrorCode.CoachNotFound => BadRequest("Coach not found."),
