@@ -441,7 +441,7 @@ public class TeamRepository : ITeamRepository
         );
     }
 
-    public async Task<CaptainStatus> RemoveCaptainAsync(ObjectId coachId, string targetUserName,
+    public async Task<OperationResult> RemoveCaptainAsync(ObjectId coachId, string targetUserName,
         CancellationToken cancellationToken)
     {
         CaptainStatus cS = new();
@@ -453,8 +453,13 @@ public class TeamRepository : ITeamRepository
 
         if (coachUserName is null)
         {
-            cS.CoachNotFound = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.CoachNotFound,
+                    Message: "Coach not found."
+                )
+            );
         }
 
         // Find the coach doc
@@ -469,8 +474,13 @@ public class TeamRepository : ITeamRepository
 
         if (coachTeam is null)
         {
-            cS.CoachHasNoTeam = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.CoachHasNoTeam,
+                    Message: "Coach has no team."
+                )
+            );
         }
 
         // Find the target user (the player to be assigned as captain)
@@ -480,8 +490,13 @@ public class TeamRepository : ITeamRepository
 
         if (targetUser is null)
         {
-            cS.UserNotFound = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.UserNotFound,
+                    Message: "User not found."
+                )
+            );
         }
 
         // Get the target user's enrolled team
@@ -489,23 +504,38 @@ public class TeamRepository : ITeamRepository
 
         if (userEnrolledTeamId is null)
         {
-            cS.NotInTeam = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.NotInTeam,
+                    Message: "User is not in any team."
+                )
+            );
         }
 
         // Ensure the target user belongs to the coach's team
         if (userEnrolledTeamId != coachTeam.Id)
         {
-            cS.NotTeamMember = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.NotTeamMember,
+                    Message: "User is not in team member."
+                )
+            );
         }
 
         // Check if the user is not captain
         var hasRole = await _userManager.IsInRoleAsync(targetUser, "captain");
         if (!hasRole)
         {
-            cS.IsNotCaptain = true;
-            return cS;
+            return new OperationResult(
+                IsSuccess: false,
+                Error: new CustomError(
+                    Code: ErrorCode.IsNotCaptain,
+                    Message: "User is not captain."
+                )
+            );
         }
 
         // Assign the captain role
@@ -526,8 +556,9 @@ public class TeamRepository : ITeamRepository
             cancellationToken
         );
 
-        cS.IsSuccess = true;
-
-        return cS;
+        return new OperationResult(
+            IsSuccess: true,
+            Message: $"{coachUserName} removed from captain."
+        );
     }
 }
