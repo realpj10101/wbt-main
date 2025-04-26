@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.30.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="UAParser.Core" Version="4.0.4" />
   </ItemGroup>
 
   <ItemGroup>

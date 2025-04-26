@@ -1,7 +1,11 @@
+using System.Text.Json;
 using api.DTOs.Helpers;
 using api.Extensions;
 using api.Interfaces.Player;
+using api.Models.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using UAParser;
+using UAParser.Objects;
 
 namespace api.Controllers.Player;
 
@@ -9,7 +13,7 @@ namespace api.Controllers.Player;
 public class AccountController(
     IAccountRepository _accountRepository
     // ITokenCookieService tokenCookieService
-    ) : BaseApiController
+) : BaseApiController
 {
     /// <summary>
     /// Create accounts
@@ -150,5 +154,42 @@ public class AccountController(
             await _accountRepository.ReloadLoggedInUserAsync(hashedUserId, token, cancellationToken);
 
         return loggedInDto is null ? Unauthorized("User is logged out or unauthorized. Login again") : loggedInDto;
+    }
+
+    private async Task<SessionMetadata> ExtractSessionMetaData()
+    {
+        var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
+        Parser? parser = Parser.GetDefault();
+        ClientInfo? client = parser.Parse(userAgent);
+
+        string deviceType = client.Device.IsSpider ? "Bot" :
+            string.IsNullOrWhiteSpace(client.Device.Family) ? "Unknown" : client.Device.Family;
+        var os = $"{client.OS.Family} {client.OS.Major}";
+        var browser = $"{client.Browser.Family} {client.Browser.Major}";
+        
+        var deviceName = $"{os} - {browser}";
+        
+        string ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+
+        // get location from headers (behind Cloudflare)
+        // string location = HttpContext.Request.Headers["CF-IPCountry"].FirstOrDefault() ?? "Unknown";
+
+        string location = await GetCountryFromIp(ipAddress);
+        
+        return new SessionMetadata(
+            deviceType,
+            deviceName,
+            string.IsNullOrWhiteSpace(userAgent) ? "Unknown" : userAgent,
+            ipAddress,
+            location
+        );
+    }
+
+    private async Task<string> GetCountryFromIp(string ip)
+    {
+        using var httpClient = new HttpClient();
+        var response = await httpClient.GetStringAsync($"http://ip-api.com/json/{ip}");
+        using var doc = JsonDocument.Parse(response);
+        return doc.RootElement.GetProperty("country").GetString() ?? "unknown";
     }
 }
