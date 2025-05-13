@@ -148,7 +148,7 @@ export class UserEditComponent {
 
   getMember(): void {
     if (isPlatformBrowser(this.platFormId)) {
-      const loggedInplayerStr: string | null = localStorage.getItem('loggedInPlayer');
+      const loggedInplayerStr: string | null = localStorage.getItem('loggedInUser');
 
       if (loggedInplayerStr) {
         const loggedInPlayer: LoggedInUser = JSON.parse(loggedInplayerStr);

@@ -1,5 +1,5 @@
 <main>
-  @if (member && loggedInPlayer) {
+  @if (member && loggedInUser) {
   <section class="top">
     <div>
       @if (member.photos.length === 0) {
@@ -9,7 +9,7 @@
     <div class="gallery">
       @for (photo of member.photos; track $index) {
       <div class="photos">
-        <img src="{{apiUrl + photo.url_165}}" width="165" height="165" alt="{{member.userName}} photo" priority>
+        <img ngSrc="{{apiUrl + photo.url_165}}" width="165" height="165" alt="{{member.name}} photo" priority>
         <div class="buttons">
           <button (click)="setMainPhotoComp(photo.url_165)" mat-stroked-button color="primary"
             [disabled]="photo.isMain">Set profile
@@ -24,9 +24,9 @@
       <div class="upload-photo-area">
         <mat-card ng2FileDrop (fileOver)="fileOverBase($event)" (click)="fileInput.click()" [uploader]="uploader"
           [ngClass]="{
-                          'nv-file-not-over': !hasBaseDropZoneOver,
-                          'nv-file-over': hasBaseDropZoneOver
-                          }">
+                        'nv-file-not-over': !hasBaseDropZoneOver,
+                        'nv-file-over': hasBaseDropZoneOver
+                        }">
           <mat-card-header>
             <mat-card-title>Add Photos</mat-card-title>
             <mat-card-subtitle>Click or Drop photos here</mat-card-subtitle>
@@ -86,7 +86,7 @@
           <mat-icon>delete</mat-icon>
           Remove all
         </button>
-      </div>
+    </div>
     </div>
   </section>
   }

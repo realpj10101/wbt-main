@@ -28,7 +28,7 @@ import { environment } from '../../../../environments/environment.development';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input('memberInput') member: Member | undefined;
-  loggedInPlayer: LoggedInUser | null | undefined;
+  loggedInUser: LoggedInUser | null | undefined;
   errorGlob: string | undefined;
   apiUrl = environment.apiUrl;
   // photoUrl: string | undefined;
@@ -38,8 +38,8 @@ export class PhotoEditorComponent implements OnInit {
   private _userService = inject(UserService);
   private _snackBar = inject(MatSnackBar);
 
-  constructor() {
-    this.loggedInPlayer = this._accountService.loggedInUserSig();
+  constructor() {    
+    this.loggedInUser = this._accountService.loggedInUserSig();
   }
 
   ngOnInit(): void {
@@ -52,10 +52,10 @@ export class PhotoEditorComponent implements OnInit {
 
   initialUploader(): void {
     console.log("ok")
-    if (this.loggedInPlayer) {
+    if (this.loggedInUser) {
       this.uploader = new FileUploader({
         url: this.apiUrl + 'api/playeruser/add-photo',
-        authToken: 'Bearer ' + this.loggedInPlayer.token,
+        authToken: 'Bearer ' + this.loggedInUser.token,
         isHTML5: true,
         allowedFileType: ['image'],
         removeAfterUpload: true,
@@ -84,11 +84,11 @@ export class PhotoEditorComponent implements OnInit {
 
   // set navbar photo only when first photo is uploaded
   setNavbarProfilePhoto(url_165: string): void {
-    if (this.loggedInPlayer) {
+    if (this.loggedInUser) {
 
-      this.loggedInPlayer.profilePhotoUrl = url_165;
+      this.loggedInUser.profilePhotoUrl = url_165;
 
-      this._accountService.loggedInUserSig.set(this.loggedInPlayer);
+      this._accountService.loggedInUserSig.set(this.loggedInUser);
     }
   }
 
@@ -110,8 +110,8 @@ export class PhotoEditorComponent implements OnInit {
               if (photo.url_165 === url_165In) {
                 photo.isMain = true;
 
-                this.loggedInPlayer!.profilePhotoUrl = url_165In;
-                this._accountService.setCurrentPlayer(this.loggedInPlayer!);
+                this.loggedInUser!.profilePhotoUrl = url_165In;
+                this._accountService.setCurrentPlayer(this.loggedInUser!);
               }
             }
 

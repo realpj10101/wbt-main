@@ -80,6 +80,8 @@ export class CommentComponent implements OnInit {
       content: this.ContetCtrl.value
     }
 
+    this.ContetCtrl.reset();
+    
     this._commentService.add(this.memberInput?.userName, commetnIn)
       .pipe(take(1))
       .subscribe({
