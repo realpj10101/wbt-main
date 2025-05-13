@@ -1,18 +1,39 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "requireExactSource": false
-        },
-        {
-            "name": "Angular Client",
-            "request": "launch",
-            "type": "chrome",
-            "url": "https://localhost:4200/",
-            "webRoot": "${workspaceFolder}/client",
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "name": ".NET Core Attach",
+        "type": "coreclr",
+        "request": "attach",
+        "requireExactSource": false
+    },
+    {
+      "name": "Angular Client",
+      "request": "launch",
+      "type": "chrome",
+      "url": "https://localhost:4200/",
+      "webRoot": "${workspaceFolder}/client",
+    }
+  ]
 }
+// {
+//   // 🟡 Debugs the .NET 9 backend API
+//   "name": ".NET Backend",
+//   "type": "coreclr",
+//   "request": "launch",
+//   "preLaunchTask": "build",
+//   "program": "${workspaceFolder}/bin/Debug/net9.0/YourProjectName.dll", // 🔄 Replace with your actual DLL path
+//   "args": [],
+//   "cwd": "${workspaceFolder}",
+//   "stopAtEntry": false,
+//   "serverReadyAction": {
+//     "action": "openExternally",
+//     "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+//   },
+//   "env": {
+//     "ASPNETCORE_ENVIRONMENT": "Development"
+//   },
+//   "sourceFileMap": {
+//     "/Views": "${workspaceFolder}/Views"
+//   }
+// },

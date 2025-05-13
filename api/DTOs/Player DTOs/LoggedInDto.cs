@@ -12,18 +12,18 @@ public class LoggedInDto
     public List<string> Errors { get; init; } = [];
 }
 
-public record ExLoggedInDto(
-    [Optional] string? Email, // Used only to verify the account. Will always return null if the account is verified.
-    [Optional] IEnumerable<string> RolesStr,
-    [Optional] string? KnownAs,
-    [Optional] string? UserName,
-    [Optional] string? Gender,
-    [Optional] string? ProfilePhotoUrl,
-    [Optional] bool IsWrongCreds,
-    [Optional] List<string> Errors
-);
-
-public record LoginResult(
-    ExLoggedInDto LoggedIn,
-    [Optional] TokenDto TokenDto
-);
+// public record LoggedInDto(
+//     [Optional] string? Email, // Used only to verify the account. Will always return null if the account is verified.
+//     [Optional] IEnumerable<string> RolesStr,
+//     [Optional] string? KnownAs,
+//     [Optional] string? UserName,
+//     [Optional] string? Gender,
+//     [Optional] string? ProfilePhotoUrl,
+//     [Optional] bool IsWrongCreds,
+//     [Optional] List<string> Errors
+// );
+//
+// public record LoginResult(
+//     LoggedInDto LoggedIn,
+//     [Optional] TokenDto TokenDto
+// );

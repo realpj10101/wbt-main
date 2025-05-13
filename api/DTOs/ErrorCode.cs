@@ -4,7 +4,7 @@ public enum ErrorCode
 {
     IsWrongCreds,
     IsAccountCreationFailed,
-    NetIdentifyFailed,
+    NetIdentityFailed,
     CoachNotFound,
     CoachHasNoTeam,
     OnlyOneCaptain,
@@ -14,5 +14,6 @@ public enum ErrorCode
     AlreadyCaptain,
     IsRefreshTokenExpired,
     IsSessionExpired,
-    TeamNotFound
+    TeamNotFound,
+    IsNotCaptain
 }

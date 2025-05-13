@@ -48,7 +48,7 @@ public class AccountRepository : IAccountRepository
                 return new OperationResult<LoggedInDto>(
                     IsSuccess: false,
                     Error: new CustomError(
-                        Code: ErrorCode.NetIdentifyFailed,
+                        Code: ErrorCode.NetIdentityFailed,
                         Message: "Failed to create role"
                     )
                 );
@@ -71,7 +71,7 @@ public class AccountRepository : IAccountRepository
            return new OperationResult<LoggedInDto>(
                IsSuccess: false,
                Error: new CustomError(
-                   Code: ErrorCode.NetIdentifyFailed,
+                   Code: ErrorCode.NetIdentityFailed,
                    Message: errorMessage
                )
            );

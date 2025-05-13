@@ -10,9 +10,9 @@ public record RegisterDto(
     DateOnly DateOfBirth,
     [Length(3, 50)] string Gender,
     [DataType(DataType.Password)]
-    [Length(PropLength.PasswordsMinLength, PropLength.PasswordsMaxLength)]
+    [Length(PropLength.PasswordMinLength, PropLength.PasswordMaxLength)]
     string Password,
     [DataType(DataType.Password)]
-    [Length(PropLength.PasswordsMinLength, PropLength.PasswordsMaxLength)]
+    [Length(PropLength.PasswordMinLength, PropLength.PasswordMaxLength)]
     string ConfirmPassword
 );

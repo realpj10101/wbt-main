@@ -37,7 +37,7 @@ public class AccountController(
             ? Ok(opResult.Result)
             : opResult.Error?.Code switch
             {
-                ErrorCode.NetIdentifyFailed => BadRequest(opResult.Error.Message),
+                ErrorCode.NetIdentityFailed => BadRequest(opResult.Error.Message),
                 ErrorCode.IsAccountCreationFailed => BadRequest(opResult.Error.Message),
                 _ => BadRequest("Creating account failed. Contact administrator")
             };

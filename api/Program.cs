@@ -1,12 +1,6 @@
-using System.Text;
 using System.Text.Json.Serialization;
 using api.Extensions;
-using api.Handler;
 using api.Middleware;
-using api.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 

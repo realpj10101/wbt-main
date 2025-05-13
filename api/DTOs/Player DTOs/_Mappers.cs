@@ -32,15 +32,15 @@ public static class Mappers
         };
     }
     
-    public static ExLoggedInDto ConvertAppUserToExLoggedInDto(AppUser appUser)
-    {
-        return new ExLoggedInDto
-        {
-            UserName = appUser.NormalizedUserName,
-            Gender = appUser.Gender,
-            ProfilePhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
-        };
-    }
+    // public static LoggedInDto ConvertAppUserToLoggedInDto(AppUser appUser)
+    // {
+    //     return new LoggedInDto()
+    //     {
+    //         UserName = appUser.NormalizedUserName,
+    //         Gender = appUser.Gender,
+    //         ProfilePhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
+    //     };
+    // }
 
     public static PlayerDto ConvertAppUserToPlayerDto(AppUser appUser, bool isFollowing = false, bool isLiking = false)
     {
@@ -70,7 +70,8 @@ public static class Mappers
             Photos: appUser.Photos,
             IsFollowing: isFollowing,
             IsCaptain: appUser.IsCaptain,
-            IsLiking: isLiking
+            IsLiking: isLiking,
+            IsAccepted: appUser.IsAccepted
         );
     }
 

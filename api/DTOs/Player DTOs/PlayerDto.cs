@@ -26,5 +26,6 @@ public record PlayerDto(
     List<Photo> Photos,
     bool IsFollowing,
     bool IsCaptain,
-    bool IsLiking
+    bool IsLiking,
+    bool IsAccepted
 );

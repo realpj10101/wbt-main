@@ -561,4 +561,14 @@ public class TeamRepository : ITeamRepository
             Message: $"{coachUserName} removed from captain."
         );
     }
+
+    public Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    // public async Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId, CancellationToken cancellationToken)
+    // {
+    //     
+    // }
 }

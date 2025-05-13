@@ -92,6 +92,6 @@ public class TokenService : ITokenService
             .Select(rootModel => rootModel.Id)
             .SingleOrDefaultAsync(cancellationToken);
 
-        return ValidationsExtensions.ValidateObjectId(userId);
+        return ValidationsExtensions.TestValidateObjectId(userId);
     }
 }

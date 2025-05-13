@@ -26,7 +26,7 @@ public class PhotoService(
     /// <param name="formFile"></param>
     /// <param name="userId"></param>
     /// <returns>ADD: array of filePaths. DELETE: boolean</returns>
-    public async Task<string[]?> AddPhotoToDisk(IFormFile formFile, ObjectId userId)
+    public async Task<string[]?> AddPhotoToDiskAsync(IFormFile formFile, ObjectId userId)
     {
         // copy file/s to the folder
         if (formFile.Length > 0) // 301kb => 301_000 byte

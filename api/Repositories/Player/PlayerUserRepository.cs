@@ -50,7 +50,7 @@ public class PlayerUserRepository : IPlayerUserRepository
             .Select(item => item.Id)
             .SingleOrDefaultAsync(cancellationToken);
         
-        return ValidationsExtensions.ValidateObjectId(playerId);
+        return ValidationsExtensions.TestValidateObjectId(playerId);
     }
     
     public async Task<UpdateResult?> UpdatePlayerAsync(PlayerUpdateDto playerUpdateDto, string? hashedUserId,
@@ -117,12 +117,12 @@ public class PlayerUserRepository : IPlayerUserRepository
         
         // userId, appUser, file
         // save file in Storage using PhotoService / userId makes the folder name
-        string[]? imageUrls = await _photoService.AddPhotoToDisk(file, playerId.Value);
+        string[]? imageUrls = await _photoService.AddPhotoToDiskAsync(file, playerId.Value);
 
         if (imageUrls is not null)
         {
             Photo photo;
-
+            
             photo = appUser.Photos.Count == 0
                 ? Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: true)
                 : Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: false);

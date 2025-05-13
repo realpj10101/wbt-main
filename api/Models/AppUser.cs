@@ -38,6 +38,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public float AssistsPerGame { get; init; }
     public string Bio { get; init; } = string.Empty;
     public string Achievements { get; init; } = string.Empty;
+    public bool IsAccepted { get; init; }
     public List<Photo> Photos { get; init; } = [];
     public ObjectId? EnrolledTeam { get; set; }
     public int FollowingsCount { get; init; }
