@@ -51,6 +51,8 @@ export class MemberDetailsComponent implements OnInit {
   readonly panelOpenState = signal(false);
   private _teamService = inject(TeamService);
   private _accountService = inject(AccountService);
+  
+  details: string[] = ['Bio', 'Achievements']
 
   ngOnInit(): void {
     this.getMember();

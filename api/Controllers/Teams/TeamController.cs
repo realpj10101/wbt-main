@@ -18,7 +18,6 @@ public class TeamController(
     ILikeRepository _likeRepository,
     ITokenService _tokenService) : BaseApiController
 {
-    [Authorize(Roles = "coach")]
     [HttpPost("create")]
     public async Task<ActionResult<ShowTeamDto>> Create(CreateTeamDto userInput, CancellationToken cancellationToken)
     {
@@ -37,8 +36,7 @@ public class TeamController(
                 ? BadRequest("Team is already exists")
                 : BadRequest("Create team failed. try again or contact administrator.");
     }
-
-    [Authorize(Roles = "coach")]
+    
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ShowTeamDto>>> GetAll([FromQuery] PaginationParams paginationParams,
         CancellationToken cancellationToken)
@@ -108,7 +106,6 @@ public class TeamController(
         return teamDto;
     }
 
-    [Authorize(Roles = "coach")]
     [HttpGet("get-members/{teamName}")]
     public async Task<ActionResult<IEnumerable<PlayerDto>>> GetAll(string teamName,
         CancellationToken cancellationToken)

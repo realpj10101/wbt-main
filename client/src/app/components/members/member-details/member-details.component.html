@@ -5,6 +5,242 @@
             @if (member.photos.length > 0) {
             @for (photo of member.photos; track $index) {
             @if (photo.isMain) {
+            <img src="{{_apiUrl + photo.url_165}}" priority alt="Main photo of {{member.userName}}" class="profile-img">
+            }
+            }
+            }
+            @else {
+            <img src="member.png" alt="Default member photo" class="profile-img" />
+            }
+
+            @switch (member.gender) {
+            @case ('male') {
+            <mat-icon aria-label="Male member icon">boy</mat-icon>
+            }
+            @case ('female') {
+            <mat-icon aria-label="Female member icon">girl</mat-icon>
+            }
+            @default {
+            <mat-icon aria-label="Member icon">person</mat-icon>
+            }
+            }
+        </div>
+
+        <div class="bottom">
+            <div class="info-row">
+                <strong>FullName:</strong>
+                <p>{{member.name}}, {{member.lastName}}</p>
+            </div>
+            <div class="info-row">
+                <strong>Age:</strong>
+                <p>{{member.age}}</p>
+            </div>
+            <div class="info-row">
+                <strong>Last Active:</strong>
+                <p>{{member.lastActive | intlRelativeTime}}</p>
+            </div>
+            <div class="info-row">
+                <strong>Location:</strong>
+                <p>{{member.city}}, {{member.region}}, {{member.country}}</p>
+            </div>
+
+            <div class="actions">
+                <button mat-raised-button color="accent">Message</button>
+
+                @if (!member.isFollowing) {
+                <button mat-raised-button color="primary" (click)="follow()">Follow</button>
+                }
+                @else {
+                <button mat-raised-button color="warn" (click)="unfollow()">UnFollow</button>
+                }
+
+                @if (loggedInUserSig && loggedInUserSig(); as user) {
+                @if (loggedInUserSig()?.roles?.includes('coach')) {
+                <button mat-raised-button (click)="addMember()">Add Member</button>
+
+                @if (!member.isCaptain) {
+                <button mat-raised-button (click)="assignCaptain()">Assign Captain</button>
+                }
+                @else {
+                <button mat-raised-button (click)="removeCaptain()">Remove Captain</button>
+                }
+                }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="right">
+        <mat-tab-group mat-align-tabs="center" class="tabs-container">
+            <mat-tab label="{{member.userName}} Photos">
+                <div class="image-contents">
+                    @if (images.length > 0) {
+                    <div class="gallery">
+                        @for (image of images; track $index) {
+                        <div class="photo" [lightbox]="$index">
+                            <img gallerize [src]="image.data?.thumb" alt="{{member.userName + '\'s image'}}"
+                                class="gallery-img" />
+                            <mat-icon color="primary" class="zoom-icon">zoom_in</mat-icon>
+                        </div>
+                        }
+                    </div>
+                    }
+                    @else {
+                    <p>This member has not shared any photos!</p>
+                    }
+                </div>
+            </mat-tab>
+
+            <mat-tab label="{{member.userName}} Professional Details">
+                <div class="tab-contents">
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Position </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.position) {
+                        <p>{{member.position}}</p>
+                        }
+                        @else {
+                        <p>Position is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Height </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.height) {
+                        <p>{{member.height}}</p>
+                        }
+                        @else {
+                        <p>Height is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Weight </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.weight) {
+                        <p>{{member.weight}}</p>
+                        }
+                        @else {
+                        <p>Weight is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Experience Level </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.experienceLevel) {
+                        <p>{{member.experienceLevel}}</p>
+                        }
+                        @else {
+                        <p>Experience Level is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Skills </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.skills) {
+                        <p>{{member.skills}}</p>
+                        }
+                        @else {
+                        <p>Skills is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="{{member.userName}} Statistics">
+                <div class="tab-contents">
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Games Played </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.gamesPlayed) {
+                        <p>{{member.gamesPlayed}}</p>
+                        }
+                        @else {
+                        <p>Games Played is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Points Per Game </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.pointsPerGame) {
+                        <p>{{member.pointsPerGame}}</p>
+                        }
+                        @else {
+                        <p>Points Per Game is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Rebounds Per Game </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.reboundsPerGame) {
+                        <p>{{member.reboundsPerGame}}</p>
+                        }
+                        @else {
+                        <p>Rebounds Per Game is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Assists Per Game </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.assistsPerGame) {
+                        <p>{{member.assistsPerGame}}</p>
+                        }
+                        @else {
+                        <p>Assists Per Game is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="{{member.userName}} Additional Details">
+                <div class="tab-contents">
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Bio </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.bio) {
+                        <p>{{member.bio}}</p>
+                        }
+                        @else {
+                        <p>Bio is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                    <mat-expansion-panel hideToggle>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title> Achievements </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        @if (member.achievements) {
+                        <p>{{member.achievements}}</p>
+                        }
+                        @else {
+                        <p>Achievements is empty!</p>
+                        }
+                    </mat-expansion-panel>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</section>
+}
+
+
+
+
+<!-- @if (member) {
+<section class="container">
+    <div class="left">
+        <div class="top">
+            @if (member.photos.length > 0) {
+            @for (photo of member.photos; track $index) {
+            @if (photo.isMain) {
             <img src="{{_apiUrl + photo.url_165}}" priority alt="" height="250px" width="250px" mat-card-image>
             }
             }
@@ -228,4 +464,4 @@
         </mat-tab-group>
     </div>
 </section>
-}
+} -->

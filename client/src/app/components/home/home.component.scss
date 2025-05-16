@@ -1,62 +1,255 @@
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slowBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 6px #ff6a00aa;
+  }
+  50% {
+    box-shadow: 0 0 15px #ff8a22cc;
+  }
+}
+
 main {
+  animation: fadeUp 0.8s ease forwards;
+
+  .container {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    
-    .container {        
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .description {
+      flex: 1 1 350px;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1.5rem;
+      animation: fadeUp 0.8s ease forwards;
+      animation-delay: 0.2s;
+
+      h3, h1 {
+        opacity: 0;
+        animation: fadeUp 0.8s ease forwards;
+      }
+      h3 {
+        font-size: 1.3rem;
+        color: orange;
+        font-weight: 600;
+        margin: 0;
+        animation-delay: 0.3s;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin: 0;
+        color: #1a1a1a;
+        animation-delay: 0.4s;
+      }
+
+      button,
+      .buttons button {
+        background-color: orange;
+        color: #fff;
+        font-weight: 700;
+        padding: 0.8rem 2.4rem;
+        border-radius: 30px;
+        box-shadow: 0 4px 10px rgb(255 111 0 / 0.4);
+        transition:
+          background 0.4s ease,
+          box-shadow 0.4s ease,
+          transform 0.3s ease,
+          filter 0.3s ease;
+        will-change: transform, box-shadow;
+
+        &:hover,
+        &:focus {
+          animation: glowPulse 1.8s infinite alternate;
+          transform: translateY(-4px) scale(1.06);
+          filter: brightness(1.1);
+          outline: none;
+        }
+      }
+
+      .buttons {
         display: flex;
+        justify-content: flex-start;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 500px;
+      }
+    }
+
+    .image {
+      flex: 1 1 400px;
+      max-width: 800px;
+      animation: slowBounce 3.5s ease-in-out infinite;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        border-top-right-radius: 40% 30%;
+        border-bottom-left-radius: 40% 30%;
+        box-shadow: 0 10px 30px rgb(0 0 0 / 0.1);
+        object-fit: cover;
+        transition: transform 0.5s ease, filter 0.5s ease;
+        will-change: transform;
+
+        &:hover {
+          transform: scale(1.07);
+          filter: brightness(1.1);
+        }
+      }
+    }
+  }
+
+  .details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1rem;
+
+    mat-card.example-card {
+      flex: 1 1 280px;
+      max-width: 350px;
+      box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
+      border-radius: 12px;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      will-change: transform, box-shadow;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+      animation-delay: 0.5s;
+    
+      &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+      }
+    
+      mat-card-header {
+        align-items: center;
+    
+        .example-header-image {
+          filter: drop-shadow(0 0 4px #ff6a00);
+          transition: filter 0.3s ease;
+          will-change: filter;
+          background-size: cover;
+          border-radius: 50%;
+          width: 48px;
+          height: 48px;
+          margin-right: 12px;
+        }
+      }
+    
+      mat-card-image {
+        border-radius: 12px;
+        max-height: 300px;
+        object-fit: cover;
+      }
+    
+      mat-card-content {
+        p {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: #444;
+          margin: 1rem 0 0;
+        }
+      }
+    }
+  }
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 900px) {
+  main {
+    padding: 1rem;
+
+    .container {
+      flex-direction: column;
+      align-items: center;
+
+      .description,
+      .image {
+        max-width: 100%;
+        flex: unset;
+      }
+
+      .description h1 {
+        font-size: 2rem;
+        text-align: center;
+      }
+
+      .description h3 {
+        text-align: center;
+      }
+
+      .buttons {
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 2rem;
-
-        .description {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-            h1 {
-                display: flex;
-                align-items: flex-end;
-                // background-color: red;
-            }
-
-            .buttons {
-                display: flex;
-                justify-content: center;
-                width: 500px;
-                gap: 2rem;
-
-                button {
-                    background-color: orange;
-                    color: white;
-                }
-            }
-        }
-
-        .image {
-            img {
-                margin-top: 2rem;
-                border-top-right-radius: 30%;
-                border-bottom-left-radius: 30%;
-            }
-        }
+      }
     }
 
     .details {
-        height: 100%;
-        // background-color: red;
-        display: flex;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
-        gap: 1rem;
-        padding-left: 2rem;
-        padding-right: 2rem;
+      flex-direction: column;
+      align-items: center;
 
-        mat-card {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-        }
+      mat-card.example-card {
+        max-width: 90vw;
+        flex: unset;
+      }
     }
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  main {
+    .container {
+      .description h1 {
+        font-size: 1.6rem;
+      }
+      .description h3 {
+        font-size: 1rem;
+      }
+      button,
+      .buttons button {
+        padding: 0.6rem 1.6rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    .details {
+      mat-card.example-card {
+        max-width: 95vw;
+        margin: 0 auto;
+      }
+    }
+  }
 }

@@ -1,77 +1,65 @@
 @if (isMobileViewSignal()) {
-<app-home-mobile />
+  <app-home-mobile />
 }
 @else {
-<main>
-  <section class="container">
-    <div class="description">
-      <h3>Chase your dreams.</h3>
-      <h1>
-        App for Basketball members
-        <br>
-        to follow and find their
-        <br>
-        dreams.
-      </h1>
+  <main>
+    <section class="container">
+      <div class="description">
+        <h3>Chase your dreams.</h3>
+        <h1>
+          App for Basketball members<br />
+          to follow and find their<br />
+          dreams.
+        </h1>
 
-      @if (loggedInPlayerSig && loggedInPlayerSig(); as user) {
-      <button routerLink="/members" mat-raised-button>Contact Users</button>
-      }
-      @else {
-      <div class="buttons">
-        <button routerLink="/choose" mat-raised-button>Start</button>
+        @if (loggedInPlayerSig && loggedInPlayerSig(); as user) {
+          <button routerLink="/members" mat-raised-button color="primary">Contact Users</button>
+        }
+        @else {
+          <div class="buttons">
+            <button routerLink="/choose" mat-raised-button color="accent">Start</button>
+          </div>
+        }
       </div>
-      }
-    </div>
 
-    <div class="image">
-      <img src="wbt2.jpg" alt="" height="500px" width="800px">
-    </div>
-  </section>
+      <div class="image">
+        <img src="wbt2.jpg" alt="Basketball app illustration" />
+      </div>
+    </section>
 
-  <section class="details">
-    <mat-card class="example-card" appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Find your fav team</mat-card-title>
-      </mat-card-header>
-      <img mat-card-image src="team.jpg" alt="" height="300px" width="500px">
-      <mat-card-content>
-        <p>
-          <strong>
-            Find your favorite team and become a member.
-          </strong>
-        </p>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="example-card" appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Contact coaches</mat-card-title>
-      </mat-card-header>
-      <img mat-card-image src="coach.jpg" alt="" height="300px" width="500px">
-      <mat-card-content>
-        <p>
-          <strong>
-            Find your favorite coaches and get in touch with them.
-          </strong>
-        </p>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="example-card" appearance="outlined">
-      <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Create your own team</mat-card-title>
-      </mat-card-header>
-      <img mat-card-image src="team2.jpg" alt="" height="300px" width="500px">
-      <mat-card-content>
-        <p>
-          <strong>
-            Create your own team and make it bigger.
-          </strong>
-        </p>
-      </mat-card-content>
-    </mat-card>
-  </section>
-</main>
+    <section class="details">
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Find your fav team</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="team.jpg" alt="Team" />
+        <mat-card-content>
+          <p><strong>Find your favorite team and become a member.</strong></p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Contact coaches</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="coach.jpg" alt="Coach" />
+        <mat-card-content>
+          <p><strong>Find your favorite coaches and get in touch with them.</strong></p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>Create your own team</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="team2.jpg" alt="Create team" />
+        <mat-card-content>
+          <p><strong>Create your own team and make it bigger.</strong></p>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </main>
 }

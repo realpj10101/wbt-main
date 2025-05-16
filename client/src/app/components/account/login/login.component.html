@@ -1,16 +1,16 @@
 <section>
     <div class="image">
-        <img src="basketball.jpg" alt="" height="500px" width="500px">
+        <img src="basketball.jpg" alt="Basketball" />
     </div>
 
     <div class="form">
         <form [formGroup]="loginFg" (ngSubmit)="loginFg.valid && login()">
-            <div class="content">
-                <h1>Login Page</h1>
+            <div class="container">
+                <h1>Login</h1>
 
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
-                    <input autoFocusDir type="email" formControlName="emailCtrl" placeholder="Your email" matInput>
+                    <input autoFocusDir type="email" formControlName="emailCtrl" placeholder="Your email" matInput />
                     @if (EmailCtrl.hasError("required")) {
                     <mat-error>This field is required.</mat-error>
                     }
@@ -21,23 +21,32 @@
 
                 <mat-form-field appearance="outline">
                     <mat-label>Password</mat-label>
-                    <input type="password" formControlName="passwordCtrl" placeholder="Your password" matInput>
-                    @if (PasswordCtrl.hasError("required")) {
+                    <input type="password" formControlName="passwordCtrl" placeholder="Your password" matInput />
+
+                    @if (PasswordCtrl.hasError('required')) {
                     <mat-error>This field is required.</mat-error>
                     }
-                    @else if (PasswordCtrl.errors && PasswordCtrl.hasError("minlength")) {
+                    @else if (PasswordCtrl.errors?.['minlength']) {
                     <mat-error>
-                        It's too short. Min: {{PasswordCtrl.errors["minlength"].requiredLength}} characters.
-                        You've typed {{PasswordCtrl.errors["minlength"].actualLength}}.
+                        It's too short. Min: {{ PasswordCtrl.errors?.['minlength'].requiredLength }} characters.
+                        You've typed {{ PasswordCtrl.errors?.['minlength'].actualLength }}.
                     </mat-error>
                     }
-                    @else if (PasswordCtrl.errors && PasswordCtrl.hasError("maxlength")) {
-                    <mat-error>It's too long. Max: {{PasswordCtrl.errors["maxlength"].requiredLength}}
-                        characters.</mat-error>
+                    @else if (PasswordCtrl.errors?.['maxlength']) {
+                    <mat-error>
+                        It's too long. Max: {{ PasswordCtrl.errors?.['maxlength'].requiredLength }} characters.
+                    </mat-error>
                     }
                 </mat-form-field>
 
-                <button type="submit" [disabled]="loginFg.invalid" mat-raised-button color="primary">Login</button>
+                <button type="submit" [disabled]="loginFg.invalid" mat-raised-button color="primary">
+                    Login
+                </button>
+
+                <p class="register-link">
+                    Don't have an account?
+                    <a routerLink="/account/register">Register here</a>
+                </p>
             </div>
         </form>
     </div>

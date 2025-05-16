@@ -1,0 +1,103 @@
+.no-access-basketball {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ff5c00;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  padding: 2rem;
+
+  .content-wrapper {
+    max-width: 380px;
+    background: rgba(255 92 0 / 0.1);
+    padding: 3rem 2rem;
+    border-radius: 2rem;
+    box-shadow: 0 8px 30px rgb(255 92 0 / 0.4);
+    backdrop-filter: blur(15px);
+    animation: fadeInUp 0.8s ease forwards;
+
+    .icon-wrapper {
+      margin-bottom: 1.5rem;
+      color: #ff5c00;
+      animation: pulse 2.2s infinite;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      letter-spacing: 3px;
+      text-shadow: 0 2px 6px rgba(255 92 0 / 0.7);
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 2.2rem;
+      font-weight: 600;
+      line-height: 1.4;
+      color: rgba(255 92 0 / 0.85);
+    }
+
+    button {
+      background: #ff5c00;
+      color: #1e1e1e;
+      border: none;
+      padding: 0.85rem 3rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 3rem;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgb(255 92 0 / 0.5);
+      transition: background-color 0.35s ease, color 0.35s ease;
+
+      &:hover {
+        background: #fff;
+        color: #ff5c00;
+        box-shadow: 0 6px 30px rgb(255 92 0 / 0.8);
+      }
+
+      &:focus {
+        outline: 3px solid #ff5c00;
+        outline-offset: 4px;
+      }
+    }
+  }
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .no-access-basketball .content-wrapper {
+    padding: 2rem 1.5rem;
+
+    h1 {
+      font-size: 2.2rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.7rem 2.2rem;
+      font-size: 1rem;
+    }
+  }
+}

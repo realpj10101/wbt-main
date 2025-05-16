@@ -1,76 +1,81 @@
 <section class="members-container">
-    <div class="left">
-        <form [formGroup]="filterFg">
-            <div class="order">
-                <h5 class="title">Sort members</h5>
-                <mat-form-field appearance="outline">
-                    <mat-label>Sort by</mat-label>
-                    <mat-select (selectionChange)="updateMemberParams()" formControlName="orderByCtrl">
-                        @for (orderOption of orderOptions; track $index) {
-                        <mat-option [value]="orderOption" (click)="getAll()"
-                            [disabled]="orderOption === memberParams?.orderBy">
-                            {{ orderOptionsView[$index] }}
-                        </mat-option>
-                        }
-                    </mat-select>
-                </mat-form-field>
-            </div>
+  <div class="left animate-slide-in-left">
+    <form [formGroup]="filterFg">
 
-            <div class="filter">
-                <h5 class="title">Search members</h5>
-                <mat-form-field appearance="outline">
-                    <input type="text" formControlName="searchCtrl" placeholder="By Username or name" matInput>
-                </mat-form-field>
-            </div>
-
-            <div class="age">z
-                <p>By age range</p>
-                <div class="slider">
-                    <mat-slider discrete max="{{maxAge}}" min="{{minAge}}">
-                        <input formControlName="minAgeCtrl" matSliderStartThumb>
-                        <input formControlName="maxAgeCtrl" matSliderEndThumb>
-                    </mat-slider>
-                </div>
-            </div>
-
-            <mat-form-field>
-                <mat-label>By gender</mat-label>
-                <mat-select formControlName="genderCtrl">
-                    <mat-select>-- none --</mat-select>
-                    <mat-option [value]="'female'">Female</mat-option>
-                    <mat-option [value]="'male'">Male</mat-option>
-                    <mat-option [value]="'other'">Other</mat-option>
-                </mat-select>
-            </mat-form-field>
-
-            <div class="actions">
-                <button (click)="updateMemberParams(); getAll();" color="primary" mat-stroked-button class="apply">
-                    Apply Filter
-                </button>
-
-                <button (click)="reset()" mat-stroked-button class="reset">
-                    Reset
-                </button>
-            </div>
-        </form>
-    </div>
-    <div class="right">
-        <h1>Find your Fav Coach or Player</h1>
-        @if (members?.length === 0) {
-        <p>No use exists with this filters. Please change the filter values.</p>
-        }
-        <div class="members">
-            @for (member of members; track $index) {
-            <app-member-card [memberInput]="member"></app-member-card>
+      <div class="filter-section">
+        <h5 class="title">Sort Members</h5>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Sort by</mat-label>
+          <mat-select (selectionChange)="updateMemberParams()" formControlName="orderByCtrl">
+            @for (orderOption of orderOptions; track $index) {
+            <mat-option [value]="orderOption" (click)="getAll()"
+              [disabled]="orderOption === memberParams?.orderBy">
+              {{ orderOptionsView[$index] }}
+            </mat-option>
             }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="filter-section">
+        <h5 class="title">Search Members</h5>
+        <mat-form-field appearance="outline" class="full-width">
+          <input matInput type="text" formControlName="searchCtrl" placeholder="By Username or Name" />
+        </mat-form-field>
+      </div>
+
+      <div class="filter-section age-range">
+        <h5 class="title">By Age Range</h5>
+        <div class="slider-range">
+          <mat-slider discrete max="{{maxAge}}" min="{{minAge}}">
+            <input formControlName="minAgeCtrl" matSliderStartThumb>
+            <input formControlName="maxAgeCtrl" matSliderEndThumb>
+          </mat-slider>
         </div>
-        @if (pagination && memberParams) {
-        <mat-paginator 
-        #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
-            [pageSize]="memberParams.pageSize" [disabled]="false" [showFirstLastButtons]="true"
-            [pageSizeOptions]="true ? pageSizeOptions : []" [hidePageSize]="false"
-            [pageIndex]="memberParams.pageNumber - 1" aria-label="Select page" class="paginator">
-        </mat-paginator>
-        }
+      </div>
+
+      <div class="filter-section">
+        <h5 class="title">By Gender</h5>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="genderCtrl">
+            <mat-option value="">-- None --</mat-option>
+            <mat-option value="female">Female</mat-option>
+            <mat-option value="male">Male</mat-option>
+            <mat-option value="other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="actions">
+        <button (click)="updateMemberParams(); getAll();" color="primary" mat-stroked-button class="apply">
+          Apply Filter
+        </button>
+        <button mat-stroked-button type="button" (click)="reset()" class="reset">
+          Reset
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="right animate-fade-in">
+    <h1>Find Your Favorite Coach or Player</h1>
+
+    @if (members?.length === 0) {
+    <p class="no-results">No users found with the selected filters. Try different values.</p>
+    }
+
+    <div class="members">
+      @for (member of members; track $index) {
+      <app-member-card [memberInput]="member"></app-member-card>
+      }
     </div>
+
+    <mat-paginator *ngIf="pagination && memberParams" #paginator (page)="handlePageEvent($event)"
+      [length]="pagination.totalItems" [pageSize]="memberParams.pageSize" [showFirstLastButtons]="true"
+      [pageSizeOptions]="pageSizeOptions" [pageIndex]="memberParams.pageNumber - 1"
+      aria-label="Select page" class="paginator">
+    </mat-paginator>
+  </div>
 </section>

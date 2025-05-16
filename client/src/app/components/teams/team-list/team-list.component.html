@@ -1,46 +1,43 @@
 <section>
     <div class="top">
-        <div class="left">
-            <h1>Create your own Team </h1>
-            <h5>Unite your passion for basketball,
-                <br>
-                assemble your dream team, and lead them to victory.
-                <br>
-                <strong>
-                    where every pass, shot, and play is a step towards
-                    greatness.
-                </strong>
-                <br>
-                Create your team now and watch your squad rise to the top!
-            </h5>
-            <button mat-flat-button routerLink="/create-team">Start</button>
-        </div>
-        <div class="right">
-            <img src="aiteam.jpeg" alt="" height="350px" width="400px">
-        </div>
+      <div class="left">
+        <h1>Create your own Team</h1>
+        <h3>
+          Unite your passion for basketball,<br />
+          assemble your dream team, and lead them to victory.<br />
+          <strong>
+            Where every pass, shot, and play is a step towards greatness.
+          </strong><br />
+          Create your team now and watch your squad rise to the top!
+        </h3>
+        <button mat-flat-button color="primary" routerLink="/create-team">Start</button>
+      </div>
+  
+      <div class="right">
+        <img src="aiteam.jpeg" alt="Create Team" />
+      </div>
     </div>
+  
     <div class="bottom">
-        @for (team of teams; track $index) {
+      @for (team of teams; track $index) {
         <app-team-card [teamInput]="team"></app-team-card>
-        }
+      }
     </div>
+  
     @if (pagination && paginationParams) {
-    <mat-paginator #paginator (page)="handlePageEvent($event)" [length]="pagination.totalItems"
-        [pageSize]="paginationParams.pageSize" [disabled]="false" [showFirstLastButtons]="true"
-        [pageSizeOptions]="true ? pageSizeOptions : []" [hidePageSize]="false" [pageIndex]="paginationParams.pageNumber - 1"
-        aria-label="Select page" class="paginator">
-    </mat-paginator>
+      <mat-paginator
+        #paginator
+        (page)="handlePageEvent($event)"
+        [length]="pagination.totalItems"
+        [pageSize]="paginationParams.pageSize"
+        [disabled]="false"
+        [showFirstLastButtons]="true"
+        [pageSizeOptions]="true ? pageSizeOptions : []"
+        [hidePageSize]="false"
+        [pageIndex]="paginationParams.pageNumber - 1"
+        aria-label="Select page"
+        class="paginator"
+      ></mat-paginator>
     }
-</section>
-
-
-<!-- <mat-card class="card">
-            <div class="image">
-                <img src="member.png" alt="" height="90px" width="90px">
-                <button mat-mini-fab>Join</button>
-            </div>
-            <div class="details">
-                <h5>Team Name</h5>
-                <p>Team Level</p>
-            </div>
-        </mat-card> -->
+  </section>
+  

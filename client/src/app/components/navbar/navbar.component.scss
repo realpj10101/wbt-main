@@ -1,196 +1,213 @@
-mat-toolbar {
+.main-toolbar {
     background-color: rgb(7, 50, 70);
-    // background-color: #009efa;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    color: white;
 
-    .left {
+    .toolbar-row {
         display: flex;
-        gap: 2rem;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
 
-        .left-side {
+        .toolbar-left {
             display: flex;
-            // flex-direction: row;
             align-items: center;
-
+            gap: 2rem;
 
             .brand {
                 display: flex;
+                align-items: center;
                 color: white;
+                text-decoration: none;
 
-                .mat-icon {
-                    // background-color: red;
-                    animation: 2s mat-icon ease-in-out infinite;
+                h3 {
+                    margin: 0;
+                    font-weight: 700;
+                    font-size: 1.6rem;
+                }
 
-                    @keyframes mat-icon {
-                        0% {
-                            transform: rotateX(0) rotateY(0) rotateZ(0);
-                        }
+                .rotating-icon {
+                    animation: rotate360 4s linear infinite;
+                }
+            }
 
-                        33% {
-                            transform: rotateX(180deg) rotateY(0) rotateZ(0);
-                        }
+            nav[mat-tab-nav-bar] {
+                display: flex;
+                gap: 1.5rem;
 
-                        67% {
-                            transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
-                        }
+                a[mat-tab-link] {
+                    color: white;
+                    font-weight: 600;
+                    padding: 0.5rem 0.75rem;
+                    border-radius: 0.25rem;
 
-                        100% {
-                            transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
-                        }
+                    &.mat-tab-link-active,
+                    &:hover,
+                    &:focus {
+                        background-color: rgba(255, 255, 255, 0.15);
+                        outline: none;
+                    }
+                }
+            }
+        }
+
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+
+            .about-buttons {
+                display: flex;
+                gap: 0.75rem;
+
+                button {
+                    color: white;
+                    background-color: orange;
+                    transition: background-color 0.3s;
+
+                    &:hover {
+                        background-color: #ff8f00;
+                    }
+                }
+            }
+
+            .user-menu-btn {
+                width: 42px;
+                height: 42px;
+                padding: 0;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+                border-radius: 50%;
+                overflow: hidden;
+                display: grid;
+                place-items: center;
+
+                .user-avatar,
+                .user-initial {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    font-weight: 700;
+                    font-size: 1.2rem;
+                    color: black;
+                    text-align: center;
+                    line-height: 42px;
+                    user-select: none;
+                }
+
+                .user-avatar {
+                    object-fit: cover;
+                }
+            }
+        }
+    }
+}
+
+@keyframes rotate360 {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+::ng-deep .user-menu {
+    width: 260px;
+    padding: 1rem 0;
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0 1rem 1rem;
+
+        .user-avatar-large,
+        .user-initial-large {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: black;
+            background-color: #f6d1a4;
+            object-fit: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .username {
+            font-weight: 600;
+            color: #444;
+            text-transform: capitalize;
+            margin: 0;
+        }
+    }
+
+    mat-nav-list {
+        a.mat-list-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1.5rem;
+            cursor: pointer;
+
+            mat-icon {
+                font-size: 20px;
+            }
+
+            &.active-link,
+            &:hover {
+                background-color: #ffb0ff;
+            }
+        }
+    }
+
+    .logout-btn-container {
+        padding: 0.5rem 1.5rem;
+        display: flex;
+        justify-content: center;
+
+        button {
+            width: 100%;
+        }
+    }
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+    .main-toolbar {
+        .toolbar-row {
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            .toolbar-left {
+                width: 100%;
+                justify-content: space-between;
+                gap: 1rem;
+
+                nav[mat-tab-nav-bar] {
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                    overflow-x: auto;
+                    -webkit-overflow-scrolling: touch;
+                }
+            }
+
+            .toolbar-right {
+                width: 100%;
+                justify-content: space-between;
+
+                .about-buttons {
+                    flex-wrap: wrap;
+                    gap: 0.5rem;
+
+                    button {
+                        flex: 1 1 auto;
                     }
                 }
             }
         }
     }
-
-    .right {
-        display: flex;
-        gap: 1rem;
-
-        .about {
-            // background-color: red;
-            display: flex;
-            gap: 1rem;
-
-            button {
-                background-color: orange;
-            }
-        }
-
-        .menu-button {
-            font-size: 2rem;
-            display: grid;
-            place-items: center;
-
-            height: 40px;
-            width: 40px;
-            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.699);
-            border-radius: 50%;
-
-            p {
-                color: black;
-            }
-
-            .top-avatar {
-                border-radius: 50%;
-                height: 100%;
-                width: 100%;
-            }
-        }
-    }
-
 }
-
-::ng-deep .mat-menu {
-    .user-info {
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        padding: 2rem;
-
-        * {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .profile-image {
-            * {
-                margin: 0;
-            }
-
-            font-size: 3rem;
-            background-color: rgb(246, 209, 164);
-
-            width: 4rem;
-            height: 4rem;
-            border-radius: 50%;
-            box-shadow: 3px 3px 3px rgb(144, 144, 144);
-
-            img {
-                height: 100%;
-                width: 100%;
-                border-radius: 50%;
-            }
-        }
-
-        .userName {
-            color: gray;
-        }
-    }
-
-    .logout {
-        padding: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    mat-list {
-        padding: 0;
-        margin: 0;
-
-        mat-list-item {
-            padding: 0;
-        }
-
-        .menu-items {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            line-height: 47px;
-            padding-left: 1rem;
-            padding-right: 5rem;
-
-            &:hover {
-                background-color: rgb(255, 176, 255);
-                cursor: pointer;
-            }
-        }
-    }
-}
-
-// mat-toolbar {
-//     background-color: rgb(7, 50, 70);
-
-//     .container {
-//         display: flex;
-//         justify-content: space-between;
-//         align-items: center;
-//         width: 100%;
-
-//         .brand {
-//             display: flex;
-//             align-items: center;
-//             color: white;
-//         }
-
-//         .mat-icon {
-//             // background-color: red;
-//             animation: 2s mat-icon ease-in-out infinite;
-
-//             @keyframes mat-icon {
-//                 0% {
-//                     transform: rotateX(0) rotateY(0) rotateZ(0);
-//                 }
-
-//                 33% {
-//                     transform: rotateX(180deg) rotateY(0) rotateZ(0);
-//                 }
-
-//                 67% {
-//                     transform: rotateX(180deg) rotateY(180deg) rotateZ(0);
-//                 }
-
-//                 100% {
-//                     transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
-//                 }
-//             }
-//         }
-//     }
-// }

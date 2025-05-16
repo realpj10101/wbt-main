@@ -1,45 +1,135 @@
 section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  padding: 4rem 2rem;
+  position: relative;
+
+  .image {
+    flex: 1 1 400px;
     display: flex;
-    justify-content: flex-end;
-    padding-right: 20rem;
+    justify-content: center;
     align-items: center;
+
+    img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 1rem;
+      object-fit: cover;
+    }
+  }
+
+  .form {
+    flex: 1 1 500px;
+    padding: 2rem;
+    background: #ffffff;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
     position: relative;
-    padding-top: 10rem;
+
+    form {
+      .container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        h1 {
+          text-align: center;
+          font-size: 2rem;
+          margin-bottom: 1rem;
+        }
+
+        .gender {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          mat-radio-group {
+            display: flex;
+            gap: 1rem;
+          }
+        }
+
+        mat-form-field {
+          width: 100%;
+        }
+
+        button {
+          align-self: center;
+          width: 50%;
+          background-color: #ff9800;
+          color: #fff;
+          font-weight: bold;
+
+          &:hover {
+            background-color: #fb8c00;
+          }
+        }
+
+        mat-error {
+          text-align: center;
+        }
+
+        p {
+          text-align: center;
+          color: red;
+          font-weight: bold;
+        }
+
+
+        .login-link {
+          margin-top: 1rem;
+          text-align: center;
+          color: black;
+
+          a {
+            margin-left: 0.25rem;
+            color: #3f51b5;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    >img {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      width: 80px;
+      height: auto;
+      border-radius: 50%;
+    }
+  }
+}
+
+// 📱 Responsive Styles
+@media (max-width: 1075px) {
+  section {
+    flex-direction: column;
+    padding: 2rem 1rem;
 
     .image {
-        position: absolute;
-        top: 10rem;
-        left: 10rem;
+      display: none;
     }
 
     .form {
-        padding: 1rem;
-        display: flex;
-        position: relative;
-        border-radius: 0.5rem;
-
-        form {
-            z-index: 2;
-
-            .container {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            mat-form-field {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
-        img {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            // border-bottom-left-radius: 100px;
-        }
+      flex: 1 1 100%;
+      max-width: 100%;
     }
+
+    .form {
+      padding: 1.5rem;
+
+      form .container button {
+        width: 100%;
+      }
+
+      >img {
+        display: none;
+      }
+    }
+  }
 }

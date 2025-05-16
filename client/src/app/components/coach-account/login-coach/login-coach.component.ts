@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AccountService } from '../../../services/account.service';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginPlayer } from '../../../models/login-player.model';
 import { LoggedInUser } from '../../../models/logged-in-player.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ import { CoachAccountService } from '../../../services/coach-account.service';
   imports: [
     ReactiveFormsModule, FormsModule,
     MatFormFieldModule, MatInputModule, MatButtonModule,
-    AutoFocusDirective, MatSnackBarModule
+    AutoFocusDirective, MatSnackBarModule, RouterLink
   ],
   templateUrl: './login-coach.component.html',
   styleUrl: './login-coach.component.scss'

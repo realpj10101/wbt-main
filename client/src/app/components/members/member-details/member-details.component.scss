@@ -1,91 +1,193 @@
 .container {
-    // background-color: red;
     display: flex;
-    margin: 3rem;
+    flex-wrap: wrap;
+    margin: 2rem;
     gap: 2rem;
-    min-height: fit-content;
-
+    justify-content: center;
+  
+    .left,
+    .right {
+      border-radius: 24px;
+      background: #e0e0e0;
+      box-shadow:
+        8px 8px 15px #bebebe,
+        -8px -8px 15px #ffffff;
+      padding: 1.5rem;
+    }
+  
     .left {
+      flex: 1 1 280px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  
+      .top {
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-radius: 34px;
-        background: #e0e0e0;
-        box-shadow: 27px 27px 40px #a1a1a1,
-            -27px -27px 40px #ffffff;
-
-        .top {
-            // background-color: green;
-            margin: 1rem;
-
-            img {
-                border-radius: 34px;
-            }
-
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
+        gap: 0.8rem;
+  
+        .profile-img {
+          width: 250px;
+          height: 250px;
+          border-radius: 24px;
+          object-fit: cover;
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
-
-        .bottom {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 1rem;
-
-            .actions {
-                // background-color: red;
-                display: flex;
-                gap: 10px;
-            }
+  
+        mat-icon {
+          font-size: 36px;
+          color: #6b6b6b;
         }
+      }
+  
+      .bottom {
+        width: 100%;
+        margin-top: 1rem;
+  
+        .info-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 0.4rem 0;
+          font-size: 1rem;
+          border-bottom: 1px solid #ccc;
+  
+          strong {
+            color: #333;
+          }
+  
+          p {
+            margin: 0;
+            color: #555;
+            font-weight: 500;
+          }
+        }
+  
+        .actions {
+          margin-top: 1rem;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.8rem;
+          justify-content: center;
+  
+          button {
+            min-width: 110px;
+            font-weight: 600;
+            border-radius: 20px;
+            text-transform: uppercase;
+            box-shadow: 3px 3px 8px #b0b0b0;
+            transition: transform 0.2s ease-in-out;
+  
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+        }
+      }
     }
-
+  
     .right {
-        // background-color: pink;
-        flex-grow: 3;
-        border-radius: 34px;
-        background: #e0e0e0;
-        box-shadow: -27px 27px 40px #a1a1a1,
-            27px -27px 40px #ffffff;
-
+      flex: 2 1 600px;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 24px;
+      background: #e0e0e0;
+      box-shadow:
+        8px 8px 15px #bebebe,
+        -8px -8px 15px #ffffff;
+      padding: 1rem;
+  
+      .tabs-container {
+        width: 100%;
+  
         .image-contents {
-            // background-color: red;
+          .gallery {
             display: flex;
-            flex-direction: column;
-
-            .gallery {
-                // background-color: blue;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 1rem;
-                justify-content: center;
-                padding: 1rem;
-
-                .photo {
-                    position: relative;
-
-                    img {
-                        border-radius: 10px;
-                    }
-
-                    mat-icon {
-                        position: absolute;
-                        top: 5px;
-                        left: 5px;
-                    }
-                }
-            }
-        }
-
-        .tab-contents {
-            // background-color: red;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-wrap: wrap;
             gap: 1rem;
-            margin: 1rem;
+            justify-content: center;
+            padding: 1rem;
+  
+            .photo {
+              position: relative;
+              border-radius: 12px;
+              overflow: hidden;
+              cursor: pointer;
+              box-shadow:
+                3px 3px 10px rgba(0, 0, 0, 0.1),
+                -3px -3px 10px rgba(255, 255, 255, 0.7);
+              transition: transform 0.2s ease;
+  
+              &:hover {
+                transform: scale(1.05);
+              }
+  
+              img.gallery-img {
+                display: block;
+                // width: 150px;
+                // height: 100px;
+                object-fit: cover;
+                border-radius: 12px;
+              }
+  
+              mat-icon.zoom-icon {
+                position: absolute;
+                top: 6px;
+                right: 6px;
+                font-size: 20px;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: 50%;
+                padding: 2px;
+                color: #1976d2;
+              }
+            }
+          }
         }
+  
+        .tab-contents {
+          padding: 0.5rem;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+  
+          mat-expansion-panel {
+            box-shadow:
+              inset 2px 2px 5px #ffffff,
+              inset -2px -2px 5px #bebebe;
+            border-radius: 12px;
+  
+            mat-expansion-panel-header {
+              font-weight: 600;
+              color: #333;
+            }
+  
+            p {
+              margin: 0.5rem 0 1rem;
+              color: #555;
+            }
+          }
+        }
+      }
     }
-}
+  }
+  
+  /* Responsive tweaks */
+  @media (max-width: 900px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+  
+      .left,
+      .right {
+        max-width: 100%;
+        width: 100%;
+      }
+  
+      .right {
+        margin-top: 2rem;
+      }
+    }
+  }
+  
