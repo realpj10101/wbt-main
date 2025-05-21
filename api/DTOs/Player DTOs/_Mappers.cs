@@ -137,7 +137,8 @@ public static class Mappers
             GamesLost: userInput.GamesLost,
             CreatedAt: DateTime.UtcNow,
             Status: Status.Pending,
-            RejectionReason: ""
+            RejectionReason: "",
+            Photos: []
         );
     }
 
@@ -154,7 +155,8 @@ public static class Mappers
             GamesLost = team.GamesLost,
             Status = team.Status,
             RejectionReason = team.RejectionReason,
-            CreatedAt = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow,
+            Photos = team.Photos
         };
     }
 
@@ -173,7 +175,8 @@ public static class Mappers
             GamesLost: userInput.GamesLost,
             CreatedAt: DateTime.UtcNow,
             Status: Status.Pending,
-            RejectionReason: ""
+            RejectionReason: "",
+            Photos: []
         );
     }
 

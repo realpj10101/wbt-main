@@ -21,11 +21,12 @@ public class TeamRepository : ITeamRepository
     private readonly ILogger<TeamRepository> _logger;
     private readonly IPlayerUserRepository _playerUserRepository;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IPhotoService _photoService;
 
     public TeamRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings,
         ITokenService tokenService, ILogger<TeamRepository> logger, IPlayerUserRepository playerUserRepository,
-        UserManager<AppUser> userManager)
+        UserManager<AppUser> userManager, IPhotoService photoService)
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
@@ -38,9 +39,13 @@ public class TeamRepository : ITeamRepository
 
         _logger = logger;
         _userManager = userManager;
+
+        _photoService = photoService;
     }
 
     #endregion
+
+    #region Team Management
 
     // Create team and add member in
     public async Task<ShowTeamDto?> CreateAsync(
@@ -562,13 +567,71 @@ public class TeamRepository : ITeamRepository
         );
     }
 
-    public Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId, CancellationToken cancellationToken)
+    public Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId,
+        CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    // public async Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId, CancellationToken cancellationToken)
-    // {
-    //     
-    // }
+    public async Task<Team?> GetByIdAsync(ObjectId teamId, CancellationToken cancellationToken)
+    {
+        Team? team = await _collection.Find<Team>(team => team.Id == teamId).SingleOrDefaultAsync(cancellationToken);
+
+        if (team is null) return null;
+
+        return team;
+    }
+
+    #endregion
+
+    public async Task<Photo?> UploadPhotoAsync(IFormFile file, string? hashedUserId, string teamName,
+        CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(hashedUserId)) return null;
+
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (userId is null) return null;
+
+        ObjectId? teamId = await _collection.AsQueryable()
+            .Where(doc => doc.TeamName == teamName)
+            .Select(doc => doc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (teamId.Equals(null)) return null;
+
+        Team? team = await GetByIdAsync(teamId.Value, cancellationToken);
+
+        if (team is null)
+        {
+            _logger.LogError("team is null / not notfound");
+
+            return null;
+        }
+
+        string[]? imageUrls = await _photoService.AddPhotoToDiskAsync(file, userId.Value);
+
+        if (imageUrls is not null)
+        {
+            Photo photo;
+
+            photo = team.Photos.Count == 0
+                ? Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: true)
+                : Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: false);
+            
+            team.Photos.Add(photo);
+
+            var updatedTeam = Builders<Team>.Update
+                .Set(doc => doc.Photos, team.Photos);
+
+            UpdateResult result =
+                await _collection.UpdateOneAsync(doc => doc.Id == teamId, updatedTeam, null, cancellationToken);
+
+            return result.ModifiedCount == 1 ? photo : null;
+        }
+        
+        _logger.LogError("PhotoService saving photo to disk failed");
+        return null;
+    }
 }
+

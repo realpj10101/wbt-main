@@ -20,4 +20,6 @@ public interface ITeamRepository
     public Task<OperationResult> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
     public Task<OperationResult> RemoveCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
     public Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId, CancellationToken cancellationToken);
+    public Task<Team?> GetByIdAsync(ObjectId teamId, CancellationToken cancellationToken);
+    public Task<Photo?> UploadPhotoAsync(IFormFile file, string? hashedUserId, string teamName, CancellationToken cancellationToken);
 }

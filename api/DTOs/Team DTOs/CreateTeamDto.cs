@@ -28,4 +28,5 @@ public class ShowTeamDto
     public Status Status { get; init; }
     public string RejectionReason { get; init; } = string.Empty;
     public DateTime CreatedAt { get; init; }
+    public List<Photo> Photos { get; init; } = [];
 }

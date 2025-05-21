@@ -1,6 +1,7 @@
 using api.DTOs.Helpers;
 using api.DTOs.Team_DTOs;
 using api.Extensions;
+using api.Extensions.Validations;
 using api.Helpers;
 using api.Interfaces.Player;
 using api.Interfaces.Teams;
@@ -36,7 +37,7 @@ public class TeamController(
                 ? BadRequest("Team is already exists")
                 : BadRequest("Create team failed. try again or contact administrator.");
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ShowTeamDto>>> GetAll([FromQuery] PaginationParams paginationParams,
         CancellationToken cancellationToken)
@@ -192,10 +193,11 @@ public class TeamController(
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-        OperationResult opResult = await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
+        OperationResult opResult =
+            await _teamRepository.AssignCaptainAsync(userId.Value, targetUserName, cancellationToken);
 
         return opResult.IsSuccess
-            ? Ok(new Response( Message: opResult.Message))
+            ? Ok(new Response(Message: opResult.Message))
             : opResult.Error.Code switch
             {
                 ErrorCode.CoachNotFound => BadRequest("Coach not found."),
@@ -218,7 +220,8 @@ public class TeamController(
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
 
-        OperationResult opResult = await _teamRepository.RemoveCaptainAsync(userId.Value, targetUserName, cancellationToken);
+        OperationResult opResult =
+            await _teamRepository.RemoveCaptainAsync(userId.Value, targetUserName, cancellationToken);
 
         return opResult.IsSuccess
             ? Ok(new Response(Message: opResult.Message))
@@ -232,6 +235,20 @@ public class TeamController(
                 ErrorCode.IsNotCaptain => BadRequest("This user is not a captain."),
                 _ => BadRequest("An error occured. Try again or contact administrator")
             };
+    }
+
+    [HttpPost("add-photo/{teamName}")]
+    public async Task<ActionResult<Photo>> AddPhoto(
+        [AllowedFileExtensions, FileSize(250_000, 4_000_000)]
+        IFormFile file, string teamName, CancellationToken cancellationToken
+    )
+    {
+        if (file is null) return BadRequest("No file selected with this request");
+
+        Photo? photo =
+            await _teamRepository.UploadPhotoAsync(file, User.GetHashedUserId(), teamName, cancellationToken);
+
+        return photo is null ? BadRequest("Add photo failed. See logger") : photo;
     }
 }
 

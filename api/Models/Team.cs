@@ -19,7 +19,8 @@ public record Team(
     int GamesLost,
     Status Status,
     DateTime CreatedAt,
-    string RejectionReason
+    string RejectionReason,
+    List<Photo> Photos
     // History
     // List<Photo> TeamLogo
     // string UpcomingMatches, // Team Schedule

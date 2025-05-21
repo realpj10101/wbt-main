@@ -30,24 +30,24 @@
                 }
             }
 
-            nav[mat-tab-nav-bar] {
+            ::ng-deep nav[mat-tab-nav-bar] {
                 display: flex;
                 gap: 1.5rem;
-
+              
                 a[mat-tab-link] {
-                    color: white;
-                    font-weight: 600;
-                    padding: 0.5rem 0.75rem;
-                    border-radius: 0.25rem;
-
-                    &.mat-tab-link-active,
-                    &:hover,
-                    &:focus {
-                        background-color: rgba(255, 255, 255, 0.15);
-                        outline: none;
-                    }
+                  color: white !important;
+                  font-weight: 600;
+                  padding: 0.5rem 0.75rem;
+                  border-radius: 0.25rem;
+              
+                  &.mat-tab-link-active,
+                  &:hover,
+                  &:focus {
+                    background-color: rgba(255, 255, 255, 0.15);
+                    outline: none;
+                  }
                 }
-            }
+              }
         }
 
         .toolbar-right {

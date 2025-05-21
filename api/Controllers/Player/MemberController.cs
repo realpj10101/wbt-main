@@ -56,7 +56,7 @@ public class MemberController(IMemberRepository _memberRepository,
     }
 
     [HttpGet("get-by-id/{playerId}")]
-    public async Task<ActionResult<PlayerDto>> GetById(string playerId, CancellationToken cancellationToken)
+    public async Task<ActionResult<PlayerDto>> wGetById(string playerId, CancellationToken cancellationToken)
     {
         PlayerDto? playerDto = await _memberRepository.GetByIdAsync(playerId, cancellationToken);
         
