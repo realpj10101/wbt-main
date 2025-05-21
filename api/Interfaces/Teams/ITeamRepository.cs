@@ -22,4 +22,6 @@ public interface ITeamRepository
     public Task<OperationResult> RequestJoinTeamAsync(string teamName, ObjectId playerId, CancellationToken cancellationToken);
     public Task<Team?> GetByIdAsync(ObjectId teamId, CancellationToken cancellationToken);
     public Task<Photo?> UploadPhotoAsync(IFormFile file, string? hashedUserId, string teamName, CancellationToken cancellationToken);
+    public Task<UpdateResult?> SetMainPhotoAsync(string hashedUserId, string teamName, string photoUrlIn, CancellationToken cancellationToken);
+    public Task<UpdateResult?> DeletePhotoAsync(string hashedUserId, string teamName, string? photoUrlIn, CancellationToken cancellationToken);
 }

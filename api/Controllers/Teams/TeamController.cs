@@ -250,21 +250,36 @@ public class TeamController(
 
         return photo is null ? BadRequest("Add photo failed. See logger") : photo;
     }
-}
 
-// old code
-// [HttpPut("update-team/{teamName}")]
-// public async Task<ActionResult> Update(UpdateTeamDto userInput, string teamName, CancellationToken cancellationToken)
-// {
-//     UpdateResult? updateRes = await _teamRepository.UpdateTeamAsync(userInput, teamName, cancellationToken);
-//     
-//     return updateRes is null
-//         ? BadRequest("Username is already existsAc.")
-//         : !updateRes.IsModifiedCountAvailable
-//         ? BadRequest("Update failed. Try again later.")
-//         : Ok("Team has been updated successfully.");
-//
-//     // return updateRes is null || !updateRes.IsModifiedCountAvailable
-//     //     ? BadRequest("Update failed. Try again later.")
-//     //     : Ok(new { message = "Team has been updated successfully." });
-// }
+    [HttpPut("set-main-photo/{teamName}")]
+    public async Task<ActionResult> SetMainPhoto(string photoUrlIn, string teamName, CancellationToken cancellationToken)
+    {
+        string? hashedUserId = User.GetHashedUserId();
+        
+        if(string.IsNullOrEmpty(hashedUserId))
+            return Unauthorized("You are not logged in. Please login again.");
+
+        UpdateResult? updateResult =
+            await _teamRepository.SetMainPhotoAsync(hashedUserId, teamName, photoUrlIn, cancellationToken);
+        
+        return updateResult is null || !updateResult.IsModifiedCountAvailable
+            ? BadRequest("Update failed. Try again or contact administrator")
+            : Ok(new { message = "Team has been updated successfully." });
+    }
+
+    [HttpDelete("delete-photo/{teamName}")]
+    public async Task<ActionResult> DeletePhoto(string photoUrlIn, string teamName, CancellationToken cancellationToken)
+    {
+        string? hashedUserId = User.GetHashedUserId();
+        
+        if (string.IsNullOrEmpty(hashedUserId))
+            return Unauthorized("You are not logged in. Please login again.");
+
+        UpdateResult? updateResult =
+            await _teamRepository.DeletePhotoAsync(hashedUserId, teamName, photoUrlIn, cancellationToken);
+        
+        return updateResult is null || !updateResult.IsModifiedCountAvailable
+            ? BadRequest("Photo deletion failed. Try again or contact administrator")
+            : Ok(new { message = "Photo has been deleted successfully." });
+    }
+}

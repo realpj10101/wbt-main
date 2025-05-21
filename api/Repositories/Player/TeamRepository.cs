@@ -633,5 +633,79 @@ public class TeamRepository : ITeamRepository
         _logger.LogError("PhotoService saving photo to disk failed");
         return null;
     }
+
+    public async Task<UpdateResult?> SetMainPhotoAsync(string hashedUserId, string teamName, string photoUrlIn, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(hashedUserId)) return null;
+
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (userId is null) return null;
+
+        ObjectId? teamId = await _collection.AsQueryable()
+            .Where(doc => doc.TeamName == teamName)
+            .Select(doc => doc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (teamId.Equals(null)) return null;
+
+        FilterDefinition<Team>? filterOld = Builders<Team>.Filter
+            .Where(team => team.Id == teamId && team.Photos.Any(photo => photo.IsMain == true));
+
+        UpdateDefinition<Team>? updateOld = Builders<Team>.Update
+            .Set(team => team.Photos.FirstMatchingElement().IsMain, false);
+
+        await _collection.UpdateOneAsync(filterOld, updateOld, null, cancellationToken);
+
+        FilterDefinition<Team>? filterNew = Builders<Team>.Filter
+            .Where(team => team.Id == teamId && team.Photos.Any(photo => photo.Url_165 == photoUrlIn));
+
+        UpdateDefinition<Team>? updateNew = Builders<Team>.Update
+            .Set(team => team.Photos.FirstMatchingElement().IsMain, true);
+
+        return await _collection.UpdateOneAsync(filterNew, updateNew, null, cancellationToken);
+    }
+
+    public async Task<UpdateResult?> DeletePhotoAsync(string hashedUserId, string teamName, string? url_165_In, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(url_165_In)) return null;
+        
+        if (string.IsNullOrEmpty(hashedUserId)) return null;
+
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+
+        if (userId is null) return null;
+
+        ObjectId? teamId = await _collection.AsQueryable()
+            .Where(doc => doc.TeamName == teamName)
+            .Select(doc => doc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (teamId.Equals(null)) return null;
+
+        Photo photo = await _collection.AsQueryable()
+            .Where(team => team.Id == teamId)
+            .SelectMany(team => team.Photos)
+            .Where(photo => photo.Url_165 == url_165_In)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (photo is null) return null;
+
+        if (photo.IsMain) return null;
+
+        bool isDeleteSuccess = await _photoService.DeletePhotoFromDisk(photo);
+
+        if (!isDeleteSuccess)
+        {
+            _logger.LogError("Delete Photo form disk failed");
+
+            return null;
+        }
+        
+        var update = Builders<Team>.Update
+            .PullFilter(team => team.Photos, photo => photo.Url_165 == url_165_In);
+
+        return await _collection.UpdateOneAsync(team => team.Id == teamId, update, null, cancellationToken);
+    }
 }
 
