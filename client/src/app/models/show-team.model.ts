@@ -1,3 +1,5 @@
+import { Photo } from "./photo.model";
+
 export interface ShowTeam {
     teamName: string;
     membersUserNames: string[];
@@ -7,4 +9,5 @@ export interface ShowTeam {
     gamesWon: number;
     gamesLost: number;
     createdAt: Date;
+    photos: Photo[];
 }

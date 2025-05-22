@@ -25,7 +25,7 @@ export class TeamService {
 
   create(userInput: CreateTeam): Observable<ShowTeam> {
     return this.http.post<ShowTeam>(this._apiUrl + 'create', userInput).pipe(
-      map (res =>{
+      map(res => {
         this.navigateToReturnUrl();
 
         return res;
@@ -39,18 +39,16 @@ export class TeamService {
     return this.paginationHandler.getPaginatedResult<ShowTeam[]>(this._apiUrl, params);
   }
 
-  getByTeamName(userIn: string): Observable<ShowTeam | undefined>
-  {
+  getByTeamName(userIn: string): Observable<ShowTeam | undefined> {
     return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn);
   }
 
-  getTeamMembersAsync(userIn: string): Observable<Member[]>
-  {
+  getTeamMembersAsync(userIn: string): Observable<Member[]> {
     return this.http.get<Member[]>(this._apiUrl + 'get-members/' + userIn);
   }
 
   addMember(teamName: ApiResponse, targetMemberUserName: string): Observable<ApiResponse> {
-    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName.message + '/' +  targetMemberUserName, null);
+    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName.message + '/' + targetMemberUserName, null);
   }
 
   getTeamName(): Observable<ApiResponse> {
@@ -63,6 +61,18 @@ export class TeamService {
 
   removeCaptain(targetUserName: string) {
     return this.http.delete<ApiResponse>(this._apiUrl + 'remove-captain/' + targetUserName);
+  }
+
+  setMainPhoto(url_165: string, teamName: string): Observable<ApiResponse> {
+    let queryParams = new HttpParams().set('photoUrlIn', url_165);
+
+    return this.http.put<ApiResponse>(this._apiUrl + 'set-main-photo' + teamName, null, { params: queryParams });
+  }
+
+  deletePhoto(url_165: string, teamName: string): Observable<ApiResponse> {
+    let queryParams = new HttpParams().set('photoUrlIn', url_165);
+
+    return this.http.put<ApiResponse>(this._apiUrl + 'delete-photo', null, { params: queryParams })
   }
 
   private getHttpParams(paginationParams: PaginationParams): HttpParams {
@@ -81,7 +91,7 @@ export class TeamService {
       const returnUrl = localStorage.getItem('returnUrl');
       if (returnUrl)
         this.router.navigate([returnUrl]);
-      else 
+      else
         this.router.navigate(['teams']);
     }
   }
