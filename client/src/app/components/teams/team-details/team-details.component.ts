@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit, signal, Signal } from '@angular/core';
 import { TeamService } from '../../../services/team.service';
 import { environment } from '../../../../environments/environment.development';
 import { ActivatedRoute } from '@angular/router';
@@ -11,11 +11,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MemberCardComponent } from "../../members/member-card/member-card.component";
 import { TeamMembersCardComponent } from "../../team-members-card/team-members-card.component";
+import { TeamPhotoEditorComponent } from "../team-photo-editor/team-photo-editor.component";
 
 @Component({
   selector: 'app-team-details',
   standalone: true,
-  imports: [MatTabsModule, MatExpansionModule, MemberCardComponent, TeamMembersCardComponent],
+  imports: [MatTabsModule, MatExpansionModule, MemberCardComponent, TeamMembersCardComponent, TeamPhotoEditorComponent],
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
@@ -27,10 +28,17 @@ export class TeamDetailsComponent implements OnInit {
   private _snack = inject(MatSnackBar);
   team: ShowTeam | undefined;
   members: Member[] | undefined;
+  currentTeamSig: Signal<ShowTeam | null> | undefined;
+  isTeamLoaded = signal(false);
+
+  isTeamLoadedSignal(): boolean {
+    return this.isTeamLoaded();
+  }
 
   ngOnInit(): void {
     this.getTeam();
     this.getTeamMembers();
+    this.currentTeamSig = this._teamService.currentTeamSignal;
   }
 
   getTeam(): void {
@@ -41,9 +49,10 @@ export class TeamDetailsComponent implements OnInit {
         .pipe(
           take(1))
         .subscribe({
-          next: (res: ShowTeam | undefined) => {
+          next: (res: ShowTeam | null) => {
             if (res) {
               this.team = res;
+              console.log(this.team);
             }
           }
         });

@@ -15,6 +15,7 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ResponsiveService } from '../../services/responsive.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavbarMobileComponent } from "./navbar-mobile/navbar-mobile.component";
+import { CoachAccountService } from '../../services/coach-account.service';
 
 @Component({
   selector: 'app-navbar',
@@ -31,6 +32,7 @@ import { NavbarMobileComponent } from "./navbar-mobile/navbar-mobile.component";
 export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl;
   loggedInUserSig: Signal<LoggedInUser | null> | undefined;
+  loggedInCoachSig: Signal<LoggedInUser | null> | undefined;
   linksWithAdmin: string[] = ['members', 'friends', 'message', 'users'];
   links: string[] = ['members', 'friends', 'teams'];
   linksWithCoach: string[] = ['members', 'friends', 'teams', 'coach-panel'];
@@ -39,6 +41,7 @@ export class NavbarComponent implements OnInit {
   isUserLoaded = signal(false);
 
   private registerPlayerService = inject(AccountService);
+  private coachAccountService = inject(CoachAccountService);
 
   isUserLoadedSignal(): boolean {
     return this.isUserLoaded();
@@ -50,6 +53,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loggedInUserSig = this.registerPlayerService.loggedInUserSig;
+    this.loggedInCoachSig = this.coachAccountService.loggedInUserSig;
 
     effect(() => {
       if (this.loggedInUserSig && this.loggedInUserSig()) {
@@ -67,7 +71,6 @@ export class NavbarComponent implements OnInit {
         this.isMobileViewSignal.set(!bPS.matches);
       });
   }
-
 
   logout(): void {
     this.registerPlayerService.logOut();

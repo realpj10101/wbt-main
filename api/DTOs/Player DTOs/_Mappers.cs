@@ -31,7 +31,7 @@ public static class Mappers
             ProfilePhotoUrl = appUser.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165
         };
     }
-    
+
     // public static LoggedInDto ConvertAppUserToLoggedInDto(AppUser appUser)
     // {
     //     return new LoggedInDto()
@@ -130,7 +130,7 @@ public static class Mappers
             MembersUserNames: [],
             TeamName: userInput.TeamName.ToLower(),
             TeamLevel: userInput.TeamLevel.ToLower(),
-            TeamCaptainId: ObjectId.Empty, 
+            TeamCaptainId: ObjectId.Empty,
             Achievements: userInput.Achievements.ToLower(),
             GamesPlayed: userInput.GamesPlayed,
             GamesWon: userInput.GamesWon,
@@ -156,6 +156,7 @@ public static class Mappers
             Status = team.Status,
             RejectionReason = team.RejectionReason,
             CreatedAt = DateTime.UtcNow,
+            ProfilePhotoUrl = team.Photos.FirstOrDefault(photo => photo.IsMain)?.Url_165,
             Photos = team.Photos
         };
     }
@@ -168,7 +169,7 @@ public static class Mappers
             MembersUserNames: [],
             TeamName: userInput.TeamName.ToLower(),
             TeamLevel: userInput.TeamLevel.ToLower(),
-            TeamCaptainId: ObjectId.Empty, 
+            TeamCaptainId: ObjectId.Empty,
             Achievements: userInput.Achievements.ToLower(),
             GamesPlayed: userInput.GamesPlayed,
             GamesWon: userInput.GamesWon,
@@ -186,7 +187,7 @@ public static class Mappers
         {
             throw new ArgumentNullException(nameof(team), "Team cannot be null");
         }
-        
+
         return new EnrolledTeam(
             TeamId: team.Id
             );

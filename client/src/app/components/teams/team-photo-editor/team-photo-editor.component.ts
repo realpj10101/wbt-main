@@ -1,7 +1,7 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { ShowTeam } from '../../../models/show-team.model';
 import { LoggedInUser } from '../../../models/logged-in-player.model';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileUploadModule } from 'ng2-file-upload';
 import { CoachAccountService } from '../../../services/coach-account.service';
 import { TeamService } from '../../../services/team.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,17 +10,28 @@ import { ActivatedRoute } from '@angular/router';
 import { Photo } from '../../../models/photo.model';
 import { take } from 'rxjs';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
   selector: 'app-team-photo-editor',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    NgOptimizedImage, FileUploadModule,
+    MatFormFieldModule, MatCardModule, MatIconModule, MatButtonModule
+  ],
   templateUrl: './team-photo-editor.component.html',
   styleUrl: './team-photo-editor.component.scss'
 })
 export class TeamPhotoEditorComponent implements OnInit {
   @Input('teamInput') team: ShowTeam | undefined;
   loggedInUser: LoggedInUser | null | undefined;
+  currentTeam: ShowTeam | null | undefined;
   apiUrl = environment.apiUrl;
   errorGlob: string | undefined;
   uploader: FileUploader | undefined;
@@ -33,12 +44,13 @@ export class TeamPhotoEditorComponent implements OnInit {
 
   constructor() {
     this.loggedInUser = this._coachAccountService.loggedInUserSig();
+    this.currentTeam = this._teamService.currentTeamSignal();
+    console.log(this.loggedInUser);
   }
 
   ngOnInit(): void {
-    this.initialUploader();
     this.teamName = this._route.snapshot.paramMap.get('teamName');
-
+    this.initialUploader();
   }
 
   fileOverBase(event: boolean): void {
@@ -49,13 +61,15 @@ export class TeamPhotoEditorComponent implements OnInit {
     if (this.loggedInUser) {
       this.uploader = new FileUploader({
         url: this.apiUrl + 'api/team/add-photo/' + this.teamName,
-        authToken: 'Bearer' + this.loggedInUser.token,
+        authToken: 'Bearer ' + this.loggedInUser.token,
         isHTML5: true,
         allowedFileType: ['image'],
         removeAfterUpload: true,
         autoUpload: false,
         maxFileSize: 4_000_000 // bytes // 4MB
       });
+
+      console.log(this.uploader);
 
       this.uploader.onAfterAddingAll = (file) => {
         file.withCredentials = false;
@@ -71,7 +85,6 @@ export class TeamPhotoEditorComponent implements OnInit {
       }
     }
   }
-
 
   setMainPhotoComp(url_165In: string): void {
     if (this.teamName) {
@@ -89,7 +102,12 @@ export class TeamPhotoEditorComponent implements OnInit {
                   photo.isMain = true;
 
                   this.loggedInUser!.profilePhotoUrl = url_165In;
-                  this._coachAccountService.setCurrentCoach(this.loggedInUser!);
+                  // this._coachAccountService.setCurrentCoach(this.loggedInUser!);
+
+                  if (this.currentTeam) {
+                    this._teamService.setCurrentTeam({ ...this.currentTeam! });
+                  }
+                  console.log(this.currentTeam);
                 }
               }
 
@@ -98,6 +116,8 @@ export class TeamPhotoEditorComponent implements OnInit {
                 verticalPosition: 'bottom',
                 duration: 7000
               });
+
+              console.log(this.team.photos);
             }
           }
         })

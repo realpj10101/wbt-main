@@ -40,6 +40,7 @@ export class PhotoEditorComponent implements OnInit {
 
   constructor() {    
     this.loggedInUser = this._accountService.loggedInUserSig();
+    console.log(this.loggedInUser);
   }
 
   ngOnInit(): void {
@@ -112,6 +113,8 @@ export class PhotoEditorComponent implements OnInit {
 
                 this.loggedInUser!.profilePhotoUrl = url_165In;
                 this._accountService.setCurrentPlayer(this.loggedInUser!);
+                console.log(this.loggedInUser);
+                
               }
             }
 

@@ -1,78 +1,83 @@
 <section>
-    <div class="top">
-      <div class="item-1">
-        <img src="basic-team.jpg" alt="Team" />
-      </div>
-  
-      <div class="item-2">
-        <mat-tab-group mat-stretch-tabs="true">
-          <mat-tab label="Team Technical Specifications">
-            <div class="tab-contents">
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>Team Name</mat-panel-title>
-                </mat-expansion-panel-header>
-                <h5>{{ team?.teamName }}</h5>
-              </mat-expansion-panel>
-  
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>Team Level</mat-panel-title>
-                </mat-expansion-panel-header>
-                <h5>{{ team?.teamLevel }}</h5>
-              </mat-expansion-panel>
-  
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>Team Achievements</mat-panel-title>
-                </mat-expansion-panel-header>
-                <h5>{{ team?.achievements }}</h5>
-              </mat-expansion-panel>
-            </div>
-          </mat-tab>
-  
-          <mat-tab label="Team Statistics">
-            <div class="tab-contents">
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>Games Played</mat-panel-title>
-                </mat-expansion-panel-header>
-                <h5>{{ team?.gamesPlayed }}</h5>
-              </mat-expansion-panel>
-  
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>Games Won</mat-panel-title>
-                </mat-expansion-panel-header>
-                <h5>{{ team?.gamesWon }}</h5>
-              </mat-expansion-panel>
-  
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>Games Lost</mat-panel-title>
-                </mat-expansion-panel-header>
-                <h5>{{ team?.gamesLost }}</h5>
-              </mat-expansion-panel>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-      </div>
+  <div class="top">
+    <div class="item-1">
+      @if (currentTeamSig && currentTeamSig();) {
+        @if (team?.profilePhotoUrl) {
+          <img src="{{apiUrl + team?.profilePhotoUrl}}" alt="Team" />
+        }
+      }
     </div>
-  
-    <div class="bottom">
-      <mat-tab-group>
-        <mat-tab label="Members">
-          @if (members?.length === 0) {
-          <p class="no-members">This team has no members.</p>
-          }
-          <div class="members">
-            @for (member of members; track $index) {
-              <app-team-members-card [memberInput]="member" />
-            }
+
+    <div class="item-2">
+      <mat-tab-group mat-stretch-tabs="true">
+        <mat-tab label="Team Technical Specifications">
+          <div class="tab-contents">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Team Name</mat-panel-title>
+              </mat-expansion-panel-header>
+              <h5>{{ team?.teamName }}</h5>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Team Level</mat-panel-title>
+              </mat-expansion-panel-header>
+              <h5>{{ team?.teamLevel }}</h5>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Team Achievements</mat-panel-title>
+              </mat-expansion-panel-header>
+              <h5>{{ team?.achievements }}</h5>
+            </mat-expansion-panel>
           </div>
         </mat-tab>
-        <mat-tab label="Team Photos"></mat-tab>
+
+        <mat-tab label="Team Statistics">
+          <div class="tab-contents">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Games Played</mat-panel-title>
+              </mat-expansion-panel-header>
+              <h5>{{ team?.gamesPlayed }}</h5>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Games Won</mat-panel-title>
+              </mat-expansion-panel-header>
+              <h5>{{ team?.gamesWon }}</h5>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Games Lost</mat-panel-title>
+              </mat-expansion-panel-header>
+              <h5>{{ team?.gamesLost }}</h5>
+            </mat-expansion-panel>
+          </div>
+        </mat-tab>
       </mat-tab-group>
     </div>
-  </section>
-  
+  </div>
+
+  <div class="bottom">
+    <mat-tab-group>
+      <mat-tab label="Members">
+        @if (members?.length === 0) {
+        <p class="no-members">This team has no members.</p>
+        }
+        <div class="members">
+          @for (member of members; track $index) {
+          <app-team-members-card [memberInput]="member" />
+          }
+        </div>
+      </mat-tab>
+      <mat-tab label="Team Photos">
+        <app-team-photo-editor [teamInput]="team" />
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

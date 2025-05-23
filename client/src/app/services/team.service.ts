@@ -1,4 +1,4 @@
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { CreateTeam } from '../models/create.team.model';
 import { map, Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -19,6 +19,7 @@ export class TeamService {
   http = inject(HttpClient)
   platformId = inject(PLATFORM_ID);
   router = inject(Router);
+  currentTeamSignal = signal<ShowTeam | null>(null);
 
   private readonly _apiUrl = environment.apiUrl + 'api/team/'
   private paginationHandler = new PaginationHandler();
@@ -39,8 +40,18 @@ export class TeamService {
     return this.paginationHandler.getPaginatedResult<ShowTeam[]>(this._apiUrl, params);
   }
 
-  getByTeamName(userIn: string): Observable<ShowTeam | undefined> {
-    return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn);
+  getByTeamName(userIn: string): Observable<ShowTeam | null> {
+    return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn).pipe(
+      map(res => {
+        if (res) {
+          this.setCurrentTeam(res);
+
+          return res;
+        }
+
+        return null;
+      })
+    )
   }
 
   getTeamMembersAsync(userIn: string): Observable<Member[]> {
@@ -66,13 +77,20 @@ export class TeamService {
   setMainPhoto(url_165: string, teamName: string): Observable<ApiResponse> {
     let queryParams = new HttpParams().set('photoUrlIn', url_165);
 
-    return this.http.put<ApiResponse>(this._apiUrl + 'set-main-photo' + teamName, null, { params: queryParams });
+    return this.http.put<ApiResponse>(this._apiUrl + 'set-main-photo/' + teamName, null, { params: queryParams });
   }
 
   deletePhoto(url_165: string, teamName: string): Observable<ApiResponse> {
     let queryParams = new HttpParams().set('photoUrlIn', url_165);
 
-    return this.http.put<ApiResponse>(this._apiUrl + 'delete-photo', null, { params: queryParams })
+    return this.http.put<ApiResponse>(this._apiUrl + 'delete-photo/' + teamName, null, { params: queryParams })
+  }
+
+  setCurrentTeam(teamDetails: ShowTeam): void {
+    this.currentTeamSignal.set(teamDetails);
+
+    if (isPlatformBrowser(this.platformId))
+      localStorage.setItem('currentTeam', JSON.stringify(teamDetails));
   }
 
   private getHttpParams(paginationParams: PaginationParams): HttpParams {

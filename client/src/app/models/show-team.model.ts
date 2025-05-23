@@ -9,5 +9,6 @@ export interface ShowTeam {
     gamesWon: number;
     gamesLost: number;
     createdAt: Date;
+    profilePhotoUrl: string;
     photos: Photo[];
 }

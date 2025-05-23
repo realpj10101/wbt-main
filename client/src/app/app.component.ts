@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { ResponsiveService } from './services/responsive.service';
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { CoachAccountService } from './services/coach-account.service';
+import { TeamService } from './services/team.service';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +28,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export class AppComponent implements OnInit {
   private registerPlayerService = inject(AccountService);
+  private coachAccount = inject(CoachAccountService);
+  private teamService = inject(TeamService);
   private platformId = inject(PLATFORM_ID);
   private breakpointObserver = inject(BreakpointObserver);
   isMobileViewSignal: WritableSignal<boolean> = inject(ResponsiveService).isMobileViewSig;
@@ -41,13 +45,18 @@ export class AppComponent implements OnInit {
   initUserOnPageRefresh(): void {
     if (isPlatformBrowser(this.platformId)) {
       const loggedInPlayerStr = localStorage.getItem('loggedInUser');
+      const currentTeam = localStorage.getItem('currentTeam');
+      console.log(currentTeam);
 
-      if (loggedInPlayerStr) {
+      if (loggedInPlayerStr && currentTeam) {
         // First, check if user's token is not expired.
         this.registerPlayerService.authorizeLoggedInPlayer();
+        this.coachAccount.authorizeLoggedInCoach();
 
         // Then, set the authorized logged-in user
         this.registerPlayerService.setCurrentPlayer(JSON.parse(loggedInPlayerStr))
+        this.coachAccount.setCurrentCoach(JSON.parse(loggedInPlayerStr))
+        this.teamService.setCurrentTeam(JSON.parse(currentTeam))
       }
     }
   }

@@ -267,7 +267,7 @@ public class TeamController(
             : Ok(new { message = "Team has been updated successfully." });
     }
 
-    [HttpDelete("delete-photo/{teamName}")]
+    [HttpPut("delete-photo/{teamName}")]
     public async Task<ActionResult> DeletePhoto(string photoUrlIn, string teamName, CancellationToken cancellationToken)
     {
         string? hashedUserId = User.GetHashedUserId();

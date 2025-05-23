@@ -77,7 +77,7 @@ export class CoachAccountService {
     this.setLoggedInCoachRoles(loggedInUser);
 
     this.loggedInUserSig.set(loggedInUser);
-
+  
     if (isPlatformBrowser(this.platformId)) // we make sure this code ran on browser not on server
       localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
   }
