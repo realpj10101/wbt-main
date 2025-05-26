@@ -17,8 +17,13 @@ export class CoachAccountService {
   router = inject(Router);
   platformId = inject(PLATFORM_ID);
   loggedInUserSig = signal<LoggedInUser | null>(null);
+  profilePhotoUrl = signal<string | null>(null);
 
   private readonly _apiUrl = environment.apiUrl + 'api/coachaccount/';
+
+  setProfilePhotoUrl(url: string) {
+    this.profilePhotoUrl.set(url);
+  }
 
   registerCoach(userInput: RegisterPlayer): Observable<LoggedInUser | null> {
     return this.http.post<LoggedInUser>(this._apiUrl + 'register', userInput).pipe(

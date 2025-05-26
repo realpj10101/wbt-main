@@ -56,7 +56,6 @@ export class AppComponent implements OnInit {
         // Then, set the authorized logged-in user
         this.registerPlayerService.setCurrentPlayer(JSON.parse(loggedInPlayerStr))
         this.coachAccount.setCurrentCoach(JSON.parse(loggedInPlayerStr))
-        this.teamService.setCurrentTeam(JSON.parse(currentTeam))
       }
     }
   }

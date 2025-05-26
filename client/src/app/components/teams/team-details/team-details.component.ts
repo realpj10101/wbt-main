@@ -12,6 +12,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MemberCardComponent } from "../../members/member-card/member-card.component";
 import { TeamMembersCardComponent } from "../../team-members-card/team-members-card.component";
 import { TeamPhotoEditorComponent } from "../team-photo-editor/team-photo-editor.component";
+import { CoachAccountService } from '../../../services/coach-account.service';
 
 @Component({
   selector: 'app-team-details',
@@ -26,6 +27,7 @@ export class TeamDetailsComponent implements OnInit {
   private _route = inject(ActivatedRoute);
   private _gallery = inject(Gallery);
   private _snack = inject(MatSnackBar);
+  photoUrl = inject(CoachAccountService).profilePhotoUrl;
   team: ShowTeam | undefined;
   members: Member[] | undefined;
   currentTeamSig: Signal<ShowTeam | null> | undefined;

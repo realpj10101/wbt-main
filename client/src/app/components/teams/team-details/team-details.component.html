@@ -1,11 +1,9 @@
 <section>
   <div class="top">
     <div class="item-1">
-      @if (currentTeamSig && currentTeamSig();) {
         @if (team?.profilePhotoUrl) {
           <img src="{{apiUrl + team?.profilePhotoUrl}}" alt="Team" />
         }
-      }
     </div>
 
     <div class="item-2">
