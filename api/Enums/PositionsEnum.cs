@@ -4,5 +4,9 @@ namespace api.Enums;
 
 public enum PositionsEnum
 {
-    [Description("Center")] Center,
+    PointGuard,      // PG
+    ShootingGuard,   
+    SmallForward,    
+    PowerForward,   
+    Center        
 }

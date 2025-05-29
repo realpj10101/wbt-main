@@ -7,6 +7,7 @@ using image_processing.Interfaces;
 using image_processing.Services;
 
 namespace api.Extensions;
+
 public static class RepositoryServiceExtensions
 {
     public static IServiceCollection AddRepositoryServices(this IServiceCollection services)
@@ -14,10 +15,10 @@ public static class RepositoryServiceExtensions
         #region Player
 
         services.AddScoped<ITokenService, TokenService>();
-        
+
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IMemberRepository, MemberRepository>();
-        services.AddScoped<IPlayerUserRepository, PlayerUserRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IFollowRepository, FollowRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<ILikeRepository, LikeRepository>();
@@ -26,16 +27,16 @@ public static class RepositoryServiceExtensions
         // services.AddScoped<IExAcRepo, ExAcRepo>();
         // services.AddScoped<IExampleTokenService, ExampleTokenService>();
         // services.AddScoped<IPlayerDetailsRepository, PlayerDetailsRepository>();
-        
+
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IPhotoModifySaveService, PhotoModifySaveService>();
-        
+
         #endregion
 
         #region Coach
 
         services.AddScoped<ICoachAccountRepository, CoachAccountRepository>();
-        
+
         #endregion
 
         return services;

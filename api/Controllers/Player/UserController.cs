@@ -4,24 +4,24 @@ using api.Repositories.Player;
 
 namespace api.Controllers.Player;
 
-public class PlayerUserController(IPlayerUserRepository _playerUserRepository) : BaseApiController
+public class UserController(IUserRepository _userRepository) : BaseApiController
 {
     #region User Management
 
     [HttpPut]
-    public async Task<ActionResult> UpdatePlayer(PlayerUpdateDto playerUpdateDto, CancellationToken cancellationToken)
+    public async Task<ActionResult> UpdatePlayer(UserUpdateDto userUpdateDto, CancellationToken cancellationToken)
     {
-        UpdateResult? updateResult = await _playerUserRepository.UpdatePlayerAsync(playerUpdateDto, User.GetHashedUserId(), cancellationToken);
+        UpdateResult? updateResult = await _userRepository.UpdatePlayerAsync(userUpdateDto, User.GetHashedUserId(), cancellationToken);
 
         return updateResult is null || !updateResult.IsModifiedCountAvailable
             ? BadRequest("Update failed. Try again later.")
             : Ok(new { message = "User has been updated successfully." });
-        
+
         // return testPlayer is null
         //     ? BadRequest("Update failed. Try again later.")
         //     : Ok(testPlayer);
     }
-    
+
     #endregion
 
     #region Photo Management
@@ -35,7 +35,7 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
     {
         if (file is null) return BadRequest("No file selected with this request");
 
-        Photo? photo = await _playerUserRepository.UploadPhotoAsync(file, User.GetHashedUserId(), cancellationToken);
+        Photo? photo = await _userRepository.UploadPhotoAsync(file, User.GetHashedUserId(), cancellationToken);
 
         return photo is null ? BadRequest("Add photo failed. See logger.") : photo;
     }
@@ -49,8 +49,8 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
             return Unauthorized("You are not logged in. Please login again.");
 
         UpdateResult? updateResult =
-            await _playerUserRepository.SetMainPhotoAsync(hashedUserId, photoUrlIn, cancellationToken);
-        
+            await _userRepository.SetMainPhotoAsync(hashedUserId, photoUrlIn, cancellationToken);
+
         return updateResult is null || !updateResult.IsModifiedCountAvailable
             ? BadRequest("Update failed. Try again later.")
             : Ok(new { message = "Player has been updated successfully." });
@@ -65,11 +65,11 @@ public class PlayerUserController(IPlayerUserRepository _playerUserRepository) :
             return Unauthorized("The player is not logged in. Please login again.");
 
         UpdateResult? updateResult =
-            await _playerUserRepository.DeletePhotoAsync(hashedUserId, photoUrlIn, cancellationToken);
-        
+            await _userRepository.DeletePhotoAsync(hashedUserId, photoUrlIn, cancellationToken);
+
         return updateResult is null || !updateResult.IsModifiedCountAvailable
             ? BadRequest("Photo deletion failed. Try again later. if the issue persists, please contact the administrator.")
             : Ok(new { message = "Photo deleted successfully." });
     }
     #endregion
-}   
+}

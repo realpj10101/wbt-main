@@ -19,13 +19,13 @@ public class TeamRepository : ITeamRepository
     private readonly IMongoCollection<AppUser> _collectionAppUser;
     private readonly ITokenService _tokenService;
     private readonly ILogger<TeamRepository> _logger;
-    private readonly IPlayerUserRepository _playerUserRepository;
+    private readonly IUserRepository _playerUserRepository;
     private readonly UserManager<AppUser> _userManager;
     private readonly IPhotoService _photoService;
 
     public TeamRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings,
-        ITokenService tokenService, ILogger<TeamRepository> logger, IPlayerUserRepository playerUserRepository,
+        ITokenService tokenService, ILogger<TeamRepository> logger, IUserRepository playerUserRepository,
         UserManager<AppUser> userManager, IPhotoService photoService)
     {
         _client = client;

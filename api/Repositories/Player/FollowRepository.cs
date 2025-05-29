@@ -14,22 +14,22 @@ public class FollowRepository : IFollowRepository
     private readonly IMongoCollection<Follow> _collection;
     private readonly ITokenService _tokenService;
     private readonly IMongoCollection<AppUser> _collectionUsers;
-    private readonly IPlayerUserRepository _playerUserRepository;
+    private readonly IUserRepository _playerUserRepository;
     private readonly ILogger<FollowRepository> _logger;
 
     public FollowRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings, ITokenService tokenService,
-        IPlayerUserRepository playerUserRepository, ILogger<FollowRepository> logger)
+        IUserRepository playerUserRepository, ILogger<FollowRepository> logger)
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
         _collection = dbName.GetCollection<Follow>(AppVariablesExtensions.CollectionFollows);
         _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
-        
+
         _tokenService = tokenService;
-        
+
         _playerUserRepository = playerUserRepository;
-        
+
         _logger = logger;
     }
     #endregion
@@ -72,9 +72,9 @@ public class FollowRepository : IFollowRepository
         }
 
         Follow follow = Mappers.ConvertFollowIdsToFollow(playerId, followedId.Value);
-        
+
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
-        
+
         session.StartTransaction();
 
         try
@@ -136,7 +136,7 @@ public class FollowRepository : IFollowRepository
         }
 
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
-        
+
         session.StartTransaction();
 
         try
@@ -191,11 +191,11 @@ public class FollowRepository : IFollowRepository
     }
 
     public async Task<bool> CheckIsFollowingAsync(ObjectId playerId, AppUser appUser,
-        CancellationToken cancellationToken) => 
+        CancellationToken cancellationToken) =>
         await _collection.Find<Follow>(
             doc => doc.FollowerId == playerId && doc.FollowedMemberId == appUser.Id
             ).AnyAsync(cancellationToken);
-    
+
     // get all followers/followings with pagination and 
     public async Task<PagedList<AppUser>> GetAllAsync(FollowParams followParams, CancellationToken cancellationToken)
     {
@@ -219,7 +219,7 @@ public class FollowRepository : IFollowRepository
                     follow => follow.FollowerId,
                     appUser => appUser.Id,
                     (follow, appUser) => appUser);
-            
+
             return await PagedList<AppUser>
                 .CreatePagedListAsync(query, followParams.PageNumber, followParams.PageSize, cancellationToken);
         }

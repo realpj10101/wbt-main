@@ -12,18 +12,18 @@ public class CommentRepository : ICommentRepository
     private readonly IMongoCollection<Comment> _collection;
     private readonly ITokenService _tokenService;
     private readonly IMongoCollection<AppUser> _collectionUsers;
-    private readonly IPlayerUserRepository _playerUserRepository;
+    private readonly IUserRepository _playerUserRepository;
     private readonly ILogger<CommentRepository> _logger;
 
     public CommentRepository(
        IMongoClient client, IMyMongoDbSettings dbSettings, ITokenService tokenService,
-       IPlayerUserRepository playerUserRepository, ILogger<CommentRepository> logger)
+       IUserRepository playerUserRepository, ILogger<CommentRepository> logger)
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
         _collection = dbName.GetCollection<Comment>(AppVariablesExtensions.CollectionComments);
         _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
-        
+
         _tokenService = tokenService;
         _playerUserRepository = playerUserRepository;
         _logger = logger;
@@ -49,21 +49,21 @@ public class CommentRepository : ICommentRepository
 
             return cS;
         }
-        
+
         string? commenterName = await _collectionUsers.AsQueryable()
             .Where(doc => doc.Id == userId)
             .Select(doc => doc.UserName)
             .FirstOrDefaultAsync(cancellationToken);
-        
+
         string? commentedMemberName = await _collectionUsers.AsQueryable()
             .Where(doc => doc.Id == targetId)
             .Select(doc => doc.UserName)
             .FirstOrDefaultAsync(cancellationToken);
-        
+
         Comment comment = Mappers.ConvertCommentIdsToComment(userId, targetId.Value, commenterName, commentedMemberName, content);
 
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
-        
+
         session.StartTransaction();
 
         try
@@ -105,18 +105,18 @@ public class CommentRepository : ICommentRepository
             _logger.LogInformation("MongoDB transaction/session finished.");
         }
 
-        return cS; 
+        return cS;
     }
-    
+
     // Find comment by doc Id and delete it.
     public async Task<CommentStatus> DeleteAsync(ObjectId userId, string targetMemberUserName,
         CancellationToken cancellationToken)
     {
         CommentStatus cS = new();
-        
-        ObjectId? targetId = 
+
+        ObjectId? targetId =
             await _playerUserRepository.GetObjectIdByUserNameAsync(targetMemberUserName, cancellationToken);
-    
+
         if (targetId is null)
         {
             cS.IsTargetMemberNotFound = true;
@@ -125,7 +125,7 @@ public class CommentRepository : ICommentRepository
         }
 
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
-        
+
         session.StartTransaction();
 
         try
@@ -176,7 +176,7 @@ public class CommentRepository : ICommentRepository
 
         return cS;
     }
-    
+
     // get all commens/commentigs with pagination
     public async Task<PagedList<AppUser>> GetAllAsync(CommentParams commentParams, CancellationToken cancellationToken)
     {
@@ -188,7 +188,7 @@ public class CommentRepository : ICommentRepository
                     comment => comment.CommentedMemberId,
                     appUser => appUser.Id,
                     (comment, appUser) => appUser);
-            
+
             return await PagedList<AppUser>
                 .CreatePagedListAsync(query, commentParams.PageNumber, commentParams.PageSize, cancellationToken);
         }
@@ -200,7 +200,7 @@ public class CommentRepository : ICommentRepository
                     comment => comment.CommenterId,
                     appUser => appUser.Id,
                     (comment, appUser) => appUser);
-            
+
             return await PagedList<AppUser>
                 .CreatePagedListAsync(query, commentParams.PageNumber, commentParams.PageSize, cancellationToken);
         }
@@ -212,9 +212,9 @@ public class CommentRepository : ICommentRepository
     {
         List<Comment> userComments =
             await _collection.Find(c => c.CommentedMemberName == userName.ToLower()).ToListAsync(cancellationToken);
-        
+
         // PagedList<Comment> userComments = await PagedList<Comment>.CreatePagedListAsync(c => c.CommentedMemberName == userName)
-            
+
         return userComments;
     }
 }

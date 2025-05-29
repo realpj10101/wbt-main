@@ -14,26 +14,26 @@ public class LikeRepository : ILikeRepository
     private readonly IMongoCollection<Like> _collection;
     private readonly ITokenService _tokenService;
     private readonly IMongoCollection<AppUser> _collectionUsers;
-    private readonly IPlayerUserRepository _playerUserRepository;
+    private readonly IUserRepository _playerUserRepository;
     private readonly ILogger<LikeRepository> _logger;
 
     public LikeRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings, ITokenService tokenService,
-        IPlayerUserRepository playerUserRepository, ILogger<LikeRepository> logger)
+        IUserRepository playerUserRepository, ILogger<LikeRepository> logger)
     {
         _client = client;
         IMongoDatabase? dbName = client.GetDatabase(dbSettings.DatabaseName);
         _collection = dbName.GetCollection<Like>(AppVariablesExtensions.CollectionLikes);
         _collectionUsers = dbName.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
-        
+
         _tokenService = tokenService;
-        
+
         _playerUserRepository = playerUserRepository;
-        
+
         _logger = logger;
     }
     #endregion
-    
+
     // Add like 
     public async Task<LikeStatus> CreateAsync(ObjectId playerId, string targetMemberUserName,
         CancellationToken cancellationToken)
@@ -54,7 +54,7 @@ public class LikeRepository : ILikeRepository
                 likeDoc.LikerId == playerId &&
                 likeDoc.LikedMemberId == targetId)
                 .AnyAsync(cancellationToken);
-        
+
         if (isFollowing)
         {
             lS.IsAlreadyLiked = true;
@@ -65,7 +65,7 @@ public class LikeRepository : ILikeRepository
         Like like = Mappers.ConvertLikeIdsToLike(playerId, targetId.Value);
 
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
-        
+
         session.StartTransaction();
 
         try
@@ -109,14 +109,14 @@ public class LikeRepository : ILikeRepository
 
         return lS;
     }
-    
+
     //dislike the target member by logged in user
     public async Task<LikeStatus> DeleteAsync(ObjectId playerId, string targetMemberUserName,
         CancellationToken cancellationToken)
     {
         LikeStatus lS = new();
-        
-        ObjectId? targetId = 
+
+        ObjectId? targetId =
             await _playerUserRepository.GetObjectIdByUserNameAsync(targetMemberUserName, cancellationToken);
 
         if (targetId is null)
@@ -127,7 +127,7 @@ public class LikeRepository : ILikeRepository
         }
 
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
-        
+
         session.StartTransaction();
 
         try
@@ -187,7 +187,7 @@ public class LikeRepository : ILikeRepository
         await _collection.Find<Like>(
             doc => doc.LikerId == playerId && doc.LikedMemberId == appUser.Id
             ).AnyAsync(cancellationToken);
-    
+
     public async Task<PagedList<AppUser>> GetAllAsync(LikeParams likeParams, CancellationToken cancellationToken)
     {
         if (likeParams.Predicate == LikePredicateEnum.Likings)
@@ -210,7 +210,7 @@ public class LikeRepository : ILikeRepository
                     like => like.LikerId,
                     appUser => appUser.Id,
                     (like, appUser) => appUser);
-            
+
             return await PagedList<AppUser>
                 .CreatePagedListAsync(query, likeParams.PageNumber, likeParams.PageSize, cancellationToken);
         }

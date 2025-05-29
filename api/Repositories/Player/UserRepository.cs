@@ -4,19 +4,19 @@ using api.Helpers;
 
 namespace api.Repositories.Player;
 
-public class PlayerUserRepository : IPlayerUserRepository
+public class UserRepository : IUserRepository
 {
-    
+
     #region Constructor
-    
+
     private readonly IMongoCollection<AppUser> _collection;
-    private readonly ILogger<PlayerUserRepository> _logger;
+    private readonly ILogger<UserRepository> _logger;
     private readonly ITokenService _tokenService;
     private readonly IPhotoService _photoService;
 
-    public PlayerUserRepository(
+    public UserRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings,
-        ILogger<PlayerUserRepository> logger, ITokenService tokenService,
+        ILogger<UserRepository> logger, ITokenService tokenService,
         IPhotoService photoService)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
@@ -25,7 +25,7 @@ public class PlayerUserRepository : IPlayerUserRepository
         _tokenService = tokenService;
         _photoService = photoService;
     }
-    
+
     #endregion
 
     #region User Management
@@ -39,7 +39,7 @@ public class PlayerUserRepository : IPlayerUserRepository
 
         return appUser;
     }
-    
+
     public async Task<AppUser?> GetPlayerByNameAsync(string userName, CancellationToken cancellationToken) =>
         await _collection.Find<AppUser>(appUser => appUser.NormalizedUserName == userName.ToUpper().Trim()).SingleOrDefaultAsync(cancellationToken);
 
@@ -49,44 +49,40 @@ public class PlayerUserRepository : IPlayerUserRepository
             .Where(appUser => appUser.NormalizedUserName == userName.ToUpper())
             .Select(item => item.Id)
             .SingleOrDefaultAsync(cancellationToken);
-        
+
         return ValidationsExtensions.TestValidateObjectId(playerId);
     }
-    
-    public async Task<UpdateResult?> UpdatePlayerAsync(PlayerUpdateDto playerUpdateDto, string? hashedUserId,
+
+    public async Task<UpdateResult?> UpdatePlayerAsync(UserUpdateDto userUpdateDto, string? hashedUserId,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(hashedUserId)) return null;
-    
+
         ObjectId? playerId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
-    
+
         if (playerId is null) return null;
 
         UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
-            .Set(appUser => appUser.Name, playerUpdateDto.Name?.Trim().ToLower())
-            .Set(appUser => appUser.LastName, playerUpdateDto.LastName?.Trim().ToLower())
-            .Set(appUser => appUser.Height, playerUpdateDto.Height)
-            .Set(appUser => appUser.Weight, playerUpdateDto.Weight)
-            .Set(appUser => appUser.Gender, playerUpdateDto.Gender?.Trim().ToLower())
-            .Set(appUser => appUser.Position, playerUpdateDto.Position?.Trim().ToLower())
-            .Set(appUser => appUser.ExperienceLevel, playerUpdateDto.ExperienceLevel?.Trim().ToLower())
-            .Set(appUser => appUser.Skills, playerUpdateDto.Skills?.Trim().ToLower())
-            .Set(appUser => appUser.GamesPlayed, playerUpdateDto.GamesPlayed)
-            .Set(appUser => appUser.PointsPerGame, playerUpdateDto.PointsPerGame)
-            .Set(appUser => appUser.ReboundsPerGame, playerUpdateDto.ReboundsPerGame)
-            .Set(appUser => appUser.AssistsPerGame, playerUpdateDto.AssistsPerGame)
-            .Set(appUser => appUser.Bio, playerUpdateDto.Bio?.Trim().ToLower())
-            .Set(appUser => appUser.Achievements, playerUpdateDto.Achievements?.Trim().ToLower())
-            .Set(appUser => appUser.City, playerUpdateDto.City?.Trim().ToLower())
-            .Set(appUser => appUser.Region, playerUpdateDto.Region?.Trim().ToLower())
-            .Set(appUser => appUser.Country, playerUpdateDto.Country?.Trim().ToLower());
+            .Set(appUser => appUser.Name, userUpdateDto.Name?.Trim().ToLower())
+            .Set(appUser => appUser.LastName, userUpdateDto.LastName?.Trim().ToLower())
+            .Set(appUser => appUser.Height, userUpdateDto.Height)
+            .Set(appUser => appUser.Weight, userUpdateDto.Weight)
+            .Set(appUser => appUser.Gender, userUpdateDto.Gender?.Trim().ToLower())
+            .Set(appUser => appUser.Position, userUpdateDto.Position);
+        // .Set(appUser => appUser.ExperienceLevel, userUpdateDto.ExperienceLevel?.Trim().ToLower())
+        // .Set(appUser => appUser.Skills, userUpdateDto.Skills?.Trim().ToLower())
+        // .Set(appUser => appUser.GamesPlayed, userUpdateDto.GamesPlayed)
+        // .Set(appUser => appUser.PointsPerGame, userUpdateDto.PointsPerGame)
+        // .Set(appUser => appUser.ReboundsPerGame, userUpdateDto.ReboundsPerGame)
+        // .Set(appUser => appUser.AssistsPerGame, userUpdateDto.AssistsPerGame)
+        // .Set(appUser => appUser.Bio, userUpdateDto.Bio?.Trim().ToLower())
+        // .Set(appUser => appUser.Achievements, userUpdateDto.Achievements?.Trim().ToLower())
+        // .Set(appUser => appUser.City, userUpdateDto.City?.Trim().ToLower())
+        // .Set(appUser => appUser.Region, userUpdateDto.Region?.Trim().ToLower())
+        // .Set(appUser => appUser.Country, userUpdateDto.Country?.Trim().ToLower());
 
-            
+
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
-
-        // TestPlayer testPlayer = Mappers.ConvertPlayerUpdateDtoToTestPlayer(playerUpdateDto);
-        //
-        // return testPlayer;
     }
 
     public Task<AppUser?> GetByIdentifierHashAsync(string identifierHash, CancellationToken cancellationToken)
@@ -114,7 +110,7 @@ public class PlayerUserRepository : IPlayerUserRepository
 
             return null;
         }
-        
+
         // userId, appUser, file
         // save file in Storage using PhotoService / userId makes the folder name
         string[]? imageUrls = await _photoService.AddPhotoToDiskAsync(file, playerId.Value);
@@ -122,22 +118,22 @@ public class PlayerUserRepository : IPlayerUserRepository
         if (imageUrls is not null)
         {
             Photo photo;
-            
+
             photo = appUser.Photos.Count == 0
                 ? Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: true)
                 : Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: false);
-            
+
             appUser.Photos.Add(photo);
 
             var updatePlayer = Builders<AppUser>.Update
                 .Set(doc => doc.Photos, appUser.Photos);
-            
-            UpdateResult result = 
+
+            UpdateResult result =
                 await _collection.UpdateOneAsync<AppUser>(doc => doc.Id == playerId, updatePlayer, null, cancellationToken);
-            
+
             return result.ModifiedCount == 1 ? photo : null;
         }
-        
+
         _logger.LogError("PhotoService saving photo to disk failed");
         return null;
     }
@@ -166,7 +162,7 @@ public class PlayerUserRepository : IPlayerUserRepository
 
         FilterDefinition<AppUser>? filterNew = Builders<AppUser>.Filter
             .Where(appUser =>
-                appUser.Id == playerId && appUser.Photos.Any<Photo>(photo => photo.Url_165== photoUrlIn));
+                appUser.Id == playerId && appUser.Photos.Any<Photo>(photo => photo.Url_165 == photoUrlIn));
 
         UpdateDefinition<AppUser>? updateNew = Builders<AppUser>.Update
             .Set(appUser => appUser.Photos.FirstMatchingElement().IsMain, true);
@@ -202,10 +198,10 @@ public class PlayerUserRepository : IPlayerUserRepository
 
             return null;
         }
-            
+
         var update = Builders<AppUser>.Update
             .PullFilter(appUser => appUser.Photos, photo => photo.Url_165 == url_165_In);
-        
+
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, update, null, cancellationToken);
     }
 

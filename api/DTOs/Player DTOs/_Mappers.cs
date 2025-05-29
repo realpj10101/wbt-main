@@ -76,13 +76,20 @@ public static class Mappers
         );
     }
 
-    public static TestPlayer ConvertPlayerUpdateDtoToTestPlayer(PlayerUpdateDto playerUpdateDto)
+    public static AppUser ConvertPlayerUpdateDtoToTestPlayer(UserUpdateDto userUpdateDto)
     {
-        return new TestPlayer(
-            Name: playerUpdateDto.Name,
-            LastName: playerUpdateDto.LastName
-        );
+        return new AppUser
+        {
+            Name = userUpdateDto.Name,
+            LastName = userUpdateDto.LastName,
+            Height = userUpdateDto.Height,
+            Weight = userUpdateDto.Weight,
+            Gender = userUpdateDto.Gender,
+            Position = userUpdateDto.Position
+        };
+        
     }
+
 
     public static Photo ConvertPhotoUrlsToPhoto(string[] photoUrls, bool isMain)
     {

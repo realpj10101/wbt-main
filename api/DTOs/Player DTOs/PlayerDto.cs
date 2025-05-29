@@ -1,3 +1,5 @@
+using api.Enums;
+
 namespace api.DTOs;
 
 public record PlayerDto(
@@ -8,7 +10,7 @@ public record PlayerDto(
     int Age,
     int Height,
     int Weight,
-    string Position,
+    PositionsEnum Position,
     string ExperienceLevel,
     string Skills,
     int GamesPlayed,

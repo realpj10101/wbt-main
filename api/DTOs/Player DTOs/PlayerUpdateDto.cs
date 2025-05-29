@@ -11,7 +11,14 @@ public class UserUpdateDto
     public int Height { get; set; }
     public int Weight { get; set; }
     public string Gender { get; set; } = string.Empty;
-    public 
+    public PositionsEnum Position { get; set; }
+    // public string ExperienceLevel { get; set; } = string.Empty;
+    // public string Skills { get; set; } = string.Empty;
+    // public int GamesPlayed { get; set; }
+    // public float PointsPerGame { get; set; }
+    // public float ReboundsPerGame { get; set; }
+    // public float AssistsPerGame { get; set; }
+    // public string
 }
 
 // public record PlayerUpdateDto(
