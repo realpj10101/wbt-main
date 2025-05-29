@@ -21,7 +21,7 @@ import { CoachAccountService } from '../../services/coach-account.service';
   selector: 'app-navbar',
   standalone: true,
   imports: [
-    CommonModule, RouterModule, NgOptimizedImage,
+    CommonModule, RouterModule,
     MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
     MatDividerModule, MatListModule, MatTabsModule,
     NavbarMobileComponent
@@ -73,6 +73,6 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.registerPlayerService.logOut();
+    this.registerPlayerService.logout();
   }
 }

@@ -26,4 +26,5 @@ export interface Member {
     isFollowing: boolean;
     isCaptain: boolean;
     isLiking: boolean;
+    isInTeam: boolean;
 }

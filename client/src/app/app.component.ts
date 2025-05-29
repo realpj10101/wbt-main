@@ -18,7 +18,6 @@ import { TeamService } from './services/team.service';
   standalone: true,
   imports: [
     RouterOutlet,
-    RouterLink, HomeComponent,
     NavbarComponent,
     FooterComponent, NgxSpinnerModule,
     MatIconModule, CommonModule
@@ -45,10 +44,9 @@ export class AppComponent implements OnInit {
   initUserOnPageRefresh(): void {
     if (isPlatformBrowser(this.platformId)) {
       const loggedInPlayerStr = localStorage.getItem('loggedInUser');
-      const currentTeam = localStorage.getItem('currentTeam');
-      console.log(currentTeam);
+      // const currentTeam = localStorage.getItem('currentTeam');
 
-      if (loggedInPlayerStr && currentTeam) {
+      if (loggedInPlayerStr) {
         // First, check if user's token is not expired.
         this.registerPlayerService.authorizeLoggedInPlayer();
         this.coachAccount.authorizeLoggedInCoach();

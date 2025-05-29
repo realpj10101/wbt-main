@@ -31,6 +31,7 @@
                 <strong>Games Played</strong>
                 <p>{{member?.gamesPlayed}}</p>
             </div>
+            <button (click)="updatePlayer()">Save changes</button>
         </div>
     </div>
 
@@ -39,8 +40,123 @@
             <mat-tab label="Edit Photos">
                 <div class="tab-contents">
                     <!-- <app-photo-editor [memberInput]="member"></app-photo-editor> -->
-                     <app-photo-editor [memberInput]="member" />
+                    <app-photo-editor [memberInput]="member" />
                 </div>
+            </mat-tab>
+            <mat-tab label="Edit Info">
+                <form>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="nameCtrl" placeholder="Your name">
+                        <mat-hint>Enter your first name.</mat-hint>
+                        @if (NameCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput formControlName="lastNameCtrl" placeholder="Your last name">
+                        <mat-hint>Enter your surname.</mat-hint>
+                        @if (LastNameCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Height (cm)</mat-label>
+                        <input matInput type="number" formControlName="heightCtrl" placeholder="e.g., 180">
+                        @if (HeightCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Weight (kg)</mat-label>
+                        <input matInput type="number" formControlName="weightCtrl" placeholder="e.g., 75">
+                        @if (WeightCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="genderCtrl">
+                            <mat-option value="male">Male</mat-option>
+                            <mat-option value="female">Female</mat-option>
+                            <mat-option value="other">Other</mat-option>
+                        </mat-select>
+                        @if (GenderCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Position</mat-label>
+                        <input matInput formControlName="positionCtrl" placeholder="e.g., Forward">
+                        @if (PositionCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Experience Level</mat-label>
+                        <input matInput formControlName="exprienceLevelCtrl" placeholder="e.g., Intermediate">
+                        @if (ExprienceLevelCtrl.hasError('required')) {
+                        <mat-error>This field is required.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Skills</mat-label>
+                        <textarea matInput formControlName="skillsCtrl" placeholder="Describe your skills"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Games Played</mat-label>
+                        <input matInput type="number" formControlName="gamesPerPlayedCtrl" placeholder="e.g., 12">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Points Per Game</mat-label>
+                        <input matInput type="number" formControlName="pointsPerGameCtrl" placeholder="e.g., 20">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Rebounds Per Game</mat-label>
+                        <input matInput type="number" formControlName="reboundsPerGameCtrl" placeholder="e.g., 8">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Assists Per Game</mat-label>
+                        <input matInput type="number" formControlName="assistsPerGameCtrl" placeholder="e.g., 5">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Bio</mat-label>
+                        <textarea matInput formControlName="bioCtrl" placeholder="Tell us about yourself"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Achievements</mat-label>
+                        <textarea matInput formControlName="achievementsCtrl" placeholder="e.g., MVP 2023"></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>City</mat-label>
+                        <input matInput formControlName="cityCtrl" placeholder="e.g., Tehran">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Region</mat-label>
+                        <input matInput formControlName="regionCtrl" placeholder="e.g., Fars">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Country</mat-label>
+                        <input matInput formControlName="countryCtrl" placeholder="e.g., Iran">
+                    </mat-form-field>
+                </form>
             </mat-tab>
         </mat-tab-group>
     </div>

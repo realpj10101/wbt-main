@@ -44,13 +44,23 @@ export class TeamPhotoEditorComponent implements OnInit {
 
   constructor() {
     this.loggedInUser = this._coachAccountService.loggedInUserSig();
-    this.currentTeam = this._teamService.currentTeamSignal();
     console.log(this.loggedInUser);
   }
 
   ngOnInit(): void {
     this.teamName = this._route.snapshot.paramMap.get('teamName');
     this.initialUploader();
+
+    if (this.teamName) {
+      this._teamService.getByTeamName(this.teamName).pipe(take(1)).subscribe({
+        next: (team) => {
+          if (team) {
+            this.team = team;
+            this._teamService.setCurrentTeam(team); // <== 🔥 Updates the global signal
+          }
+        }
+      });
+    }
   }
 
   fileOverBase(event: boolean): void {
@@ -93,34 +103,25 @@ export class TeamPhotoEditorComponent implements OnInit {
         .subscribe({
           next: (res: ApiResponse) => {
             if (res && this.team) {
-
+              // Update local team photo list
               for (const photo of this.team.photos) {
-                if (photo.isMain === true)
-                  photo.isMain = false;
-
-                if (photo.url_165 === url_165In) {
-                  photo.isMain = true;
-
-                  this.loggedInUser!.profilePhotoUrl = url_165In;
-                  // this._coachAccountService.setCurrentCoach(this.loggedInUser!);
-
-                  if (this.currentTeam) {
-                    this._teamService.setCurrentTeam({ ...this.currentTeam! });
-                  }
-                  console.log(this.currentTeam);
-                }
+                photo.isMain = (photo.url_165 === url_165In);
               }
+
+              // Update main photo field (optional, if stored separately)
+              this.team.profilePhotoUrl = url_165In;
+
+              // Update the team signal
+              this._teamService.setCurrentTeam(this.team);
 
               this._snackBar.open(res.message, 'close', {
                 horizontalPosition: 'center',
                 verticalPosition: 'bottom',
                 duration: 7000
               });
-
-              console.log(this.team.photos);
             }
           }
-        })
+        });
     }
   }
 

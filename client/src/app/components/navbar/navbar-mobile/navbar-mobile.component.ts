@@ -36,6 +36,6 @@ export class NavbarMobileComponent implements OnInit {
   }
 
   logout(): void {
-    this._accountService.logOut();
+    this._accountService.logout();
   }
 }

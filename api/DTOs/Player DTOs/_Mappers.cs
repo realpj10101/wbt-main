@@ -71,7 +71,8 @@ public static class Mappers
             IsFollowing: isFollowing,
             IsCaptain: appUser.IsCaptain,
             IsLiking: isLiking,
-            IsAccepted: appUser.IsAccepted
+            IsAccepted: appUser.IsAccepted,
+            IsInTeam: appUser.IsInTeam
         );
     }
 
@@ -127,7 +128,6 @@ public static class Mappers
         return new Team(
             CreatorId: userId,
             MembersIds: [],
-            MembersUserNames: [],
             TeamName: userInput.TeamName.ToLower(),
             TeamLevel: userInput.TeamLevel.ToLower(),
             TeamCaptainId: ObjectId.Empty,
@@ -147,7 +147,6 @@ public static class Mappers
         return new ShowTeamDto
         {
             TeamName = team.TeamName,
-            MembersUserNames = team.MembersUserNames,
             TeamLevel = team.TeamLevel,
             Achievements = team.Achievements,
             GamesPlayed = team.GamesPlayed,
@@ -166,7 +165,6 @@ public static class Mappers
         return new Team(
             CreatorId: userId,
             MembersIds: [],
-            MembersUserNames: [],
             TeamName: userInput.TeamName.ToLower(),
             TeamLevel: userInput.TeamLevel.ToLower(),
             TeamCaptainId: ObjectId.Empty,

@@ -27,5 +27,6 @@ public record PlayerDto(
     bool IsFollowing,
     bool IsCaptain,
     bool IsLiking,
-    bool IsAccepted
+    bool IsAccepted,
+    bool IsInTeam
 );

@@ -19,10 +19,18 @@ export class TeamService {
   http = inject(HttpClient)
   platformId = inject(PLATFORM_ID);
   router = inject(Router);
-  currentTeamSignal = signal<ShowTeam | null>(null);
-
+  
   private readonly _apiUrl = environment.apiUrl + 'api/team/'
   private paginationHandler = new PaginationHandler();
+  private _currentTeamSignal = signal<ShowTeam | null>(null);
+
+  get currentTeamSig() {
+    return this._currentTeamSignal;
+  }
+
+  setCurrentTeam(team: ShowTeam) {
+    this._currentTeamSignal.set({ ...team }); // spread to trigger reactivity
+  }
 
   create(userInput: CreateTeam): Observable<ShowTeam> {
     return this.http.post<ShowTeam>(this._apiUrl + 'create', userInput).pipe(
@@ -41,25 +49,19 @@ export class TeamService {
   }
 
   getByTeamName(userIn: string): Observable<ShowTeam | null> {
-    return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn).pipe(
-      map(res => {
-        if (res) {
-          this.setCurrentTeam(res);
-
-          return res;
-        }
-
-        return null;
-      })
-    )
+    return this.http.get<ShowTeam>(this._apiUrl + 'get-by-name/' + userIn);
   }
 
   getTeamMembersAsync(userIn: string): Observable<Member[]> {
     return this.http.get<Member[]>(this._apiUrl + 'get-members/' + userIn);
   }
 
-  addMember(teamName: ApiResponse, targetMemberUserName: string): Observable<ApiResponse> {
-    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName.message + '/' + targetMemberUserName, null);
+  addMember(teamName: string, targetMemberUserName: string): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this._apiUrl + 'add-member/' + teamName + '/' + targetMemberUserName, null);
+  }
+
+  removeMember(teamName: string, targetMemberUserName: string): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(this._apiUrl + 'remove-member/' + teamName + '/' + targetMemberUserName, null);
   }
 
   getTeamName(): Observable<ApiResponse> {
@@ -84,13 +86,6 @@ export class TeamService {
     let queryParams = new HttpParams().set('photoUrlIn', url_165);
 
     return this.http.put<ApiResponse>(this._apiUrl + 'delete-photo/' + teamName, null, { params: queryParams })
-  }
-
-  setCurrentTeam(teamDetails: ShowTeam): void {
-    this.currentTeamSignal.set(teamDetails);
-
-    if (isPlatformBrowser(this.platformId))
-      localStorage.setItem('currentTeam', JSON.stringify(teamDetails));
   }
 
   private getHttpParams(paginationParams: PaginationParams): HttpParams {

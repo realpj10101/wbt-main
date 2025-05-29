@@ -228,7 +228,7 @@ public class TeamRepository : ITeamRepository
             return tS;
         }
 
-        Team teamContainingMember = await _collection.Find(t => t.MembersUserNames.Contains(targetMemberUserName))
+        Team teamContainingMember = await _collection.Find(t => t.MembersIds.Contains(memberId))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (teamContainingMember is not null)
@@ -238,13 +238,76 @@ public class TeamRepository : ITeamRepository
         }
 
         UpdateDefinition<Team> updateResult = Builders<Team>.Update
-            .AddToSet(doc => doc.MembersIds, memberId)
-            .AddToSet(doc => doc.MembersUserNames, targetMemberUserName);
+            .AddToSet(doc => doc.MembersIds, memberId);
 
         await _collection.UpdateOneAsync(doc => doc.Id == team.Id, updateResult, null, cancellationToken);
 
         UpdateDefinition<AppUser> userUpdateRes = Builders<AppUser>.Update
-            .Set(doc => doc.EnrolledTeam, team.Id);
+            .Set(doc => doc.EnrolledTeam, team.Id)
+            .Set(doc => doc.IsInTeam, true);
+
+        await _collectionAppUser.UpdateOneAsync(doc => doc.Id == memberId, userUpdateRes, null, cancellationToken);
+
+        tS.IsSuccess = true;
+
+        return tS;
+    }
+
+    public async Task<TeamStatus> RemoveMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName, CancellationToken cancellationToken)
+    {
+        TeamStatus tS = new();
+
+        Team team = await _collection.Find(t => t.TeamName == targetTeamName).FirstOrDefaultAsync(cancellationToken);
+
+        if (team is null)
+        {
+            tS.IsTargetTeamNotFound = true;
+            return tS;
+        }
+
+        if (team.CreatorId != userId)
+        {
+            tS.IsNotTheCreator = true;
+            return tS;
+        }
+
+        AppUser user = await _collectionAppUser.Find(doc => doc.NormalizedUserName == targetMemberUserName.ToUpper())
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (user is null)
+        {
+            tS.IsTargetMemberNotFound = true;
+            return tS;
+        }
+
+        ObjectId memberId = await _collectionAppUser.AsQueryable()
+            .Where(doc => doc.NormalizedUserName == targetMemberUserName.ToUpper())
+            .Select(doc => doc.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (userId == memberId)
+        {
+            tS.IsJoiningThemself = true;
+            return tS;
+        }
+
+        Team teamContainingMember = await _collection.Find(t => t.MembersIds.Contains(memberId))
+         .FirstOrDefaultAsync(cancellationToken);
+
+        if (teamContainingMember is null)
+        {
+            tS.IsAlreadyNotInTeam = true;
+            return tS;
+        }
+
+        UpdateDefinition<Team> updateResult = Builders<Team>.Update
+       .Pull(doc => doc.MembersIds, user.Id);
+
+        await _collection.UpdateOneAsync(doc => doc.Id == team.Id, updateResult, null, cancellationToken);
+
+        UpdateDefinition<AppUser> userUpdateRes = Builders<AppUser>.Update
+         .Set(doc => doc.EnrolledTeam, ObjectId.Empty)
+         .Set(doc => doc.IsInTeam, false);
 
         await _collectionAppUser.UpdateOneAsync(doc => doc.Id == memberId, userUpdateRes, null, cancellationToken);
 
@@ -618,7 +681,7 @@ public class TeamRepository : ITeamRepository
             photo = team.Photos.Count == 0
                 ? Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: true)
                 : Mappers.ConvertPhotoUrlsToPhoto(imageUrls, isMain: false);
-            
+
             team.Photos.Add(photo);
 
             var updatedTeam = Builders<Team>.Update
@@ -629,7 +692,7 @@ public class TeamRepository : ITeamRepository
 
             return result.ModifiedCount == 1 ? photo : null;
         }
-        
+
         _logger.LogError("PhotoService saving photo to disk failed");
         return null;
     }
@@ -669,7 +732,7 @@ public class TeamRepository : ITeamRepository
     public async Task<UpdateResult?> DeletePhotoAsync(string hashedUserId, string teamName, string? url_165_In, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(url_165_In)) return null;
-        
+
         if (string.IsNullOrEmpty(hashedUserId)) return null;
 
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
@@ -701,7 +764,7 @@ public class TeamRepository : ITeamRepository
 
             return null;
         }
-        
+
         var update = Builders<Team>.Update
             .PullFilter(team => team.Photos, photo => photo.Url_165 == url_165_In);
 

@@ -69,7 +69,7 @@ export class AccountService {
         },
         error: err => {
           console.log(err.error);
-          this.logOut()
+          this.logout()
         }
       });
   }
@@ -91,7 +91,7 @@ export class AccountService {
     Array.isArray(roles) ? loggedInUser.roles = roles : loggedInUser.roles.push(roles);
   }
 
-  logOut(): void {
+  logout(): void {
     this.loggedInUserSig.set(null);
 
     if (isPlatformBrowser(this.platformId)) {
@@ -114,14 +114,14 @@ export class AccountService {
     }
   }
 
-  loadLoggedInUserFromStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const userJson = localStorage.getItem('loggedInUser');
-      if (userJson) {
-        const user = JSON.parse(userJson) as LoggedInUser;
-        this.setLoggedInPlayerRoles(user);
-        this.loggedInUserSig.set(user);
-      }
-    }
-  }
+  // loadLoggedInUserFromStorage(): void {
+  //   if (isPlatformBrowser(this.platformId)) {
+  //     const userJson = localStorage.getItem('loggedInUser');
+  //     if (userJson) {
+  //       const user = JSON.parse(userJson) as LoggedInUser;
+  //       this.setLoggedInPlayerRoles(user);
+  //       this.loggedInUserSig.set(user);
+  //     }
+  //   }
+  // }
 }

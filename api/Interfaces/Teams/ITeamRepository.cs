@@ -14,8 +14,10 @@ public interface ITeamRepository
     public Task<List<AppUser>?> GetTeamMembersAsync(string teamName,  CancellationToken cancellationToken);
     public Task<TeamStatus> AddMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName,
         CancellationToken cancellationToken);
-    // public Task<TeamStatus> RemoveMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName,
-    //     CancellationToken cancellationToken);
+
+    public Task<TeamStatus> RemoveMemberAsync(ObjectId userId, string targetMemberUserName, string targetTeamName,
+        CancellationToken cancellationToken
+    );
     public Task<string?> GetTeamNameByIdAsync(ObjectId userId, CancellationToken cancellationToken);
     public Task<OperationResult> AssignCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);
     public Task<OperationResult> RemoveCaptainAsync(ObjectId coachId, string targetUserName, CancellationToken cancellationToken);

@@ -17,7 +17,7 @@ import { CoachAccountService } from '../../../services/coach-account.service';
 @Component({
   selector: 'app-team-details',
   standalone: true,
-  imports: [MatTabsModule, MatExpansionModule, MemberCardComponent, TeamMembersCardComponent, TeamPhotoEditorComponent],
+  imports: [MatTabsModule, MatExpansionModule, TeamMembersCardComponent, TeamPhotoEditorComponent],
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
@@ -32,6 +32,7 @@ export class TeamDetailsComponent implements OnInit {
   members: Member[] | undefined;
   currentTeamSig: Signal<ShowTeam | null> | undefined;
   isTeamLoaded = signal(false);
+  teamSig = this._teamService.currentTeamSig;
 
   isTeamLoadedSignal(): boolean {
     return this.isTeamLoaded();
@@ -40,7 +41,6 @@ export class TeamDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.getTeam();
     this.getTeamMembers();
-    this.currentTeamSig = this._teamService.currentTeamSignal;
   }
 
   getTeam(): void {

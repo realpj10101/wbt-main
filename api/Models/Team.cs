@@ -9,7 +9,6 @@ public record Team(
     ObjectId Id,
     ObjectId CreatorId,
     List<ObjectId> MembersIds, // Basic Details
-    List<string> MembersUserNames,
     string TeamName,
     string TeamLevel, // Professional Details
     ObjectId TeamCaptainId,

@@ -168,6 +168,31 @@ public class TeamController(
     }
 
     [Authorize(Roles = "coach")]
+    [HttpPut("remove-member/{teamName}/{targetMemberUserName}")]
+    public async Task<ActionResult<Response>> RemoveMember(string targetMemberUserName, string teamName, CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+        TeamStatus tS =
+            await _teamRepository.RemoveMemberAsync(userId.Value, targetMemberUserName, teamName, cancellationToken);
+
+        return tS.IsSuccess
+            ? Ok(new Response(Message: $"You remove {targetMemberUserName} from team {teamName} successfully"))
+            : tS.IsNotTheCreator
+            ? BadRequest("You are not the owner of the team.")
+            : tS.IsTargetTeamNotFound
+            ? NotFound($"Team {teamName} is not found.")
+            : tS.IsAlreadyNotInTeam
+            ? BadRequest($"{targetMemberUserName} is already not in team.")
+            : tS.IsRemovingThemself
+            ? BadRequest("You are the owner of this team.")
+            : BadRequest("Updated team failed. Please contact administrator.");
+    }
+
+    [Authorize(Roles = "coach")]
     [HttpGet("get-team-name")]
     public async Task<ActionResult<Response>> GetTeamName(CancellationToken cancellationToken)
     {
@@ -255,13 +280,13 @@ public class TeamController(
     public async Task<ActionResult> SetMainPhoto(string photoUrlIn, string teamName, CancellationToken cancellationToken)
     {
         string? hashedUserId = User.GetHashedUserId();
-        
-        if(string.IsNullOrEmpty(hashedUserId))
+
+        if (string.IsNullOrEmpty(hashedUserId))
             return Unauthorized("You are not logged in. Please login again.");
 
         UpdateResult? updateResult =
             await _teamRepository.SetMainPhotoAsync(hashedUserId, teamName, photoUrlIn, cancellationToken);
-        
+
         return updateResult is null || !updateResult.IsModifiedCountAvailable
             ? BadRequest("Update failed. Try again or contact administrator")
             : Ok(new { message = "Team has been updated successfully." });
@@ -271,13 +296,13 @@ public class TeamController(
     public async Task<ActionResult> DeletePhoto(string photoUrlIn, string teamName, CancellationToken cancellationToken)
     {
         string? hashedUserId = User.GetHashedUserId();
-        
+
         if (string.IsNullOrEmpty(hashedUserId))
             return Unauthorized("You are not logged in. Please login again.");
 
         UpdateResult? updateResult =
             await _teamRepository.DeletePhotoAsync(hashedUserId, teamName, photoUrlIn, cancellationToken);
-        
+
         return updateResult is null || !updateResult.IsModifiedCountAvailable
             ? BadRequest("Photo deletion failed. Try again or contact administrator")
             : Ok(new { message = "Photo has been deleted successfully." });

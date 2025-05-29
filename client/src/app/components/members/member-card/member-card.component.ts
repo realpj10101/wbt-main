@@ -17,7 +17,7 @@ import { CommentService } from '../../../services/comment.service';
   selector: 'app-member-card',
   standalone: true,
   imports: [
-      CommonModule, RouterModule, NgOptimizedImage,
+      CommonModule, RouterModule,
       MatCardModule, MatIconModule, MatButtonModule
   ],
   templateUrl: './member-card.component.html',

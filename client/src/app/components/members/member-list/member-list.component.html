@@ -8,8 +8,7 @@
           <mat-label>Sort by</mat-label>
           <mat-select (selectionChange)="updateMemberParams()" formControlName="orderByCtrl">
             @for (orderOption of orderOptions; track $index) {
-            <mat-option [value]="orderOption" (click)="getAll()"
-              [disabled]="orderOption === memberParams?.orderBy">
+            <mat-option [value]="orderOption" (click)="getAll()" [disabled]="orderOption === memberParams?.orderBy">
               {{ orderOptionsView[$index] }}
             </mat-option>
             }
@@ -74,8 +73,8 @@
 
     <mat-paginator *ngIf="pagination && memberParams" #paginator (page)="handlePageEvent($event)"
       [length]="pagination.totalItems" [pageSize]="memberParams.pageSize" [showFirstLastButtons]="true"
-      [pageSizeOptions]="pageSizeOptions" [pageIndex]="memberParams.pageNumber - 1"
-      aria-label="Select page" class="paginator">
+      [pageSizeOptions]="pageSizeOptions" [pageIndex]="memberParams.pageNumber - 1" aria-label="Select page"
+      class="paginator">
     </mat-paginator>
   </div>
 </section>

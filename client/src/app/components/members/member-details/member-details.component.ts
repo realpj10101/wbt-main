@@ -6,7 +6,7 @@ import { Gallery, GalleryItem, GalleryModule, ImageItem } from "ng-gallery";
 import { MemberService } from '../../../services/member.service';
 import { FollowService } from '../../../services/follow.service';
 import { environment } from '../../../../environments/environment.development';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiResponse } from '../../../models/helpers/apiResponse.model';
 import { LoggedInUser } from '../../../models/logged-in-player.model';
@@ -26,8 +26,8 @@ import { AccountService } from '../../../services/account.service';
   imports: [
     CommonModule,
     MatIconModule, MatButtonModule, MatTabsModule, MatExpansionModule,
-    GalleryModule, LightboxModule, NgOptimizedImage,
-    IntlModule
+    GalleryModule, LightboxModule,
+    IntlModule, RouterModule
   ],
   // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './member-details.component.html',
@@ -36,7 +36,7 @@ import { AccountService } from '../../../services/account.service';
 export class MemberDetailsComponent implements OnInit {
   member: Member | undefined;
   members$: Observable<Member[] | null> | undefined;
-  teamName: ApiResponse | undefined;
+  teamName: string | undefined;
   loggedInUserSig: Signal<LoggedInUser | null> | undefined;
 
   images: GalleryItem[] = [];
@@ -51,7 +51,7 @@ export class MemberDetailsComponent implements OnInit {
   readonly panelOpenState = signal(false);
   private _teamService = inject(TeamService);
   private _accountService = inject(AccountService);
-  
+
   details: string[] = ['Bio', 'Achievements']
 
   ngOnInit(): void {
@@ -61,7 +61,7 @@ export class MemberDetailsComponent implements OnInit {
 
     if (this.loggedInUserSig && this.loggedInUserSig()?.roles.includes('coach')) {
       this._teamService.getTeamName().subscribe({
-        next: (team: ApiResponse) => { this.teamName = team, console.log(this.teamName) },
+        next: (team: ApiResponse) => { this.teamName = team.message, console.log(this.teamName) },
         error: (err) => console.log("Error fetching team name:", err)
       })
     }
@@ -144,6 +144,28 @@ export class MemberDetailsComponent implements OnInit {
     if (this.teamName && userName) {
       this._teamService.addMember(this.teamName, userName).subscribe({
         next: (res: ApiResponse) => {
+          if (this.member)
+            this.member.isInTeam = true;
+
+          this._snack.open(res.message, 'close', {
+            duration: 7000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top'
+          })
+        }
+      });
+    }
+  }
+
+  removeMember(): void {
+    const userName: string | null = this._route.snapshot.paramMap.get('userName');
+
+    if (this.teamName && userName) {
+      this._teamService.removeMember(this.teamName, userName.toLowerCase()).subscribe({
+        next: (res: ApiResponse) => {
+          if (this.member)
+            this.member.isInTeam = false;
+
           this._snack.open(res.message, 'close', {
             duration: 7000,
             horizontalPosition: 'center',
