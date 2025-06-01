@@ -4,13 +4,18 @@ using api.Repositories.Player;
 
 namespace api.Controllers.Player;
 
-public class UserController(IUserRepository _userRepository) : BaseApiController
+public class UserController(IUserRepository _userRepository, ITokenService _tokenService) : BaseApiController
 {
     #region User Management
 
     [HttpPut]
     public async Task<ActionResult> UpdatePlayer(UserUpdateDto userUpdateDto, CancellationToken cancellationToken)
     {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+        
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+        
         UpdateResult? updateResult = await _userRepository.UpdatePlayerAsync(userUpdateDto, User.GetHashedUserId(), cancellationToken);
 
         return updateResult is null || !updateResult.IsModifiedCountAvailable

@@ -91,7 +91,40 @@ public class UserRepository : IUserRepository
                 throw new ArgumentException($"Invalid position: {userUpdateDto.Position}");
             }
         }
+        
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.ExperienceLevel))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.ExperienceLevel, userUpdateDto.ExperienceLevel.Trim()));
 
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Skills))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Skills, userUpdateDto.Skills.Trim()));
+        
+        if (userUpdateDto.GamesPlayed.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.GamesPlayed, userUpdateDto.GamesPlayed.Value));
+        
+        if (userUpdateDto.PointsPerGame.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.PointsPerGame, userUpdateDto.PointsPerGame.Value));
+        
+        if (userUpdateDto.ReboundsPerGame.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.ReboundsPerGame, userUpdateDto.ReboundsPerGame.Value));
+        
+        if (userUpdateDto.AssistsPerGame.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.AssistsPerGame, userUpdateDto.AssistsPerGame.Value));
+        
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Bio))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Bio, userUpdateDto.Bio.Trim()));
+        
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Achievements))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Achievements, userUpdateDto.Achievements.Trim()));
+        
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.City))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.City, userUpdateDto.City.Trim()));
+        
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Region))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Region, userUpdateDto.Region.Trim()));
+
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Country))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Country, userUpdateDto.Country.Trim()));
+        
         var updateDef = Builders<AppUser>.Update.Combine(updates);
 
         if (!updates.Any())

@@ -12,13 +12,17 @@ public class UserUpdateDto
     public int? Weight { get; init; }
     public string? Gender { get; init; }
     public string? Position { get; init; }
-    // public string ExperienceLevel { get; set; } = string.Empty;
-    // public string Skills { get; set; } = string.Empty;
-    // public int GamesPlayed { get; set; }
-    // public float PointsPerGame { get; set; }
-    // public float ReboundsPerGame { get; set; }
-    // public float AssistsPerGame { get; set; }
-    // public string
+    public string? ExperienceLevel { get; init; }
+    public string? Skills { get; init; }
+    public int? GamesPlayed { get; init; }
+    public float? PointsPerGame { get; init; }
+    public float? ReboundsPerGame { get; init; }
+    public float? AssistsPerGame { get; init; }
+    public string? Bio { get; init; }
+    public string? Achievements { get; init; }
+    public string? City { get; init; }
+    public string? Region { get; init; }
+    public string? Country { get; init; } 
 }
 
 // public record PlayerUpdateDto(

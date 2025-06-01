@@ -44,39 +44,27 @@
                 </div>
             </mat-tab>
             <mat-tab label="Edit Info">
-                <form>
+                <form [formGroup]="userEditFg">
                     <mat-form-field appearance="outline">
                         <mat-label>Name</mat-label>
                         <input matInput formControlName="nameCtrl" placeholder="Your name">
                         <mat-hint>Enter your first name.</mat-hint>
-                        @if (NameCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Last Name</mat-label>
                         <input matInput formControlName="lastNameCtrl" placeholder="Your last name">
                         <mat-hint>Enter your surname.</mat-hint>
-                        @if (LastNameCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Height (cm)</mat-label>
                         <input matInput type="number" formControlName="heightCtrl" placeholder="e.g., 180">
-                        @if (HeightCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Weight (kg)</mat-label>
                         <input matInput type="number" formControlName="weightCtrl" placeholder="e.g., 75">
-                        @if (WeightCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
@@ -86,25 +74,16 @@
                             <mat-option value="female">Female</mat-option>
                             <mat-option value="other">Other</mat-option>
                         </mat-select>
-                        @if (GenderCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Position</mat-label>
                         <input matInput formControlName="positionCtrl" placeholder="e.g., Forward">
-                        @if (PositionCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
                         <mat-label>Experience Level</mat-label>
                         <input matInput formControlName="exprienceLevelCtrl" placeholder="e.g., Intermediate">
-                        @if (ExprienceLevelCtrl.hasError('required')) {
-                        <mat-error>This field is required.</mat-error>
-                        }
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
