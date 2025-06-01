@@ -62,27 +62,36 @@ public class UserRepository : IUserRepository
 
         if (playerId is null) return null;
 
-        UpdateDefinition<AppUser> updatePlayer = Builders<AppUser>.Update
-            .Set(appUser => appUser.Name, userUpdateDto.Name?.Trim().ToLower())
-            .Set(appUser => appUser.LastName, userUpdateDto.LastName?.Trim().ToLower())
-            .Set(appUser => appUser.Height, userUpdateDto.Height)
-            .Set(appUser => appUser.Weight, userUpdateDto.Weight)
-            .Set(appUser => appUser.Gender, userUpdateDto.Gender?.Trim().ToLower())
-            .Set(appUser => appUser.Position, userUpdateDto.Position);
-        // .Set(appUser => appUser.ExperienceLevel, userUpdateDto.ExperienceLevel?.Trim().ToLower())
-        // .Set(appUser => appUser.Skills, userUpdateDto.Skills?.Trim().ToLower())
-        // .Set(appUser => appUser.GamesPlayed, userUpdateDto.GamesPlayed)
-        // .Set(appUser => appUser.PointsPerGame, userUpdateDto.PointsPerGame)
-        // .Set(appUser => appUser.ReboundsPerGame, userUpdateDto.ReboundsPerGame)
-        // .Set(appUser => appUser.AssistsPerGame, userUpdateDto.AssistsPerGame)
-        // .Set(appUser => appUser.Bio, userUpdateDto.Bio?.Trim().ToLower())
-        // .Set(appUser => appUser.Achievements, userUpdateDto.Achievements?.Trim().ToLower())
-        // .Set(appUser => appUser.City, userUpdateDto.City?.Trim().ToLower())
-        // .Set(appUser => appUser.Region, userUpdateDto.Region?.Trim().ToLower())
-        // .Set(appUser => appUser.Country, userUpdateDto.Country?.Trim().ToLower());
+        var updates = new List<UpdateDefinition<AppUser>>();
 
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Name))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Name, userUpdateDto.Name.Trim()));
 
-        return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, updatePlayer, null, cancellationToken);
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.LastName))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.LastName, userUpdateDto.LastName.Trim()));
+
+        if (userUpdateDto.Height.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Height, userUpdateDto.Height.Value));
+
+        if (userUpdateDto.Weight.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Weight, userUpdateDto.Weight.Value));
+
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Gender))
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Gender, userUpdateDto.Gender.Trim()));
+
+        if (userUpdateDto.Position.HasValue)
+            updates.Add(Builders<AppUser>.Update.Set(u => u.Position, userUpdateDto.Position.Value));
+
+        var updateDef = Builders<AppUser>.Update.Combine(updates);
+
+        if (!updates.Any())
+            return null; // or return early if nothing to update
+
+        return await _collection.UpdateOneAsync<AppUser>(
+            appUser => appUser.Id == playerId,
+            updateDef,
+            null,
+            cancellationToken);
     }
 
     public Task<AppUser?> GetByIdentifierHashAsync(string identifierHash, CancellationToken cancellationToken)

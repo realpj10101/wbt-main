@@ -11,7 +11,7 @@ public class AccountRepository : IAccountRepository
 
     private readonly IMongoCollection<AppUser>? _collection;
     private readonly UserManager<AppUser> _userManager;
-    private readonly ITokenService _tokenService;
+    private readonly ITokenService _tokenService;   
 
     public AccountRepository(IMongoClient client, IMyMongoDbSettings dbSettings,
         UserManager<AppUser> userManager, ITokenService tokenService)

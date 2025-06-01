@@ -76,18 +76,17 @@ public static class Mappers
         );
     }
 
-    public static AppUser ConvertPlayerUpdateDtoToTestPlayer(UserUpdateDto userUpdateDto)
+    public static AppUser ConvertUserUpdateDtoToTestPlayer(UserUpdateDto userUpdateDto)
     {
-        return new AppUser
-        {
-            Name = userUpdateDto.Name,
-            LastName = userUpdateDto.LastName,
-            Height = userUpdateDto.Height,
-            Weight = userUpdateDto.Weight,
-            Gender = userUpdateDto.Gender,
-            Position = userUpdateDto.Position
-        };
-        
+            return new AppUser
+            {
+                Name = userUpdateDto.Name,
+                LastName = userUpdateDto.LastName,
+                Height = userUpdateDto.Height,
+                Weight = userUpdateDto.Weight,
+                Gender = userUpdateDto.Gender,
+                Position = userUpdateDto.Position
+            };
     }
 
 

@@ -10,13 +10,13 @@ namespace api.Models;
 public class AppUser : MongoIdentityUser<ObjectId>
 {
     public string? IdentifierHash { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public string LastName { get; init; } = string.Empty;
-    public int Height { get; init; }
-    public int Weight { get; init; }
+    public string? Name { get; init; } = string.Empty;
+    public string? LastName { get; init; } = string.Empty;
+    public int? Height { get; init; }
+    public int? Weight { get; init; }
     public DateOnly DateOfBirth { get; init; }
     public DateTime LastActive { get; init; }
-    public string Gender { get; init; } = string.Empty;
+    public string? Gender { get; init; } = string.Empty;
     public string City { get; init; } = string.Empty;
     public string Region { get; init; } = string.Empty;
     public string Country { get; init; } = string.Empty;
@@ -27,7 +27,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public string CurrentTeam { get; init; } = string.Empty;
     public string TrainingStyle { get; init; } = string.Empty;
     public string PreferredPlayers { get; init; } = string.Empty;
-    public PositionsEnum Position { get; init; }
+    public PositionsEnum? Position { get; init; }
     public string? JtiValue { get; init; }
     // public PositionsEnum Position { get; init; }
     public string ExperienceLevel { get; init; } = string.Empty;
