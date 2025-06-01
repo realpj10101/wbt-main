@@ -21,7 +21,7 @@ public record PlayerDto(
     string Achievements,
     DateTime Created,
     DateTime LastActive,
-    string Gender,
+    string? Gender,
     string City,
     string Region,
     string Country,

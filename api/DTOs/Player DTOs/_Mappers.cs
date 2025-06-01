@@ -76,18 +76,18 @@ public static class Mappers
         );
     }
 
-    public static AppUser ConvertUserUpdateDtoToTestPlayer(UserUpdateDto userUpdateDto)
-    {
-            return new AppUser
-            {
-                Name = userUpdateDto.Name,
-                LastName = userUpdateDto.LastName,
-                Height = userUpdateDto.Height,
-                Weight = userUpdateDto.Weight,
-                Gender = userUpdateDto.Gender,
-                Position = userUpdateDto.Position
-            };
-    }
+    // public static AppUser ConvertUserUpdateDtoToTestPlayer(UserUpdateDto userUpdateDto)
+    // {
+    //         return new AppUser
+    //         {
+    //             Name = userUpdateDto.Name,
+    //             LastName = userUpdateDto.LastName,
+    //             Height = userUpdateDto.Height,
+    //             Weight = userUpdateDto.Weight,
+    //             Gender = userUpdateDto.Gender,
+    //             Position = userUpdateDto.Position
+    //         };
+    // }
 
 
     public static Photo ConvertPhotoUrlsToPhoto(string[] photoUrls, bool isMain)

@@ -11,7 +11,7 @@ public class UserUpdateDto
     public int? Height { get; init; }
     public int? Weight { get; init; }
     public string? Gender { get; init; }
-    public PositionsEnum? Position { get; init; }
+    public string? Position { get; init; }
     // public string ExperienceLevel { get; set; } = string.Empty;
     // public string Skills { get; set; } = string.Empty;
     // public int GamesPlayed { get; set; }

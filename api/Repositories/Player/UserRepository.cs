@@ -79,8 +79,18 @@ public class UserRepository : IUserRepository
         if (!string.IsNullOrWhiteSpace(userUpdateDto.Gender))
             updates.Add(Builders<AppUser>.Update.Set(u => u.Gender, userUpdateDto.Gender.Trim()));
 
-        if (userUpdateDto.Position.HasValue)
-            updates.Add(Builders<AppUser>.Update.Set(u => u.Position, userUpdateDto.Position.Value));
+        if (!string.IsNullOrWhiteSpace(userUpdateDto.Position))
+        {
+            if (Enum.TryParse<PositionsEnum>(userUpdateDto.Position.Trim(), true, out var positionEnum))
+            {
+                updates.Add(Builders<AppUser>.Update.Set(u => u.Position, positionEnum));
+            }
+            else
+            {
+                // Optional: log or handle invalid string case
+                throw new ArgumentException($"Invalid position: {userUpdateDto.Position}");
+            }
+        }
 
         var updateDef = Builders<AppUser>.Update.Combine(updates);
 
