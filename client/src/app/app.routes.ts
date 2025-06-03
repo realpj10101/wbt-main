@@ -23,44 +23,46 @@ import { RegisterCoachComponent } from './components/coach-account/register-coac
 import { LoginCoachComponent } from './components/coach-account/login-coach/login-coach.component';
 import { UsersComponent } from './components/admin/users/users.component';
 import { CoachPanelComponent } from './components/coach-panel/coach-panel.component';
-// import { authLoggedInGuard } from './guards/auth-logged-in.guard';
+import { authLoggedInGuard } from './guards/auth-logged-in.guard';
+import { authGuard } from './guards/auth.guard';
+import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  // {
-  //   path: '',
-  //   runGuardsAndResolvers: 'always',
-  //   canActivate: [authGuard],
-  //   children: [
-  { path: 'members', component: MemberListComponent },
-  { path: 'member-card', component: MemberCardComponent },
-  { path: 'member-details/:userName', component: MemberDetailsComponent },
-  { path: 'message', component: MessagesComponent },
-  { path: 'friends', component: FriendsComponent },
-  { path: 'no-access', component: NoAccessComponent },
-  { path: 'user/user-edit', component: UserEditComponent },
-  { path: 'comment/:userName', component: CommentComponent },
-  { path: 'likes', component: LikesComponent },
-  { path: 'create-team', component: CreateTeamComponent },
-  { path: 'teams', component: TeamListComponent },
-  { path: 'team-details/:teamName', component: TeamDetailsComponent },
-  { path: 'choose', component: ChooseComponent },
-  { path: 'users', component: UsersComponent},
-  { path: 'coach-panel', component: CoachPanelComponent},
-  //   ]
-  // },
-  // {
-  //   path: '',
-  //   runGuardsAndResolvers: 'always',
-  //   canActivate: [authLoggedInGuard],
-  //   children: [
-  { path: 'account/register', component: RegisterComponent },
-  { path: 'account/login', component: LoginComponent },
-  { path: 'coachaccount/register', component: RegisterCoachComponent },
-  { path: 'coachaccount/login', component: LoginCoachComponent},
-  //   ]
-  // },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authGuard],
+    children: [
+      { path: 'members', component: MemberListComponent },
+      { path: 'member-card', component: MemberCardComponent },
+      { path: 'member-details/:userName', component: MemberDetailsComponent },
+      { path: 'message', component: MessagesComponent },
+      { path: 'friends', component: FriendsComponent },
+      { path: 'no-access', component: NoAccessComponent },
+      { path: 'user/user-edit', component: UserEditComponent, canDeactivate: [preventUnsavedChangesGuard] },
+      { path: 'comment/:userName', component: CommentComponent },
+      { path: 'likes', component: LikesComponent },
+      { path: 'create-team', component: CreateTeamComponent },
+      { path: 'teams', component: TeamListComponent },
+      { path: 'team-details/:teamName', component: TeamDetailsComponent },
+      { path: 'choose', component: ChooseComponent },
+      { path: 'users', component: UsersComponent },
+      { path: 'coach-panel', component: CoachPanelComponent },
+    ]
+  },
+  {
+    path: '',
+    runGuardsAndResolvers: 'always',
+    canActivate: [authLoggedInGuard],
+    children: [
+      { path: 'account/register', component: RegisterComponent },
+      { path: 'account/login', component: LoginComponent },
+      { path: 'coachaccount/register', component: RegisterCoachComponent },
+      { path: 'coachaccount/login', component: LoginCoachComponent },
+    ]
+  },
   { path: 'server-error', component: ServerErrorComponent },
   { path: '**', component: NotFoundComponent }
 ];

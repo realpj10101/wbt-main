@@ -25,6 +25,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatRadioModule } from '@angular/material/radio';
 import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 import { MatSelectModule } from '@angular/material/select';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -48,12 +49,13 @@ export class UserEditComponent {
   private _userService = inject(UserService);
   private platFormId = inject(PLATFORM_ID);
   private fb = inject(FormBuilder);
+  private _commonService = inject(CommonService);
 
   userEditFg: FormGroup = this.fb.group({
     nameCtrl: ['', [Validators.maxLength(this.maxInpuChars)]],
     lastNameCtrl: ['', [Validators.maxLength(this.maxInpuChars)]],
-    heightCtrl: '',
-    weightCtrl: '',
+    heightCtrl: 0,
+    weightCtrl: 0,
     genderCtrl: 'female',
     positionCtrl: '',
     exprienceLevelCtrl: ['', [Validators.maxLength(this.maxInpuChars)]],
@@ -106,7 +108,7 @@ export class UserEditComponent {
   }
 
   get GamesPlayedCtrl(): AbstractControl {
-    return this.userEditFg.get('gamesPerPlayedCtrl') as FormControl;
+    return this.userEditFg.get('gamesPlayedCtrl') as FormControl;
   }
 
   get PointsPerGameCtrl(): AbstractControl {
@@ -191,22 +193,22 @@ export class UserEditComponent {
     if (this.member) {
       let updateUser: UserUpdate = {
         name: this.NameCtrl.value,
-        // lastName: this.LastNameCtrl.value,
-        // height: this.HeightCtrl.value,
-        // weight: this.WeightCtrl.value,
-        // gender: this.GenderCtrl.value,
-        // position: this.PositionCtrl.value,
-        // exprienceLevel: this.ExprienceLevelCtrl.value,
-        // skills: this.SkillsCtrl.value,
-        // gamesPlayed: this.GamesPlayedCtrl.value,
-        // pointsPerGame: this.PointsPerGameCtrl.value,
-        // reboundsPerGame: this.ReboundsPerGameCtrl.value,
-        // assistsPerGame: this.AssistsPerGameCtrl.value,
-        // bio: this.BioCtrl.value,
-        // achievements: this.AchievementsCtrl.value,
-        // city: this.CityCtrl.value,
-        // region: this.RegionCtrl.value,
-        // country: this.CountryCtrl.value
+        lastName: this.LastNameCtrl.value,
+        height: this.HeightCtrl.value,
+        weight: this.WeightCtrl.value,
+        gender: this.GenderCtrl.value,
+        position: this.PositionCtrl.value,
+        exprienceLevel: this.ExprienceLevelCtrl.value,
+        skills: this.SkillsCtrl.value,
+        gamesPlayed: this.GamesPlayedCtrl.value,
+        pointsPerGame: this.PointsPerGameCtrl.value,
+        reboundsPerGame: this.ReboundsPerGameCtrl.value,
+        assistsPerGame: this.AssistsPerGameCtrl.value,
+        bio: this.BioCtrl.value,
+        achievements: this.AchievementsCtrl.value,
+        city: this.CityCtrl.value,
+        region: this.RegionCtrl.value,
+        country: this.CountryCtrl.value
       }
 
       this._userService.updateUser(updateUser)
@@ -223,6 +225,19 @@ export class UserEditComponent {
           }
         });
     }
+  }
+
+  checkIsAnyValueChanged(): boolean {
+    if  (
+      this.member
+      && this.member.name === this.NameCtrl.value
+    ) {
+      this._commonService.isPreveventLeavingPage = false;
+    }
+
+    this._commonService.isPreveventLeavingPage = true
+
+    return true;
   }
 }
 

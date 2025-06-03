@@ -55,7 +55,7 @@ export class PhotoEditorComponent implements OnInit {
     console.log("ok")
     if (this.loggedInUser) {
       this.uploader = new FileUploader({
-        url: this.apiUrl + 'api/playeruser/add-photo',
+        url: this.apiUrl + 'api/user/add-photo',
         authToken: 'Bearer ' + this.loggedInUser.token,
         isHTML5: true,
         allowedFileType: ['image'],
