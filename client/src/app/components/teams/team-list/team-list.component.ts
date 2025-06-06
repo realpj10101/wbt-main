@@ -13,14 +13,13 @@ import { RouterModule } from '@angular/router';
 
 
 @Component({
-  selector: 'app-team-list',
-  standalone: true,
-  imports: [
-    MatButtonModule, MatCardModule, MatPaginatorModule,
-    TeamCardComponent, RouterModule
-],
-  templateUrl: './team-list.component.html',
-  styleUrl: './team-list.component.scss'
+    selector: 'app-team-list',
+    imports: [
+        MatButtonModule, MatCardModule, MatPaginatorModule,
+        TeamCardComponent, RouterModule
+    ],
+    templateUrl: './team-list.component.html',
+    styleUrl: './team-list.component.scss'
 })
 export class TeamListComponent implements OnInit, OnDestroy {
   private _teamService = inject(TeamService);

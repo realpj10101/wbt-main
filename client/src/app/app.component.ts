@@ -14,16 +14,15 @@ import { CoachAccountService } from './services/coach-account.service';
 import { TeamService } from './services/team.service';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    NavbarComponent,
-    FooterComponent, NgxSpinnerModule,
-    MatIconModule, CommonModule
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [
+        RouterOutlet,
+        NavbarComponent,
+        FooterComponent, NgxSpinnerModule,
+        MatIconModule, CommonModule
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   private registerPlayerService = inject(AccountService);

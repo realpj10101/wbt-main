@@ -21,17 +21,16 @@ import { TeamService } from '../../../services/team.service';
 import { AccountService } from '../../../services/account.service';
 
 @Component({
-  selector: 'app-member-details',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatIconModule, MatButtonModule, MatTabsModule, MatExpansionModule,
-    GalleryModule, LightboxModule,
-    IntlModule, RouterModule
-  ],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './member-details.component.html',
-  styleUrl: './member-details.component.scss'
+    selector: 'app-member-details',
+    imports: [
+        CommonModule,
+        MatIconModule, MatButtonModule, MatTabsModule, MatExpansionModule,
+        GalleryModule, LightboxModule,
+        IntlModule, RouterModule
+    ],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './member-details.component.html',
+    styleUrl: './member-details.component.scss'
 })
 export class MemberDetailsComponent implements OnInit {
   member: Member | undefined;

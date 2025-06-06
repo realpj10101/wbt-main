@@ -12,14 +12,13 @@ import { TeamService } from '../../services/team.service';
 import { MemberService } from '../../services/member.service';
 
 @Component({
-  selector: 'app-coach-panel-card',
-  standalone: true,
-  imports: [
-    CommonModule, RouterModule, NgOptimizedImage,
-    MatCardModule, MatIconModule, MatButtonModule
-  ],
-  templateUrl: './coach-panel-card.component.html',
-  styleUrl: './coach-panel-card.component.scss'
+    selector: 'app-coach-panel-card',
+    imports: [
+        CommonModule, RouterModule, NgOptimizedImage,
+        MatCardModule, MatIconModule, MatButtonModule
+    ],
+    templateUrl: './coach-panel-card.component.html',
+    styleUrl: './coach-panel-card.component.scss'
 })
 export class CoachPanelCardComponent {
   @Input('memberInput') memberIn: Member | undefined;

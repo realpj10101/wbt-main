@@ -18,16 +18,15 @@ import { NavbarMobileComponent } from "./navbar-mobile/navbar-mobile.component";
 import { CoachAccountService } from '../../services/coach-account.service';
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [
-    CommonModule, RouterModule,
-    MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
-    MatDividerModule, MatListModule, MatTabsModule,
-    NavbarMobileComponent
-  ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+    selector: 'app-navbar',
+    imports: [
+        CommonModule, RouterModule,
+        MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
+        MatDividerModule, MatListModule, MatTabsModule,
+        NavbarMobileComponent
+    ],
+    templateUrl: './navbar.component.html',
+    styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
   apiUrl: string = environment.apiUrl;

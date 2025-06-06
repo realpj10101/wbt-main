@@ -16,15 +16,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { environment } from '../../../../environments/environment.development';
 
 @Component({
-  selector: 'app-photo-editor',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NgOptimizedImage, FileUploadModule,
-    MatFormFieldModule, MatCardModule, MatIconModule, MatButtonModule
-  ],
-  templateUrl: './photo-editor.component.html',
-  styleUrl: './photo-editor.component.scss'
+    selector: 'app-photo-editor',
+    imports: [
+        CommonModule,
+        NgOptimizedImage, FileUploadModule,
+        MatFormFieldModule, MatCardModule, MatIconModule, MatButtonModule
+    ],
+    templateUrl: './photo-editor.component.html',
+    styleUrl: './photo-editor.component.scss'
 })
 export class PhotoEditorComponent implements OnInit {
   @Input('memberInput') member: Member | undefined;

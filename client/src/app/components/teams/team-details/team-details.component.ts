@@ -15,11 +15,10 @@ import { TeamPhotoEditorComponent } from "../team-photo-editor/team-photo-editor
 import { CoachAccountService } from '../../../services/coach-account.service';
 
 @Component({
-  selector: 'app-team-details',
-  standalone: true,
-  imports: [MatTabsModule, MatExpansionModule, TeamMembersCardComponent, TeamPhotoEditorComponent],
-  templateUrl: './team-details.component.html',
-  styleUrl: './team-details.component.scss'
+    selector: 'app-team-details',
+    imports: [MatTabsModule, MatExpansionModule, TeamMembersCardComponent, TeamPhotoEditorComponent],
+    templateUrl: './team-details.component.html',
+    styleUrl: './team-details.component.scss'
 })
 export class TeamDetailsComponent implements OnInit {
   private _teamService = inject(TeamService);

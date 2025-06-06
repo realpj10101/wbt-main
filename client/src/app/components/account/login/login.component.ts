@@ -11,15 +11,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule, FormsModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule,
-    AutoFocusDirective, MatSnackBarModule, RouterLink
-  ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    imports: [
+        ReactiveFormsModule, FormsModule,
+        MatFormFieldModule, MatInputModule, MatButtonModule,
+        AutoFocusDirective, MatSnackBarModule, RouterLink
+    ],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   registerPlayerService = inject(AccountService);

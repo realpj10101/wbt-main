@@ -6,14 +6,13 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
-  selector: 'app-home-mobile',
-  standalone: true,
-  imports: [
-    RouterLink, RouterOutlet,
-    MatButtonModule, MatCardModule,
-  ],
-  templateUrl: './home-mobile.component.html',
-  styleUrl: './home-mobile.component.scss'
+    selector: 'app-home-mobile',
+    imports: [
+        RouterLink, RouterOutlet,
+        MatButtonModule, MatCardModule,
+    ],
+    templateUrl: './home-mobile.component.html',
+    styleUrl: './home-mobile.component.scss'
 })
 export class HomeMobileComponent {
 

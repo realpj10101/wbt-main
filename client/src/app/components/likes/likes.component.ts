@@ -11,15 +11,14 @@ import { MemberCardComponent } from '../members/member-card/member-card.componen
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-likes',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MemberCardComponent,
-    MatTabsModule, MatPaginatorModule
-  ],
-  templateUrl: './likes.component.html',
-  styleUrl: './likes.component.scss'
+    selector: 'app-likes',
+    imports: [
+        CommonModule,
+        MemberCardComponent,
+        MatTabsModule, MatPaginatorModule
+    ],
+    templateUrl: './likes.component.html',
+    styleUrl: './likes.component.scss'
 })
 export class LikesComponent implements OnInit {
   private _likeService = inject(LikeService);

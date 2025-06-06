@@ -11,15 +11,14 @@ import { MemberCardComponent } from '../members/member-card/member-card.componen
 import { FollowPredicate } from '../../enums/follow-predicate-enum';
 
 @Component({
-  selector: 'app-friends',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MemberCardComponent,
-    MatTabsModule, MatPaginatorModule
-  ],
-  templateUrl: './friends.component.html',
-  styleUrl: './friends.component.scss'
+    selector: 'app-friends',
+    imports: [
+        CommonModule,
+        MemberCardComponent,
+        MatTabsModule, MatPaginatorModule
+    ],
+    templateUrl: './friends.component.html',
+    styleUrl: './friends.component.scss'
 })
 export class FriendsComponent implements OnInit {
   followService = inject(FollowService);

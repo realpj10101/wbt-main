@@ -13,15 +13,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 
 @Component({
-  selector: 'app-navbar-mobile',
-  standalone: true,
-  imports: [
-    CommonModule, RouterModule, NgOptimizedImage,
-    MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
-    MatDividerModule, MatListModule, MatTabsModule,
-  ],
-  templateUrl: './navbar-mobile.component.html',
-  styleUrl: './navbar-mobile.component.scss'
+    selector: 'app-navbar-mobile',
+    imports: [
+        CommonModule, RouterModule, NgOptimizedImage,
+        MatToolbarModule, MatButtonModule, MatIconModule, MatMenuModule,
+        MatDividerModule, MatListModule, MatTabsModule,
+    ],
+    templateUrl: './navbar-mobile.component.html',
+    styleUrl: './navbar-mobile.component.scss'
 })
 export class NavbarMobileComponent implements OnInit {
   apiUrl: string = environment.apiUrl;

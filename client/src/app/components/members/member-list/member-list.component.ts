@@ -17,16 +17,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
-  selector: 'app-member-list',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-    MatButtonModule, MatSliderModule,
-    MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
-  ],
-  templateUrl: './member-list.component.html',
-  styleUrl: './member-list.component.scss'
+    selector: 'app-member-list',
+    imports: [
+        CommonModule,
+        MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+        MatButtonModule, MatSliderModule,
+        MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
+    ],
+    templateUrl: './member-list.component.html',
+    styleUrl: './member-list.component.scss'
 })
 export class MemberListComponent implements OnInit, OnDestroy {
   memberService = inject(MemberService);

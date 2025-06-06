@@ -12,15 +12,14 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 import { CoachAccountService } from '../../../services/coach-account.service';
 
 @Component({
-  selector: 'app-login-coach',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule, FormsModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule,
-    AutoFocusDirective, MatSnackBarModule, RouterLink
-  ],
-  templateUrl: './login-coach.component.html',
-  styleUrl: './login-coach.component.scss'
+    selector: 'app-login-coach',
+    imports: [
+        ReactiveFormsModule, FormsModule,
+        MatFormFieldModule, MatInputModule, MatButtonModule,
+        AutoFocusDirective, MatSnackBarModule, RouterLink
+    ],
+    templateUrl: './login-coach.component.html',
+    styleUrl: './login-coach.component.scss'
 })
 export class LoginCoachComponent {
   coachAccountService = inject(CoachAccountService);

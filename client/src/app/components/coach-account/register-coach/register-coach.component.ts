@@ -15,17 +15,16 @@ import { Subscription } from 'rxjs';
 import { RegisterPlayer } from '../../../models/register-player.model';
 
 @Component({
-  selector: 'app-register-coach',
-  standalone: true,
-  imports: [
-    CommonModule, FormsModule, ReactiveFormsModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatSnackBarModule, MatRadioModule,
-    MatDatepickerModule, MatNativeDateModule,
-    AutoFocusDirective, RouterLink
-  ],
-  templateUrl: './register-coach.component.html',
-  styleUrl: './register-coach.component.scss'
+    selector: 'app-register-coach',
+    imports: [
+        CommonModule, FormsModule, ReactiveFormsModule,
+        MatFormFieldModule, MatInputModule, MatButtonModule,
+        MatSnackBarModule, MatRadioModule,
+        MatDatepickerModule, MatNativeDateModule,
+        AutoFocusDirective, RouterLink
+    ],
+    templateUrl: './register-coach.component.html',
+    styleUrl: './register-coach.component.scss'
 })
 export class RegisterCoachComponent implements OnInit, OnDestroy {
   coachAccountService = inject(CoachAccountService);

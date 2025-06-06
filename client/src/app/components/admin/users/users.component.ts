@@ -5,11 +5,10 @@ import { Subscription } from 'rxjs';
 import { UserDetailsComponent } from "../user-details/user-details.component";
 
 @Component({
-  selector: 'app-users',
-  standalone: true,
-  imports: [UserDetailsComponent],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+    selector: 'app-users',
+    imports: [UserDetailsComponent],
+    templateUrl: './users.component.html',
+    styleUrl: './users.component.scss'
 })
 export class UsersComponent implements OnInit, OnDestroy {
   users: UserWithRole[] | undefined;

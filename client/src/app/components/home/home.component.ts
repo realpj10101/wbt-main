@@ -10,15 +10,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HomeMobileComponent } from "./home-mobile/home-mobile.component";
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [
-    RouterLink, RouterOutlet,
-    MatButtonModule, MatCardModule,
-    HomeMobileComponent
-  ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    imports: [
+        RouterLink, RouterOutlet,
+        MatButtonModule, MatCardModule,
+        HomeMobileComponent
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent {
   apiUrl: string = environment.apiUrl;

@@ -21,17 +21,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 @Component({
-  selector: 'app-comment',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule, ReactiveFormsModule,
-    MatIconModule, MatButtonModule, MatTabsModule,
-    IntlModule, MatExpansionModule, MatFormFieldModule,
-    MatInputModule
-  ],
-  templateUrl: './comment.component.html',
-  styleUrl: './comment.component.scss'
+    selector: 'app-comment',
+    imports: [
+        CommonModule,
+        FormsModule, ReactiveFormsModule,
+        MatIconModule, MatButtonModule, MatTabsModule,
+        IntlModule, MatExpansionModule, MatFormFieldModule,
+        MatInputModule
+    ],
+    templateUrl: './comment.component.html',
+    styleUrl: './comment.component.scss'
 })
 export class CommentComponent implements OnInit {
   @Input('memberInput') memberInput: Member | undefined;

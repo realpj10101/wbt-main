@@ -11,14 +11,13 @@ import { Pagination } from '../../models/helpers/pagination.model';
 import { CoachPanelCardComponent } from '../coach-panel-card/coach-panel-card.component';
 
 @Component({
-  selector: 'app-coach-panel',
-  standalone: true,
-  imports: [
-    CoachPanelCardComponent,
-    MatPaginator
-  ],
-  templateUrl: './coach-panel.component.html',
-  styleUrl: './coach-panel.component.scss'
+    selector: 'app-coach-panel',
+    imports: [
+        CoachPanelCardComponent,
+        MatPaginator
+    ],
+    templateUrl: './coach-panel.component.html',
+    styleUrl: './coach-panel.component.scss'
 })
 export class CoachPanelComponent implements OnInit {
   private _teamService = inject(TeamService);

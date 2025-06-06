@@ -14,14 +14,13 @@ import { LikeService } from '../../services/like.service';
 import { CommentService } from '../../services/comment.service';
 
 @Component({
-  selector: 'app-team-members-card',
-  standalone: true,
-  imports: [
-    CommonModule, RouterModule, NgOptimizedImage,
-    MatCardModule, MatIconModule, MatButtonModule
-  ],
-  templateUrl: './team-members-card.component.html',
-  styleUrl: './team-members-card.component.scss'
+    selector: 'app-team-members-card',
+    imports: [
+        CommonModule, RouterModule, NgOptimizedImage,
+        MatCardModule, MatIconModule, MatButtonModule
+    ],
+    templateUrl: './team-members-card.component.html',
+    styleUrl: './team-members-card.component.scss'
 })
 export class TeamMembersCardComponent {
   @Input('memberInput') memberIn: Member | undefined;

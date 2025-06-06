@@ -18,15 +18,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { AccountService } from '../../../services/account.service';
 
 @Component({
-  selector: 'app-team-photo-editor',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NgOptimizedImage, FileUploadModule,
-    MatFormFieldModule, MatCardModule, MatIconModule, MatButtonModule
-  ],
-  templateUrl: './team-photo-editor.component.html',
-  styleUrl: './team-photo-editor.component.scss'
+    selector: 'app-team-photo-editor',
+    imports: [
+        CommonModule,
+        NgOptimizedImage, FileUploadModule,
+        MatFormFieldModule, MatCardModule, MatIconModule, MatButtonModule
+    ],
+    templateUrl: './team-photo-editor.component.html',
+    styleUrl: './team-photo-editor.component.scss'
 })
 export class TeamPhotoEditorComponent implements OnInit {
   @Input('teamInput') team: ShowTeam | undefined;

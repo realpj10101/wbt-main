@@ -11,15 +11,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
-  selector: 'app-create-team',
-  standalone: true,
-  imports: [
-    FormsModule, ReactiveFormsModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatStepperModule
-  ],
-  templateUrl: './create-team.component.html',
-  styleUrl: './create-team.component.scss'
+    selector: 'app-create-team',
+    imports: [
+        FormsModule, ReactiveFormsModule,
+        MatFormFieldModule, MatInputModule, MatButtonModule,
+        MatStepperModule
+    ],
+    templateUrl: './create-team.component.html',
+    styleUrl: './create-team.component.scss'
 })
 export class CreateTeamComponent {
   private _teamService = inject(TeamService);

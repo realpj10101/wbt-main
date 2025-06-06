@@ -28,16 +28,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { CommonService } from '../../../services/common.service';
 
 @Component({
-  selector: 'app-user-edit',
-  standalone: true,
-  imports: [
-    MatCardModule, MatIconModule, MatButtonModule,
-    MatTabsModule, MatFormFieldModule, MatInputModule,
-    MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule,
-    PhotoEditorComponent, MatSelectModule
-  ],
-  templateUrl: './user-edit.component.html',
-  styleUrl: './user-edit.component.scss'
+    selector: 'app-user-edit',
+    imports: [
+        MatCardModule, MatIconModule, MatButtonModule,
+        MatTabsModule, MatFormFieldModule, MatInputModule,
+        MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule,
+        PhotoEditorComponent, MatSelectModule
+    ],
+    templateUrl: './user-edit.component.html',
+    styleUrl: './user-edit.component.scss'
 })
 export class UserEditComponent {
   apiUrl = environment.apiUrl;

@@ -4,13 +4,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonService } from '../../services/common.service';
 
 @Component({
-  selector: 'app-confrirm',
-  standalone: true,
-  imports: [
-    MatButtonModule, MatDialogModule
-  ],
-  templateUrl: './confrirm.component.html',
-  styleUrl: './confrirm.component.scss'
+    selector: 'app-confrirm',
+    imports: [
+        MatButtonModule, MatDialogModule
+    ],
+    templateUrl: './confrirm.component.html',
+    styleUrl: './confrirm.component.scss'
 })
 export class ConfrirmComponent {
 }
