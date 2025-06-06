@@ -4,4 +4,4 @@ public interface IChatRepository
 {
     public Task SavedMessageAsync(ChatMessage message);
     public Task<List<ChatMessage>> GetAllMessages();
-}
+}   

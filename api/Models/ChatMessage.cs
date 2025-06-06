@@ -3,7 +3,8 @@ namespace api.Models;
 public record ChatMessage(
     [property: BsonId, BsonRepresentation(BsonType.ObjectId)]
     string? Id, // hamishe sabet
-    string UserName,
+    ObjectId? TeamId,
+    string SenderUserName,
     string Message,
     DateTime TimeStamp
 );

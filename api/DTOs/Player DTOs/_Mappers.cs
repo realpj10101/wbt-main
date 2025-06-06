@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using api.DTOs.Team_DTOs;
 using api.Enums;
 using api.Extensions;
+using NuGet.Protocol.Plugins;
 using SharpCompress.Common;
 
 namespace api.DTOs;
@@ -204,6 +205,17 @@ public static class Mappers
             CommentedMemberName: comment.CommentedMemberName,
             Content: comment.Content,
             CreatedAt: comment.CreatedAt
+        );
+    }
+
+    public static ChatMessage ConvertMessageSenderDtoToChatMessageDto(MessageSenderDto sender, ObjectId? teamId)
+    {
+        return new ChatMessage(
+            Id: null,
+            TeamId: teamId,
+            SenderUserName: sender.SenderUserName,
+            Message: sender.Message,
+            TimeStamp: DateTime.UtcNow
         );
     }
 }

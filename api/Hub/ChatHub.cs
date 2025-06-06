@@ -1,4 +1,5 @@
 using api.Interfaces;
+using api.Interfaces.Teams;
 using api.Models;
 using Microsoft.AspNetCore.SignalR;
 
@@ -6,23 +7,20 @@ namespace api.Hub;
 
 public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
 {
-    private readonly IChatRepository _chatRepository;
-
-    public ChatHub(IChatRepository chatRepository)
+    private ITeamMessagingRepository _teamMessagingRepository;
+    public ChatHub(ITeamMessagingRepository teamMessagingRepository)
     {
-        _chatRepository = chatRepository;
+        _teamMessagingRepository = teamMessagingRepository;
     }
 
-    public async Task SendMessage(string userName, string message)
+    public async Task SendMessage(string userName, string message, string teaName, ObjectId teamId)
     {
-        ChatMessage chatMessage = new(
-            Id: null,
-            UserName: userName,
-            Message: message,
-            TimeStamp: DateTime.UtcNow
+        MessageSenderDto sender = new(
+            SenderUserName: userName,
+            Message: message
         );
 
-        await _chatRepository.SavedMessageAsync(chatMessage);
+        await _teamMessagingRepository.SavedMessageAsync(sender, teaName);
 
         await Clients.All.SendAsync("ReceiveMessage", userName, message);
     }
