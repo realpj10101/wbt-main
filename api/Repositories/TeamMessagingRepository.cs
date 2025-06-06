@@ -15,7 +15,7 @@ public class TeamMessagingRepository : ITeamMessagingRepository
         _teamCollection = dbName.GetCollection<Team>(AppVariablesExtensions.CollectionTeams);
     }
     
-    public async Task<ChatMessage?> SavedMessageAsync(MessageSenderDto message, string temaName)
+    public async Task<MessageSenderDto?> SavedMessageAsync(MessageSenderDto message, string temaName)
     {
         ObjectId? teamId = _teamCollection.AsQueryable()
             .Where(doc => doc.TeamName == temaName)
@@ -29,7 +29,7 @@ public class TeamMessagingRepository : ITeamMessagingRepository
         
         await _collection.InsertOneAsync(userMessage);
 
-        return userMessage;
+        return message;
     }
 
     public Task<List<ChatMessage>> GetAllMessagesAsync()
