@@ -1,6 +1,7 @@
 using api.Interfaces.Coach;
 using api.Interfaces.Player;
 using api.Interfaces.Teams;
+using api.Repositories;
 using api.Repositories.Coach;
 using api.Repositories.Player;
 using image_processing.Interfaces;
@@ -24,9 +25,7 @@ public static class RepositoryServiceExtensions
         services.AddScoped<ILikeRepository, LikeRepository>();
         services.AddScoped<IAdminRepository, AdminRepository>();
         services.AddScoped<ITeamRepository, TeamRepository>();
-        // services.AddScoped<IExAcRepo, ExAcRepo>();
-        // services.AddScoped<IExampleTokenService, ExampleTokenService>();
-        // services.AddScoped<IPlayerDetailsRepository, PlayerDetailsRepository>();
+        services.AddScoped<ITeamMessagingRepository, TeamMessagingRepository>();
 
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IPhotoModifySaveService, PhotoModifySaveService>();

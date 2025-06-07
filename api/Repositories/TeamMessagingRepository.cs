@@ -32,8 +32,8 @@ public class TeamMessagingRepository : ITeamMessagingRepository
         return message;
     }
 
-    public Task<List<ChatMessage>> GetAllMessagesAsync()
+    public async Task<List<ChatMessage>> GetAllMessagesAsync()
     {
-        throw new NotImplementedException();
+        return await _collection.Find(_ => true).ToListAsync();
     }
 }

@@ -13,7 +13,7 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         _teamMessagingRepository = teamMessagingRepository;
     }
 
-    public async Task SendMessage(string userName, string message, string teaName, ObjectId teamId)
+    public async Task SendMessage(string userName, string message, string teaName)
     {
         MessageSenderDto sender = new(
             SenderUserName: userName,
