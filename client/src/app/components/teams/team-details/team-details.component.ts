@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnDestroy, OnInit, signal, Signal } from '@angular/core';
+import { AfterViewChecked, Component, effect, ElementRef, inject, OnDestroy, OnInit, signal, Signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamService } from '../../../services/team.service';
 import { environment } from '../../../../environments/environment.development';
@@ -30,7 +30,8 @@ import { IntlModule } from 'angular-ecmascript-intl';
   templateUrl: './team-details.component.html',
   styleUrl: './team-details.component.scss'
 })
-export class TeamDetailsComponent implements OnInit {
+export class TeamDetailsComponent implements OnInit, AfterViewChecked {
+  @ViewChild('messageContainer') private messageContainer!: ElementRef;
   private _teamService = inject(TeamService);
   apiUrl = environment.apiUrl;
   private _route = inject(ActivatedRoute);
@@ -45,6 +46,16 @@ export class TeamDetailsComponent implements OnInit {
   teamSig = this._teamService.currentTeamSig;
   messageText = '';
   messages = this.teamMessagingService.messages;
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
+    } catch (err) {}
+  }
 
   isTeamLoadedSignal(): boolean {
     return this.isTeamLoaded();
