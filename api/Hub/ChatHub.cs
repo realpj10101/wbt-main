@@ -15,10 +15,10 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
     {
         _teamMessagingRepository = teamMessagingRepository;
     }
-    
+
     public override async Task OnConnectedAsync()
     {
-        string userName = Context.User?.Identity?.Name ?? Context.ConnectionId;
+        string userName = (Context.User?.Identity?.Name ?? Context.ConnectionId).ToLowerInvariant(); ;
 
         _onlineUsers[userName] = Context.ConnectionId;
 
@@ -34,11 +34,11 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         if (!string.IsNullOrEmpty(user.Key))
         {
             _onlineUsers.TryRemove(user.Key, out _);
-            
+
             // Store last seen time
             var lastSeen = DateTime.UtcNow;
 
-            await Clients.All.SendAsync("UserOffline", user.Key, lastSeen);
+            await Clients.All.SendAsync("UserOffline", user.Key.ToLowerInvariant(), lastSeen);
         }
 
         await base.OnDisconnectedAsync(exception);
@@ -52,11 +52,14 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
 
         await _teamMessagingRepository.SavedMessageAsync(sender, teaName);
 
-        await Clients.All.SendAsync("ReceiveMessage", userName, message);
+        var timeStamp = DateTime.UtcNow;
+
+        await Clients.All.SendAsync("ReceiveMessage", userName.ToLowerInvariant(), message, timeStamp);
     }
 
     public Task<List<string>> GetOnlineUsers()
     {
-        return Task.FromResult(_onlineUsers.Keys.ToList());
+        var usersLowercase = _onlineUsers.Keys.Select(k => k.ToLowerInvariant()).ToList();
+        return Task.FromResult(usersLowercase);
     }
 }
