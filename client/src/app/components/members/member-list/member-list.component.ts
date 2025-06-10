@@ -46,9 +46,8 @@ export class MemberListComponent implements OnInit, OnDestroy {
   filterFg = this._fB.group({
     searchCtrl: ['', []],
     orderByCtrl: [],
-    minAgeCtrl: [this.minAge],
-    maxAgeCtrl: [this.maxAge],
-    genderCtrl: []
+    minAgeCtrl: [this.minAge, []],
+    maxAgeCtrl: [this.maxAge, []],
   });
 
   ngOnInit(): void {
@@ -77,15 +76,13 @@ export class MemberListComponent implements OnInit, OnDestroy {
     return this.filterFg.get('maxAgeCtrl') as FormControl;
   }
 
-  get GenderCtrl(): AbstractControl {
-    return this.filterFg.get('genderCtrl') as FormControl;
-  }
-
   getAll(): void {
     if (this.memberParams)
       this.subscribed = this.memberService.getAll(this.memberParams).subscribe({
         next: (response: PaginatedResult<Member[]>) => {
           if (response.body && response.pagination) {
+            console.log(response);
+            
             this.members = response.body;
             this.pagination = response.pagination;
           }
@@ -107,13 +104,15 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   updateMemberParams(): void {
-    if (this.memberParams) {
+    if (this.memberParams) {      
       this.memberParams.search = this.SearchCtrl.value;
       this.memberParams.orderBy = this.OrderByCtrl.value;
       this.memberParams.minAge = this.MinAgeCtrl.value;
       this.memberParams.maxAge = this.MaxAgeCtrl.value;
-      this.memberParams.gender = this.GenderCtrl.value;
     }
+    
+    console.log(this.memberParams?.search);
+    
   }
 
   isAnyFilterApplied(): boolean {

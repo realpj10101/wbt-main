@@ -54,7 +54,7 @@ export class TeamDetailsComponent implements OnInit, AfterViewChecked {
   scrollToBottom(): void {
     try {
       this.messageContainer.nativeElement.scrollTop = this.messageContainer.nativeElement.scrollHeight;
-    } catch (err) {}
+    } catch (err) { }
   }
 
   isTeamLoadedSignal(): boolean {
@@ -120,5 +120,29 @@ export class TeamDetailsComponent implements OnInit, AfterViewChecked {
       this.teamMessagingService.sendMessage(currentUser.userName.toLowerCase(), this.messageText, teamName);
       this.messageText = '';
     }
+  }
+
+  isOnline(userName: string): boolean {
+    // console.log('Checking online status for:', userName);
+    let userOnlineStatus: boolean = this.teamMessagingService.isUserOnline(userName);
+
+    console.log(userOnlineStatus);
+
+    return userOnlineStatus;
+  }
+
+  getUserOnlineSignal(userName: string) {
+    return this.teamMessagingService.getUserStatusSignal(userName);
+  }
+
+  getLastSeen(userName: string): string {
+    const lastSeen = this.teamMessagingService.getLastSeen(userName);
+    console.log('Getting last seen for:', userName, 'Result:', lastSeen);
+    return lastSeen
+      ? new Intl.DateTimeFormat('en-Us', {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }).format(lastSeen)
+      : 'Unknown'; // Default to 'Unknown' if lastSeen is undefined
   }
 }

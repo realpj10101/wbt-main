@@ -32,8 +32,10 @@ export class MemberService {
     if (memberParams) {
       if (memberParams.search)
         params = params.append('search', memberParams.search);
-      if (memberParams.gender)
-        params = params.append('gender', memberParams.gender);
+      console.log('service', memberParams);
+      
+      // if (memberParams.gender)
+      //   params = params.append('gender', memberParams.gender);
 
       params = params.append('pageSize', memberParams.pageSize);
       params = params.append('pageNumebr', memberParams.pageNumber);

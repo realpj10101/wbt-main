@@ -5,5 +5,5 @@ export class MemberParams extends PaginationParams {
     orderBy = 'lastAcive';
     minAge = 6;
     maxAge = 99;
-    gender: string | undefined;
+    // gender: string | undefined;
 }

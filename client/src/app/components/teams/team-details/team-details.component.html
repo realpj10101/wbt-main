@@ -2,9 +2,9 @@
   <div class="top">
     <div class="item-1">
       @if (teamSig(); as team) {
-        @if (team.profilePhotoUrl) {
-          <img [src]="apiUrl + team.profilePhotoUrl" alt="Team" />
-        }
+      @if (team.profilePhotoUrl) {
+      <img [src]="apiUrl + team.profilePhotoUrl" alt="Team" />
+      }
       }
     </div>
 
@@ -82,26 +82,30 @@
         <div class="chat-box">
           <div class="messages" #messageContainer>
             @if (messages().length > 0) {
-              @for (message of messages(); track $index) {
-                <div class="message">
-                  <div class="container">
-                    <span class="user">{{ message.senderUserName }}:</span>
-                    <span class="time">{{ message.timeStamp | intlRelativeTime}}</span>
-                  </div>
-                  <span class="text">{{ message.message }}</span>
-                </div>
-              }
+            @for (message of messages(); track $index) {
+            <div class="message">
+              <div class="container">
+                <span class="user">{{ message.senderUserName }}:</span>
+
+                @if (getUserOnlineSignal(message.senderUserName)) {
+                <span class="status" style="color: green;">Online</span>
+                }
+                @else if(!getUserOnlineSignal(message.senderUserName)) {
+                <span class="status" style="color: red;">
+                  Offline (Last seen: {{ getLastSeen(message.senderUserName) }})
+                </span>
+                }
+              </div>
+              <span class="text">{{ message.message }}</span>
+            </div>
+            }
             } @else {
-              <div class="empty">No messages let.</div>
+            <div class="empty">No messages yet.</div>
             }
           </div>
-      
+
           <div class="input-box">
-            <input
-              [(ngModel)]="messageText"
-              placeholder="Write your message..."
-              (keyup.enter)="sendMessage()"
-            />
+            <input [(ngModel)]="messageText" placeholder="Write your message..." (keyup.enter)="sendMessage()" />
             <button (click)="sendMessage()">Send</button>
           </div>
         </div>
