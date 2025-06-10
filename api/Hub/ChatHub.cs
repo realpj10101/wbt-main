@@ -11,6 +11,7 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
     private ITeamMessagingRepository _teamMessagingRepository;
 
     private static readonly ConcurrentDictionary<string, string> _onlineUsers = new();
+    private static readonly ConcurrentDictionary<string, DateTime> _lastSeenTimes = new();
     public ChatHub(ITeamMessagingRepository teamMessagingRepository)
     {
         _teamMessagingRepository = teamMessagingRepository;
@@ -22,6 +23,10 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
 
         _onlineUsers[userName] = Context.ConnectionId;
 
+        // If the user was previously marked as offline, remove their last seen time
+        // because they are now online.
+        _lastSeenTimes.TryRemove(userName, out _);
+
         // Notify clients that a user came online
         await Clients.All.SendAsync("UserOnline", userName);
 
@@ -30,15 +35,20 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
 
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        var user = _onlineUsers.FirstOrDefault(x => x.Value == Context.ConnectionId);
-        if (!string.IsNullOrEmpty(user.Key))
+        var userEntry = _onlineUsers.FirstOrDefault(user => user.Value == Context.ConnectionId);
+
+        // Check if a user was found for connection
+        if (!string.IsNullOrEmpty(userEntry.Key))
         {
-            _onlineUsers.TryRemove(user.Key, out _);
+            string userName = userEntry.Key;
 
-            // Store last seen time
+            // Remove the user from online users list
+            _onlineUsers.TryRemove(userName, out _);
+
             var lastSeen = DateTime.UtcNow;
+            _lastSeenTimes[userName] = lastSeen;
 
-            await Clients.All.SendAsync("UserOffline", user.Key.ToLowerInvariant(), lastSeen);
+            await Clients.All.SendAsync("UserOffline", userName.ToLowerInvariant(), lastSeen);
         }
 
         await base.OnDisconnectedAsync(exception);
@@ -57,9 +67,45 @@ public class ChatHub : Microsoft.AspNetCore.SignalR.Hub
         await Clients.All.SendAsync("ReceiveMessage", userName.ToLowerInvariant(), message, timeStamp);
     }
 
-    public Task<List<string>> GetOnlineUsers()
+    public Task<List<UserStatusDto>> GetOnlineUsers()
     {
-        var usersLowercase = _onlineUsers.Keys.Select(k => k.ToLowerInvariant()).ToList();
-        return Task.FromResult(usersLowercase);
+        var allKnownUsers = new HashSet<string>();
+
+        // Add all currentl online users to set
+        foreach (var userName in _onlineUsers.Keys)
+        {
+            allKnownUsers.Add(userName.ToLowerInvariant());
+        }
+
+        // Add users for whom we have a last seen time (they are currently offline)
+        foreach (var userName in _lastSeenTimes.Keys)
+        {
+            allKnownUsers.Add(userName.ToLowerInvariant());
+        }
+
+        var userStatuses = new List<UserStatusDto>();
+
+        // Iterate through all known users to build their status Dtos
+        foreach (var userName in allKnownUsers)
+        {
+            // Check if the user is currently in the online users dictionary
+            var isOnline = _onlineUsers.ContainsKey(userName);
+            DateTime? lastSeen = null;
+
+            // Check if user is not online, try get their last seen time from the _lastSeenTimes dictionary
+            if (!isOnline && _lastSeenTimes.TryGetValue(userName, out var storedLastSeen))
+            {
+                lastSeen = storedLastSeen;
+            }
+
+            userStatuses.Add(new UserStatusDto
+            {
+                UserName = userName,
+                IsOnline = isOnline,
+                LastSeen = lastSeen
+            });
+        }
+
+        return Task.FromResult(userStatuses);
     }
 }
