@@ -12,19 +12,18 @@
 
   <mat-menu #appMenu="matMenu" class="app-menu">
     @if (loggedInUserSig && loggedInUserSig(); as user) {
-      <div class="user-info">
-        @if (user.profilePhotoUrl) {
-        <img class="user-avatar-large" src="{{apiUrl + user.profilePhotoUrl}}"
-          alt="{{user.userName}}'s profile photo" />
-        }
-        @else {
-        <span class="user-initial-large">{{ user.userName[0] | titlecase }}</span>
-        }
-        <p class="username">{{ user.userName }}</p>
-      </div>
+    <div class="user-info">
+      @if (user.profilePhotoUrl) {
+      <img class="user-avatar-large" src="{{apiUrl + user.profilePhotoUrl}}" alt="{{user.userName}}'s profile photo" />
+      }
+      @else {
+      <span class="user-initial-large">{{ user.userName[0] | titlecase }}</span>
+      }
+      <p class="username">{{ user.userName }}</p>
+    </div>
     }
     <mat-divider></mat-divider>
-    <mat-nav-list>
+    <mat-list>
       <mat-list-item routerLink="user/user-edit" routerLinkActive="active-link" aria-label="Edit Profile">
         <mat-icon color="primary" aria-hidden="true">edit_note</mat-icon>
         <span>Edit Profile</span>
@@ -56,6 +55,6 @@
       <div class="logout">
         <button (click)="logout()" mat-raised-button aria-label="Logout">Logout</button>
       </div>
-    </mat-nav-list>
+    </mat-list>
   </mat-menu>
 </mat-toolbar>

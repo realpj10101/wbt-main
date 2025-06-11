@@ -110,6 +110,10 @@
         justify-content: space-evenly;
         gap: 5px;
 
+        .dislike {
+            color: red;
+        }
+
         .message {
             display: none;
             position: absolute;

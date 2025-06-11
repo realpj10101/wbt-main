@@ -86,15 +86,6 @@
             <div class="message">
               <div class="container">
                 <span class="user">{{ message.senderUserName }}:</span>
-
-                @if (getUserOnlineSignal(message.senderUserName)) {
-                <span class="status" style="color: green;">Online</span>
-                }
-                @else if(!getUserOnlineSignal(message.senderUserName)) {
-                <span class="status" style="color: red;">
-                  Offline (Last seen: {{ getLastSeen(message.senderUserName) }})
-                </span>
-                }
               </div>
               <span class="text">{{ message.message }}</span>
             </div>

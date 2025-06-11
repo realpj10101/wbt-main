@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, effect, ElementRef, inject, OnDestroy, OnInit, signal, Signal, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, computed, effect, ElementRef, inject, OnDestroy, OnInit, signal, Signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeamService } from '../../../services/team.service';
 import { environment } from '../../../../environments/environment.development';
@@ -120,29 +120,5 @@ export class TeamDetailsComponent implements OnInit, AfterViewChecked {
       this.teamMessagingService.sendMessage(currentUser.userName.toLowerCase(), this.messageText, teamName);
       this.messageText = '';
     }
-  }
-
-  isOnline(userName: string): boolean {
-    // console.log('Checking online status for:', userName);
-    let userOnlineStatus: boolean = this.teamMessagingService.isUserOnline(userName);
-
-    console.log(userOnlineStatus);
-
-    return userOnlineStatus;
-  }
-
-  getUserOnlineSignal(userName: string) {
-    return this.teamMessagingService.getUserStatusSignal(userName);
-  }
-
-  getLastSeen(userName: string): string {
-    const lastSeen = this.teamMessagingService.getLastSeen(userName);
-    console.log('Getting last seen for:', userName, 'Result:', lastSeen);
-    return lastSeen
-      ? new Intl.DateTimeFormat('en-Us', {
-        dateStyle: 'medium',
-        timeStyle: 'short'
-      }).format(lastSeen)
-      : 'Unknown'; // Default to 'Unknown' if lastSeen is undefined
   }
 }

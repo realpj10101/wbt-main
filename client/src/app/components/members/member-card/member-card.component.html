@@ -52,7 +52,6 @@
                 <mat-icon>person_remove</mat-icon>
             </button>
             }
-
             @if (!memberIn?.isLiking) {
             <button mat-mini-fab (click)="like()">
                 <mat-icon>favorite</mat-icon>
@@ -60,7 +59,7 @@
             }
             @else {
             <button mat-mini-fab (click)="dislike()">
-                <mat-icon color="warn">favorite</mat-icon>
+                <mat-icon class="dislike">favorite</mat-icon>
             </button>
             }
             <button mat-mini-fab [routerLink]="['/comment/' + memberIn?.userName]">
