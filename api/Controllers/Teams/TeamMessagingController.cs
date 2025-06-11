@@ -1,5 +1,7 @@
+using api.DTOs.Helpers;
 using api.Extensions;
 using api.Interfaces.Teams;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers.Teams;
 
@@ -40,5 +42,26 @@ public class TeamMessagingController(ITeamMessagingRepository _teamMessagingRepo
         }
 
         return Ok(messagesRes);
+    }
+
+    [Authorize(Roles = "coach")]
+    [HttpDelete("delete-chats/{teamName}")]
+    public async Task<ActionResult<Response>> DeleteChats(string teamName, CancellationToken cancellationToken)
+    {
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
+
+        if (userId is null)
+            return Unauthorized("You are not logged in. Please login again.");
+
+        OperationResult? opResult = await _teamMessagingRepository.DeleteAllMessagesAsync(teamName, cancellationToken);
+
+        return opResult.IsSuccess
+            ? Ok(new Response(Message: "Chats delted successfully"))
+            : opResult.Error.Code switch
+            {
+                ErrorCode.TeamNotFound => BadRequest(opResult.Error.Message),
+                ErrorCode.ChatNotFound => BadRequest(opResult.Error.Message),
+                _ => BadRequest("Something went wrong.")
+            };
     }
 }

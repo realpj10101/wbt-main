@@ -15,5 +15,6 @@ public enum ErrorCode
     IsRefreshTokenExpired,
     IsSessionExpired,
     TeamNotFound,
-    IsNotCaptain
+    IsNotCaptain,
+    ChatNotFound
 }
