@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using api.Extensions;
 using api.Hub;
 using api.Middleware;
+using api.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 

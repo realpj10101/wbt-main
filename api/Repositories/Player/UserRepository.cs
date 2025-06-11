@@ -137,6 +137,12 @@ public class UserRepository : IUserRepository
             cancellationToken);
     }
 
+    public async Task<string?> GetUserNameByIdentifierHashAsync(
+        string identifierHash, CancellationToken cancellationToken
+    ) =>
+        await _collection.AsQueryable().Where(appUser => appUser.IdentifierHash == identifierHash)
+            .Select(appUser => appUser.NormalizedUserName).SingleOrDefaultAsync(cancellationToken);
+
     public Task<AppUser?> GetByIdentifierHashAsync(string identifierHash, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

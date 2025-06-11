@@ -118,7 +118,8 @@ public static class Mappers
         );
     }
 
-    public static Comment ConvertCommentIdsToComment(ObjectId commenterId, ObjectId commentedId, string commenterName, string commentedMemberName, string content)
+    public static Comment ConvertCommentIdsToComment(ObjectId commenterId, ObjectId commentedId, string commenterName,
+        string commentedMemberName, string content)
     {
         return new Comment(
             CommenterId: commenterId,
@@ -127,7 +128,7 @@ public static class Mappers
             CommentedMemberName: commentedMemberName,
             Content: content,
             CreatedAt: DateTime.Now
-            );
+        );
     }
 
     public static Team ConvertCreateTeamDtoToTeam(ObjectId userId, CreateTeamDto userInput)
@@ -195,7 +196,7 @@ public static class Mappers
 
         return new EnrolledTeam(
             TeamId: team.Id
-            );
+        );
     }
 
     public static UserCommentDto ConvertCommentToUserCommentDto(Comment comment)
@@ -218,4 +219,13 @@ public static class Mappers
             TimeStamp: DateTime.UtcNow
         );
     }
+
+    public static OnlineUserDto ConvertAppUserToOnlineStatusDto(AppUser appUser) =>
+        new(
+            appUser.NormalizedUserName
+            ?? throw new ArgumentNullException(
+                nameof(appUser.NormalizedUserName), "NormalizedUserName cannot be null."
+            ),
+            appUser.LastActive
+        );
 }
