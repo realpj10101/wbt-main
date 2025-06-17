@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   constructor() {
     this.setBreakpointObserver();
   }
-
+  
   ngOnInit(): void {
     this.initUserOnPageRefresh();
   }

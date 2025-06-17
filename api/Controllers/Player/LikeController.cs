@@ -27,7 +27,7 @@ public class LikeController(
             : lS.IsAlreadyLiked
             ? BadRequest($"{targetMemberUserName} is already liked.")
             : BadRequest("Liking failed. Please try again or contact the administrator.");
-    }
+    }   
     
     // remove like
     [HttpDelete("remove/{targetMemberUserName}")]

@@ -17,10 +17,10 @@ export class LikeService {
 
   private paginationHandler = new PaginationHandler();
 
-  private readonly _apiUrl = environment.apiUrl + 'api/like/';
+  private readonly _apiUrl = environment.apiUrl + 'api/like/';  
 
-  create(targetMemberUserName: string): Observable<ApiResponse> {
-    return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetMemberUserName, null);
+  create(targetAudioName: string): Observable<ApiResponse> {
+    return this._http.post<ApiResponse>(this._apiUrl + 'add' + targetAudioName, null);
   }
 
   delete(unfollowedMember: string): Observable<ApiResponse> {

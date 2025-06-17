@@ -14,8 +14,6 @@ public class TokenService : ITokenService
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
         _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
-        // _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionCoaches);
-        // _collection = database.GetCollection<RootModel>(AppVariablesExtensions.collectionTeams);
 
         string? tokenValue = config.GetValue<string>(AppVariablesExtensions.TokenKey);
 

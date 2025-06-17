@@ -46,7 +46,7 @@ public class MemberRepository : IMemberRepository
         
         if (!string.IsNullOrEmpty(memberParams.Gender))
             query = query.Where(doc => doc.Gender == memberParams.Gender);
-
+    
         if (!string.IsNullOrEmpty(memberParams.Search))
         {
             query = query.Where(doc =>

@@ -26,6 +26,7 @@ import { CoachPanelComponent } from './components/coach-panel/coach-panel.compon
 import { authLoggedInGuard } from './guards/auth-logged-in.guard';
 import { authGuard } from './guards/auth.guard';
 import { preventUnsavedChangesGuard } from './guards/prevent-unsaved-changes.guard';
+import { OnlineUsersComponent } from './components/online-users/online-users.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -50,6 +51,7 @@ export const routes: Routes = [
       { path: 'choose', component: ChooseComponent },
       { path: 'users', component: UsersComponent },
       { path: 'coach-panel', component: CoachPanelComponent },
+      { path: 'online-users', component: OnlineUsersComponent }
     ]
   },
   {

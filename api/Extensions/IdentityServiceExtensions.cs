@@ -59,12 +59,6 @@ public static class IdentityServiceExtensions
             .AddSignInManager<SignInManager<AppUser>>()
             .AddRoleManager<RoleManager<AppRole>>()
             .AddDefaultTokenProviders();
-
-            // services.ConfigureMongoDbIdentity<Coach, AppRole, ObjectId>(mongodbIdentityConfig)
-            // .AddUserManager<UserManager<Coach>>()
-            // .AddSignInManager<SignInManager<Coach>>()
-            // .AddRoleManager<RoleManager<AppRole>>()
-            // .AddDefaultTokenProviders();
         }
         #endregion MongoIdentity & Role
         

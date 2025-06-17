@@ -113,15 +113,4 @@ export class AccountService {
         localStorage.removeItem('returnUrl');
     }
   }
-
-  // loadLoggedInUserFromStorage(): void {
-  //   if (isPlatformBrowser(this.platformId)) {
-  //     const userJson = localStorage.getItem('loggedInUser');
-  //     if (userJson) {
-  //       const user = JSON.parse(userJson) as LoggedInUser;
-  //       this.setLoggedInPlayerRoles(user);
-  //       this.loggedInUserSig.set(user);
-  //     }
-  //   }
-  // }
 }

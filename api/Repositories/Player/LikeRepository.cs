@@ -15,7 +15,7 @@ public class LikeRepository : ILikeRepository
     private readonly ITokenService _tokenService;
     private readonly IMongoCollection<AppUser> _collectionUsers;
     private readonly IUserRepository _playerUserRepository;
-    private readonly ILogger<LikeRepository> _logger;
+    private readonly ILogger<LikeRepository> _logger;   
 
     public LikeRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings, ITokenService tokenService,
@@ -67,7 +67,7 @@ public class LikeRepository : ILikeRepository
         using IClientSessionHandle session = await _client.StartSessionAsync(null, cancellationToken);
 
         session.StartTransaction();
-
+                                    
         try
         {
             await _collection.InsertOneAsync(session, like, null, cancellationToken);

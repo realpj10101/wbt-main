@@ -1,0 +1,19 @@
+<section class="container">
+    <h2 class="title">Online Users</h2>
+  
+    @if (onlineUsers().length === 0) {
+      <div class="empty-message">No User is online</div>
+    } @else {
+      <ul class="user-list">
+        @for (user of onlineUsers(); track user.userName) {
+          <li class="user-item">
+            <span class="status-icon">🟢</span>
+            <span class="user-name">{{ user.userName }}</span>
+            <span class="last-active">
+              ( Last Seen: {{ user.lastActive | date: 'short' }})
+            </span>
+          </li>
+        }
+      </ul>
+    }
+  </section>
