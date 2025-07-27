@@ -17,15 +17,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSliderModule } from '@angular/material/slider';
 
 @Component({
-    selector: 'app-member-list',
-    imports: [
-        CommonModule,
-        MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
-        MatButtonModule, MatSliderModule,
-        MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
-    ],
-    templateUrl: './member-list.component.html',
-    styleUrl: './member-list.component.scss'
+  selector: 'app-member-list',
+  imports: [
+    CommonModule,
+    MatPaginatorModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+    MatButtonModule, MatSliderModule,
+    MemberCardComponent, FormsModule, ReactiveFormsModule, RouterModule
+  ],
+  templateUrl: './member-list.component.html',
+  styleUrl: './member-list.component.scss'
 })
 export class MemberListComponent implements OnInit, OnDestroy {
   memberService = inject(MemberService);
@@ -39,7 +39,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
   orderOptions: string[] = ['lastAcitve', 'created', 'age'];
   orderOptionsView: string[] = ['Last Active', 'Created', 'Age'];
   minAge: number = 6;
-  maxAge: number = 99;  
+  maxAge: number = 99;
 
   private _fB = inject(FormBuilder);
 
@@ -82,7 +82,7 @@ export class MemberListComponent implements OnInit, OnDestroy {
         next: (response: PaginatedResult<Member[]>) => {
           if (response.body && response.pagination) {
             console.log(response);
-            
+
             this.members = response.body;
             this.pagination = response.pagination;
           }
@@ -104,20 +104,19 @@ export class MemberListComponent implements OnInit, OnDestroy {
   }
 
   updateMemberParams(): void {
-    if (this.memberParams) {      
+    if (this.memberParams) {
       this.memberParams.search = this.SearchCtrl.value;
       this.memberParams.orderBy = this.OrderByCtrl.value;
       this.memberParams.minAge = this.MinAgeCtrl.value;
       this.memberParams.maxAge = this.MaxAgeCtrl.value;
     }
-    
+
     console.log(this.memberParams?.search);
-    
   }
 
   isAnyFilterApplied(): boolean {
-    return this.OrderByCtrl.value === this.memberParams?.orderBy 
-    && (this.SearchCtrl.pristine || this.SearchCtrl.value.length < 1)
+    return this.OrderByCtrl.value === this.memberParams?.orderBy
+      && (this.SearchCtrl.pristine || this.SearchCtrl.value.length < 1)
   }
 
   reset(): void {

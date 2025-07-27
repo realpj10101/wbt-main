@@ -212,7 +212,7 @@ public static class Mappers
     public static ChatMessage ConvertMessageSenderDtoToChatMessageDto(MessageSenderDto sender, ObjectId? teamId)
     {
         return new ChatMessage(
-            Id: null,
+            Id: ObjectId.GenerateNewId(),
             TeamId: teamId,
             SenderUserName: sender.SenderUserName,
             Message: sender.Message,

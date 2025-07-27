@@ -20,7 +20,7 @@ export class LikeService {
   private readonly _apiUrl = environment.apiUrl + 'api/like/';  
 
   create(targetAudioName: string): Observable<ApiResponse> {
-    return this._http.post<ApiResponse>(this._apiUrl + 'add' + targetAudioName, null);
+    return this._http.post<ApiResponse>(this._apiUrl + 'add/' + targetAudioName, null);
   }
 
   delete(unfollowedMember: string): Observable<ApiResponse> {

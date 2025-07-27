@@ -48,7 +48,6 @@ export const routes: Routes = [
       { path: 'create-team', component: CreateTeamComponent },
       { path: 'teams', component: TeamListComponent },
       { path: 'team-details/:teamName', component: TeamDetailsComponent },
-      { path: 'choose', component: ChooseComponent },
       { path: 'users', component: UsersComponent },
       { path: 'coach-panel', component: CoachPanelComponent },
       { path: 'online-users', component: OnlineUsersComponent }
@@ -63,6 +62,8 @@ export const routes: Routes = [
       { path: 'account/login', component: LoginComponent },
       { path: 'coachaccount/register', component: RegisterCoachComponent },
       { path: 'coachaccount/login', component: LoginCoachComponent },
+      { path: 'choose', component: ChooseComponent },
+
     ]
   },
   { path: 'server-error', component: ServerErrorComponent },

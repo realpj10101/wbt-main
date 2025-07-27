@@ -15,16 +15,16 @@ import { AutoFocusDirective } from '../../../directives/auto-focus.directive';
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-register',
-    imports: [
-        CommonModule, FormsModule, ReactiveFormsModule,
-        MatFormFieldModule, MatInputModule, MatButtonModule,
-        MatSnackBarModule, MatRadioModule,
-        MatDatepickerModule, MatNativeDateModule,
-        AutoFocusDirective, RouterLink
-    ],
-    templateUrl: './register.component.html',
-    styleUrl: './register.component.scss'
+  selector: 'app-register',
+  imports: [
+    CommonModule, FormsModule, ReactiveFormsModule,
+    MatFormFieldModule, MatInputModule, MatButtonModule,
+    MatSnackBarModule, MatRadioModule,
+    MatDatepickerModule, MatNativeDateModule,
+    AutoFocusDirective, RouterLink
+  ],
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registerPlayerService = inject(AccountService);
