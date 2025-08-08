@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID, Signal } from '@angular/core';
 import { environment } from '../../../../environments/environment.development';
 import { Member } from '../../../models/member.model';
 import { MemberService } from '../../../services/member.service';
@@ -26,6 +26,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 import { MatSelectModule } from '@angular/material/select';
 import { CommonService } from '../../../services/common.service';
+import { AccountService } from '../../../services/account.service';
 
 @Component({
     selector: 'app-user-edit',
@@ -38,12 +39,15 @@ import { CommonService } from '../../../services/common.service';
     templateUrl: './user-edit.component.html',
     styleUrl: './user-edit.component.scss'
 })
-export class UserEditComponent {
+export class UserEditComponent implements OnInit {
   apiUrl = environment.apiUrl;
   member: Member | undefined;
+  loggedInUserSig: Signal<LoggedInUser | null> | undefined;
+
   readonly maxTextAreaChars: number = 1000;
   readonly minInputCahrs: number = 1;
   readonly maxInpuChars: number = 50;
+  private _accountService = inject(AccountService);
   private _memberService = inject(MemberService);
   private _userService = inject(UserService);
   private platFormId = inject(PLATFORM_ID);
@@ -143,6 +147,8 @@ export class UserEditComponent {
   }
 
   ngOnInit(): void {
+    this.loggedInUserSig = this._accountService.loggedInUserSig;
+
     this.getMember();
   }
 

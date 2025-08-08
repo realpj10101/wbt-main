@@ -1,7 +1,12 @@
 <section class="contents">
     <div class="left">
         <div class="top">
+            @if (loggedInUserSig && loggedInUserSig(); as user) {
+            <img src="{{apiUrl + user.profilePhotoUrl}}" height="250px" width="250px" alt="">
+            }
+            @else {
             <img src="member.png" alt="" height="250px" width="250px">
+            }
             @switch (member?.gender) {
             @case ('male') {
             <mat-icon>boy</mat-icon>
@@ -31,7 +36,8 @@
                 <strong>Games Played</strong>
                 <p>{{member?.gamesPlayed}}</p>
             </div>
-            <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid || !checkIsAnyValueChanged()" mat-raised-button>Save
+            <button type="submit" (click)="updatePlayer()" [disabled]="userEditFg.invalid || !checkIsAnyValueChanged()"
+                mat-raised-button>Save
                 changes</button>
         </div>
     </div>

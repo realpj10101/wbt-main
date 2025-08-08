@@ -9,12 +9,12 @@ export const authLoggedInGuard: CanActivateFn = (route, state) => {
   const platformId = inject(PLATFORM_ID);
 
   if (isPlatformBrowser(platformId)) {
-    
+
     if (localStorage.getItem('loggedInUser')) {
 
       router.navigate(['members']);
 
-      snackbar.open('You are already logged in.', 'Close', { horizontalPosition: 'center', duration: 7000})
+      snackbar.open('You are already logged in.', 'Close', { horizontalPosition: 'center', duration: 7000 })
 
       return false; // block the component
     }
