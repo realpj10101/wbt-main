@@ -38,6 +38,8 @@ public static class RepositoryServiceExtensions
 
         #endregion
 
+        services.AddScoped<IVideoService, VideoService>();
+
         return services;
     }
 }

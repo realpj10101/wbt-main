@@ -12,10 +12,10 @@ public class UserController(IUserRepository _userRepository, ITokenService _toke
     public async Task<ActionResult> UpdatePlayer(UserUpdateDto userUpdateDto, CancellationToken cancellationToken)
     {
         ObjectId? userId = await _tokenService.GetActualUserIdAsync(User.GetHashedUserId(), cancellationToken);
-        
+
         if (userId is null)
             return Unauthorized("You are not logged in. Please login again.");
-        
+
         UpdateResult? updateResult = await _userRepository.UpdatePlayerAsync(userUpdateDto, User.GetHashedUserId(), cancellationToken);
 
         return updateResult is null || !updateResult.IsModifiedCountAvailable
@@ -76,5 +76,22 @@ public class UserController(IUserRepository _userRepository, ITokenService _toke
             ? BadRequest("Photo deletion failed. Try again later. if the issue persists, please contact the administrator.")
             : Ok(new { message = "Photo deleted successfully." });
     }
+    #endregion
+
+    #region Video management
+
+    [HttpPost("upload-video")]
+    public async Task<ActionResult<Video>> UploadVideo(
+        [AllowedFileExtensions, FileSize(1_000_000, 100_000_000)]
+        IFormFile file, CancellationToken cancellationToken
+    )
+    {
+        if (file is null) return BadRequest("No file selected with this request");
+        
+        Video? video = await _userRepository.UploadVideoAsync(file, User.GetHashedUserId(), cancellationToken);
+        
+        return video is null ? BadRequest("Upload video failed. See logger.") : video;
+    }
+
     #endregion
 }

@@ -54,6 +54,61 @@ public class AllowedFileExtensionsAttribute : ValidationAttribute
                 new byte[] { 0xFF, 0xD8, 0xFF, 0xDB },
             }
         },
+        // MP4 (ISO Base Media file format)
+        { ".mp4", new List<byte[]>
+            {
+                new byte[] { 0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70 }, // ftyp
+                new byte[] { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70 },
+            }
+        },
+
+        // MOV (QuickTime)
+        { ".mov", new List<byte[]>
+            {
+                new byte[] { 0x00, 0x00, 0x00, 0x14, 0x66, 0x74, 0x79, 0x70 }, 
+            }
+        },
+
+        // AVI
+        { ".avi", new List<byte[]>
+            {
+                new byte[] { 0x52, 0x49, 0x46, 0x46 }, // "RIFF"
+            }
+        },
+
+        // MKV / WebM (Matroska)
+        { ".mkv", new List<byte[]>
+            {
+                new byte[] { 0x1A, 0x45, 0xDF, 0xA3 }, // Matroska header
+            }
+        },
+        { ".webm", new List<byte[]>
+            {
+                new byte[] { 0x1A, 0x45, 0xDF, 0xA3 }, // همون امضای Matroska
+            }
+        },
+
+        // FLV (Flash Video)
+        { ".flv", new List<byte[]>
+            {
+                new byte[] { 0x46, 0x4C, 0x56, 0x01 }, // "FLV" + version
+            }
+        },
+
+        // WMV (ASF container)
+        { ".wmv", new List<byte[]>
+            {
+                new byte[] { 0x30, 0x26, 0xB2, 0x75, 0x8E, 0x66, 0xCF, 0x11 },
+            }
+        },
+
+        // 3GP (mobile video format, based on ISO Base Media)
+        { ".3gp", new List<byte[]>
+            {
+                new byte[] { 0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70 }, 
+            }
+        },
+
         // { ".jpeg2000", new List<byte[]> { new byte[] { 0x00, 0x00, 0x00, 0x0C, 0x6A, 0x50, 0x20, 0x20, 0x0D, 0x0A, 0x87, 0x0A } } },
         { ".png", new List<byte[]> { new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A } } },
         // { ".gif", new List<byte[]> { new byte[] { 0x47, 0x49, 0x46, 0x38 } } },
