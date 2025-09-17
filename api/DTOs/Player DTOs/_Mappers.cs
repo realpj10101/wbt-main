@@ -228,4 +228,10 @@ public static class Mappers
             ),
             appUser.LastActive
         );
+
+    public static Video ConvertVideoUrlToVideo(string videoUrl) =>
+        new(
+            FilePath: videoUrl,
+            UploadedAt: DateTime.UtcNow
+        );
 }

@@ -41,6 +41,7 @@ public class AppUser : MongoIdentityUser<ObjectId>
     public bool IsInTeam { get; set; }
     public bool IsAccepted { get; init; }
     public List<Photo> Photos { get; init; } = [];
+    public List<Video> Videos { get; init; } = [];
     public ObjectId? EnrolledTeam { get; set; }
     public List<string> ConnectionsPresence { get; set; } = []; 
     public int FollowingsCount { get; init; }

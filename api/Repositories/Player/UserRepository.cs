@@ -13,17 +13,19 @@ public class UserRepository : IUserRepository
     private readonly ILogger<UserRepository> _logger;
     private readonly ITokenService _tokenService;
     private readonly IPhotoService _photoService;
+    private readonly IVideoService _videoService;
 
     public UserRepository(
         IMongoClient client, IMyMongoDbSettings dbSettings,
         ILogger<UserRepository> logger, ITokenService tokenService,
-        IPhotoService photoService)
+        IPhotoService photoService, IVideoService videoService)
     {
         var database = client.GetDatabase(dbSettings.DatabaseName);
         _collection = database.GetCollection<AppUser>(AppVariablesExtensions.CollectionUsers);
         _logger = logger;
         _tokenService = tokenService;
         _photoService = photoService;
+        _videoService = videoService;
     }
 
     #endregion
@@ -261,6 +263,44 @@ public class UserRepository : IUserRepository
             .PullFilter(appUser => appUser.Photos, photo => photo.Url_165 == url_165_In);
 
         return await _collection.UpdateOneAsync<AppUser>(appUser => appUser.Id == playerId, update, null, cancellationToken);
+    }
+
+    public async Task<Video?> UploadVideoAsync(IFormFile file, string? hashedUserId, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(hashedUserId)) return null;
+
+        ObjectId? userId = await _tokenService.GetActualUserIdAsync(hashedUserId, cancellationToken);
+        
+        if (userId is null) return null;
+
+        AppUser? appUser = await GetByIdAsync(userId.Value, cancellationToken);
+        if (appUser is null)
+        {
+            _logger.LogError("AppUser is null");
+
+            return null;
+        }
+        
+        string? videoUrl = await _videoService.SaveVideoToDiskAsync(file, userId.Value);
+        if (videoUrl is not null)
+        {
+            Video? video;
+            
+            video = Mappers.ConvertVideoUrlToVideo(videoUrl);
+            
+            appUser.Videos.Add(video);
+            
+            var updatedUser = Builders<AppUser>.Update
+                .Set(doc => doc.Videos, appUser.Videos);
+            
+            UpdateResult updateResult = await 
+                _collection.UpdateOneAsync(doc => doc.Id == userId, updatedUser, null, cancellationToken);
+            
+            return updateResult.ModifiedCount == 1 ? video : null;
+        }
+        
+        _logger.LogError("VideoService saving video to disk failed");
+        return null;
     }
 
     #endregion

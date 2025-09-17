@@ -11,4 +11,5 @@ public interface IUserRepository
     public Task<Photo?> UploadPhotoAsync(IFormFile file, string? hashedUserId, CancellationToken cancellationToken);
     public Task<UpdateResult?> SetMainPhotoAsync(string hashedUserId, string photoUrlIn, CancellationToken cancellationToken);
     public Task<UpdateResult?> DeletePhotoAsync(string hashedUserId, string? urlIn, CancellationToken cancellationToken);
+    public Task<Video?> UploadVideoAsync(IFormFile file, string? hashedUserId, CancellationToken cancellationToken);
 }
