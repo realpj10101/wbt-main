@@ -26,6 +26,7 @@ public record PlayerDto(
     string Region,
     string Country,
     List<Photo> Photos,
+    List<Video> Videos,
     bool IsFollowing,
     bool IsCaptain,
     bool IsLiking,  

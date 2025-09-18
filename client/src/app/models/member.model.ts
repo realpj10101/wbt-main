@@ -1,4 +1,5 @@
 import { Photo } from "./photo.model"
+import { Video } from "./video.mode";
 
 export interface Member {
     userName: string;
@@ -23,6 +24,7 @@ export interface Member {
     region: string;
     country: string;
     photos: Photo[];
+    videos: Video[];
     isFollowing: boolean;
     isCaptain: boolean;
     isLiking: boolean;

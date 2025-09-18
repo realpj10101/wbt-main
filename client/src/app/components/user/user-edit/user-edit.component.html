@@ -50,6 +50,11 @@
                     <app-photo-editor [memberInput]="member" />
                 </div>
             </mat-tab>
+            <mat-tab label="Edit Videos">
+                <div class="tab-contents">
+                    <app-video-editor [memberInput]="member"/>
+                </div>
+            </mat-tab>
             <form [formGroup]="userEditFg">
                 <mat-tab label="Professional Details">
                     <div class="form-groups">

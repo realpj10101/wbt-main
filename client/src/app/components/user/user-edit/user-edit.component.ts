@@ -27,15 +27,17 @@ import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 import { MatSelectModule } from '@angular/material/select';
 import { CommonService } from '../../../services/common.service';
 import { AccountService } from '../../../services/account.service';
+import { VideoEditorComponent } from "../video-editor/video-editor.component";
 
 @Component({
     selector: 'app-user-edit',
     imports: [
-        MatCardModule, MatIconModule, MatButtonModule,
-        MatTabsModule, MatFormFieldModule, MatInputModule,
-        MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule,
-        PhotoEditorComponent, MatSelectModule
-    ],
+    MatCardModule, MatIconModule, MatButtonModule,
+    MatTabsModule, MatFormFieldModule, MatInputModule,
+    MatDividerModule, MatRadioModule, ReactiveFormsModule, FormsModule,
+    PhotoEditorComponent, MatSelectModule,
+    VideoEditorComponent
+],
     templateUrl: './user-edit.component.html',
     styleUrl: './user-edit.component.scss'
 })

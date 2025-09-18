@@ -1,0 +1,13 @@
+<div class="card">
+
+    <img class="poster" src="ball-2.png" alt="{{alt}}" loading="lazy" decoding="async">
+
+    <video #videEl src="{{videoSrc}}" preload="metadata" playsInline muted controls>
+    </video>
+
+    <button type="button" class="play" (click)="play(videEl)" aria-label="Play">  
+        ▶
+    </button>
+
+    <span class="ring"></span>
+</div>

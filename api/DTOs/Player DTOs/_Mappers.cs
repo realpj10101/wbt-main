@@ -69,6 +69,7 @@ public static class Mappers
             Region: appUser.Region,
             Country: appUser.Country,
             Photos: appUser.Photos,
+            Videos: appUser.Videos,
             IsFollowing: isFollowing,
             IsCaptain: appUser.IsCaptain,
             IsLiking: isLiking,
