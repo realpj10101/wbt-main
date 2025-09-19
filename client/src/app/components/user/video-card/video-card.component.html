@@ -1,13 +1,26 @@
-<div class="card">
+<div class="video-wrapper">
+    <video #player src="{{videoSrc}}" (loadedmetadata)="onLoadedMetaData()" (timeupdate)="onTimeUpdate()"></video>
 
-    <img class="poster" src="ball-2.png" alt="{{alt}}" loading="lazy" decoding="async">
-
-    <video #videEl src="{{videoSrc}}" preload="metadata" playsInline muted controls>
-    </video>
-
-    <button type="button" class="play" (click)="play(videEl)" aria-label="Play">  
-        ▶
+    <button mat-mini-fab class="play-btn" (click)="togglePlay()">
+        @if (isPlaying) {
+        <mat-icon>pause</mat-icon>
+        }
+        @else {
+        <mat-icon>play_arrow</mat-icon>
+        }
     </button>
 
-    <span class="ring"></span>
+    <div class="controls">
+        <span class="time">{{ formatTime(currentTime) }}</span>
+
+        <input class="seek" type="range" [min]="0" [max]="duration" [step]="0.1"
+            [value]="seeking ? seekPreviewTime : currentTime" (input)="onSeekInput($event)"
+            (change)="onSeekCommit($event)" (mousedown)="seeking = true" (touchstart)="seeking = true">
+
+
+        <button mat-mini-fab class="fullscreen-btn" (click)="toggleFullScreen()">
+            <mat-icon>fullscreen</mat-icon>
+        </button>
+    </div>
+
 </div>

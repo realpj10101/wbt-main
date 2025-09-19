@@ -1,9 +1,13 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Input, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-video-card',
   standalone: true,
-  imports: [],
+  imports: [
+    MatIconModule, MatButtonModule
+  ],
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss'
 })
@@ -12,44 +16,90 @@ export class VideoCardComponent {
   @Input() posterSrc: string | undefined;
   @Input() alt = 'preview';
 
-  @HostBinding('class.is-playing') isPlaying = false;
-
+  isPlaying = false;
   duration = 0;
   currentTime = 0;
-  buffered = 0;
-  progress = 0;
-  volume = 0.8;
-  muted = false;
-  showControls = false;
+  seeking = false;
+  seekPreviewTime = 0;
+  bufferPercent = 0;
+  hoverVisible = false;
+  thumbVisible = false;
+  hoverX = 0;
+  thumbX = 0;
+  hoverTime = 0;
 
-  private _isScrubbing = false;
+  private _dragging = false;
+  private _thumbMetaReady = false;
+  private _thumbSeekScheduled = false;
+  private _pendingThumbTime = 0;
 
-  formatTime(sec: number): string {
-    if (!isFinite(sec)) return '00:00';
-    const second = Math.floor(sec % 60).toString().padStart(2, '0');
-    const minute = Math.floor((sec / 60)).toString().padStart(2, '0');
-    const hour = Math.floor(sec / 3600);
-    return hour > 0 ? `${hour}:${minute}:${second}` : `${minute}:${second}`;
+  get PlayedPercent() {
+    return this.duration ? (this.currentTime / this.duration) * 100 : 0;
   }
 
-  play(video: HTMLVideoElement): void {
-    this.isPlaying = true;
-    video.muted = this.muted;
-    video.volume = this.volume;
-    video.playsInline = true;
+  @ViewChild('player') playerRef!: ElementRef<HTMLVideoElement>;
+  @ViewChild('thumbVideo') thumbVideoRef!: ElementRef<HTMLVideoElement>;
 
-    video.play().catch(() => { })
+  togglePlay(): void {
+    const video = this.playerRef.nativeElement;
+
+    if (video.paused) {
+      video.play();
+      this.isPlaying = true;
+    }
+    else {
+      video.pause();
+      this.isPlaying = false;
+    }
   }
 
-  pause(video: HTMLVideoElement): void {
-    this.isPlaying = false;
-    video.pause();
+  toggleFullScreen(): void {
+    const video = this.playerRef.nativeElement;
+
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    }
+    else if ((video as any).webkitRequestFullscreen) { // For safary
+      (video as any).webkitRequestFullscreen();
+    }
+    else if ((video as any).msRequestFullscreen) { // For IE
+      (video as any).msRequestFullscreen();
+    }
   }
 
-  reset(video: HTMLVideoElement): void {
-    this.pause(video);
-    video.currentTime = 0;
+  onLoadedMetaData(): void {
+    const video = this.playerRef.nativeElement;
+
+    this.duration = video.duration || 0;
   }
 
-  // onLoadMetaData(vide: Html)
+  onTimeUpdate(): void {
+    if (!this.seeking) {
+      this.currentTime = this.playerRef.nativeElement.currentTime || 0;
+    }
+  }
+
+  onSeekInput(event: Event): void {
+    const value = Number((event.target as HTMLInputElement).value);
+
+    this.seekPreviewTime = value;
+  }
+
+  onSeekCommit(event: Event): void {
+    const v = this.playerRef.nativeElement;
+    const value = Number((event.target as HTMLInputElement).value);
+
+    v.currentTime = value;
+    this.currentTime = value;
+    this.seeking = false;
+  }
+
+  formatTime(second: number): string {
+    if (!isFinite(second)) return '0:00';
+
+    const minute = Math.floor(second / 60);
+    const sec = Math.floor(second % 60);
+
+    return `${minute}:${sec.toString().padStart(2, '0')}`;
+  }
 }
