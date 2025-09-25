@@ -1,5 +1,6 @@
 <div class="video-wrapper">
-    <video #player src="{{videoSrc}}" (loadedmetadata)="onLoadedMetaData()" (timeupdate)="onTimeUpdate()"></video>
+    <video #player src="{{videoSrc}}" (loadedmetadata)="onLoadedMetaData()" (timeupdate)="onTimeUpdate()"
+        (progress)="onProgress()" (volumechange)="onVolumeChange()"></video>
 
     <button mat-mini-fab class="play-btn" (click)="togglePlay()">
         @if (isPlaying) {
@@ -13,10 +14,21 @@
     <div class="controls">
         <span class="time">{{ formatTime(currentTime) }}</span>
 
+        <div class="volume">
+            <button mat-mini-fab class="mute-btn" [attr.aria-label]="muted || volume === 0 ? 'Unmute' : 'Mute'"
+                (click)="toggleMute()">
+                <mat-icon>
+                    {{ (muted || volume === 0) ? 'volume_off' : (volume < 0.5 ? 'volume_down' : 'volume_up' ) }}
+                        </mat-icon>
+            </button>
+
+            <input class="volume-range" type="range" min="0" max="1" step="0.01" [value]="volume"
+                (input)="onVolumeInput($event)" />
+        </div>
+
         <input class="seek" type="range" [min]="0" [max]="duration" [step]="0.1"
             [value]="seeking ? seekPreviewTime : currentTime" (input)="onSeekInput($event)"
             (change)="onSeekCommit($event)" (mousedown)="seeking = true" (touchstart)="seeking = true">
-
 
         <button mat-mini-fab class="fullscreen-btn" (click)="toggleFullScreen()">
             <mat-icon>fullscreen</mat-icon>

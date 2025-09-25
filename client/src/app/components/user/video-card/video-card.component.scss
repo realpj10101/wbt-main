@@ -32,7 +32,7 @@
         position: absolute;
         inset: auto 0 0 0;
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: auto auto 1fr auto;
         gap: .5rem;
         align-items: center;
         padding: .5rem .75rem;
@@ -40,6 +40,65 @@
         opacity: 0;
         pointer-events: none;
         transition: .2s;
+
+        .volume {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            min-width: 0; 
+
+            .mute-btn {
+                background: rgba(0, 0, 0, .4);
+                color: #fff;
+                transition: .2s;
+            }
+
+            .mute-btn:hover {
+                background: rgba(0, 0, 0, .6);
+            }
+
+            .volume-range {
+                width: 110px;
+                appearance: none;
+                height: 4px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, .35);
+                outline: none;
+                transition: width .2s ease, opacity .2s ease;
+            }
+
+            .volume-range::-webkit-slider-thumb {
+                appearance: none;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #fff;
+                border: none;
+                box-shadow: 0 0 0 4px rgba(255, 255, 255, .25);
+            }
+
+            .volume-range::-moz-range-thumb {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #fff;
+                border: none;
+                box-shadow: 0 0 0 4px rgba(255, 255, 255, .25);
+            }
+
+            @media (max-width: 640px) {
+                .volume-range {
+                    width: 0;
+                    opacity: 0;
+                }
+
+                &:hover .volume-range,
+                .volume-range:focus-visible {
+                    width: 110px;
+                    opacity: 1;
+                }
+            }
+        }
 
         .time {
             font: 500 12px/1.2 system-ui, sans-serif;

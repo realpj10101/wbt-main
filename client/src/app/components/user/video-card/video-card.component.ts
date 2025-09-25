@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss'
 })
-export class VideoCardComponent implements OnDestroy {
+export class VideoCardComponent  {
   @Input() videoSrc: string | undefined;
   @Input() posterSrc: string | undefined;
   @Input() alt = 'preview';
@@ -27,11 +27,14 @@ export class VideoCardComponent implements OnDestroy {
   hoverX = 0;
   thumbX = 0;
   hoverTime = 0;
+  volume = 1;
+  muted = false;
 
   private _dragging = false;
   private _thumbMetaReady = false;
   private _thumbSeekScheduled = false;
   private _pendingThumbTime = 0;
+  private _lastNonZeroVolume = 1;
 
   get PlayedPercent() {
     return this.duration ? (this.currentTime / this.duration) * 100 : 0;
@@ -41,13 +44,6 @@ export class VideoCardComponent implements OnDestroy {
   @ViewChild('thumbVideo') thumbVideoRef!: ElementRef<HTMLVideoElement>;
   @ViewChild('seekWrap') seekWrapRef!: ElementRef<HTMLElement>;
   @ViewChild('thumbCanvas') thumbCanvasRef?: ElementRef<HTMLCanvasElement>;
-
-  ngOnDestroy(): void {
-    // document.removeEventListener('mousemove', _onDocMove);
-    // document.removeEventListener('mousemove', _onDocUp);
-    // document.removeEventListener('mousemove', _onDocTouchMove);
-    // document.removeEventListener('mousemove', _onDocTouchEnd);
-  }
 
   togglePlay(): void {
     const video = this.playerRef.nativeElement;
@@ -81,10 +77,53 @@ export class VideoCardComponent implements OnDestroy {
 
     this.duration = video.duration || 0;
 
-    const thumbVideo = this.thumbVideoRef.nativeElement;
-    if (thumbVideo.readyState >= 1) this._thumbMetaReady = true;
+    video.volume = this.volume;
+    video.muted = this.muted;
+  }
+
+  onVolumeChange(): void {
+    const video = this.playerRef.nativeElement;
+
+    this.volume = video.volume;
+    this.muted = video.muted || this.volume === 0;
+
+    if (!this.muted && this.volume > 0) this._lastNonZeroVolume = this.volume;
+  }
+
+  onVolumeInput(event: Event): void {
+    const video = this.playerRef.nativeElement;
+    const value = Number((event.target as HTMLInputElement).value);
+
+    this.volume = value;
+    video.volume = value;
+    
+    if (value === 0) {
+      video.muted = true;
+      this.muted = true;
+    }
     else {
-      thumbVideo.addEventListener('loadedmetadata', () => { this._thumbMetaReady = true; }, { once: true });
+      video.muted = false;
+      this.muted = false;
+      this._lastNonZeroVolume = value;
+    }
+  }
+
+  toggleMute(): void {
+    const video = this.playerRef.nativeElement;
+
+    if (this.muted || this.volume === 0) {
+      const restore = this._lastNonZeroVolume || 0.5;
+      video.muted = false;
+      video.volume = restore;
+      this.volume = restore;
+      this.muted = false;
+    }
+    else {
+      this._lastNonZeroVolume = this.volume > 0 ? this.volume : (this._lastNonZeroVolume || 0.5);
+      video.muted = true;
+      this.muted = true;
+
+      this.volume = 0;
     }
   }
 
