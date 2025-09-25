@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './video-card.component.html',
   styleUrl: './video-card.component.scss'
 })
-export class VideoCardComponent  {
+export class VideoCardComponent {
   @Input() videoSrc: string | undefined;
   @Input() posterSrc: string | undefined;
   @Input() alt = 'preview';
@@ -30,10 +30,6 @@ export class VideoCardComponent  {
   volume = 1;
   muted = false;
 
-  private _dragging = false;
-  private _thumbMetaReady = false;
-  private _thumbSeekScheduled = false;
-  private _pendingThumbTime = 0;
   private _lastNonZeroVolume = 1;
 
   get PlayedPercent() {
@@ -96,7 +92,7 @@ export class VideoCardComponent  {
 
     this.volume = value;
     video.volume = value;
-    
+
     if (value === 0) {
       video.muted = true;
       this.muted = true;
@@ -149,10 +145,6 @@ export class VideoCardComponent  {
       this.bufferPercent = 0;
     }
   }
-
-  // onSeekHover(event: MouseEvent) {
-  //   const { x, time, clampedX } = 
-  // }
 
   onSeekInput(event: Event): void {
     const value = Number((event.target as HTMLInputElement).value);
