@@ -32,10 +32,6 @@ export class VideoCardComponent {
 
   private _lastNonZeroVolume = 1;
 
-  get PlayedPercent() {
-    return this.duration ? (this.currentTime / this.duration) * 100 : 0;
-  }
-
   @ViewChild('player') playerRef!: ElementRef<HTMLVideoElement>;
   @ViewChild('thumbVideo') thumbVideoRef!: ElementRef<HTMLVideoElement>;
   @ViewChild('seekWrap') seekWrapRef!: ElementRef<HTMLElement>;
